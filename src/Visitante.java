@@ -1,24 +1,28 @@
 import java.util.Objects;
 
+
+
 public class Visitante {
+    public enum Genero {
+        HOMEM,
+        MULHER,
+        NAOBINARIO
+    }
+
     private final String cpf;
     private final String nome;
     private final String sobrenome;
-    private final char genero;
+    private final Genero genero;
 
-    public Visitante(String cpf, String nome, String sobrenome, char genero){
+    public Visitante(String cpf, String nome, String sobrenome, Genero genero){
         Objects.requireNonNull(cpf, "Cpf nao pode ser nulo");
         Objects.requireNonNull(nome, "Nome nao pode ser nulo");
         Objects.requireNonNull(sobrenome, "Sobrenome nao pode ser nulo");
         if(cpf.equals("")) throw new IllegalArgumentException("Cpf nao pode ser vazio");
         if(nome.equals("")) throw new IllegalArgumentException("Nome nao pode ser vazio");
         if(sobrenome.equals("")) throw new IllegalArgumentException("Sobrenome nao pode ser vazio");
-        switch (genero) {
-            case 'm', 'M' -> this.genero = 'm';
-            case 'f', 'F' -> this.genero = 'f';
-            case 'o', 'O' -> this.genero = 'o';
-            default -> throw new IllegalArgumentException("Genero deve ser (F)eminino, (M)asculino ou (O)utro");
-        }
+
+        this.genero = genero;
         this.cpf = cpf;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -36,7 +40,7 @@ public class Visitante {
         return sobrenome;
     }
 
-    public char getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
