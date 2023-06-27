@@ -1,6 +1,7 @@
 import java.util.Objects;
 
 public class Hangar {
+    //TODO: adicionar conexão com classe endereço e modelo, quando completadas
     private final int codigo;
     private final String bloco;
     private final Endereco endereco;
