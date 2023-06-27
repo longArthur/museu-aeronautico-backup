@@ -5,22 +5,22 @@ Programação, Banco de Dados e Análise e Projeto de Sistemas.
 Ele servirá como sistema de Login empresarial e de gerenciamento de visitantes.
 
 
-Aqui, indicamos o esquema logico-textual do Museu Aeronautico:
+Aqui, indicamos o esquema logico-textual do Museu Aeronautico, demarcados com ! se terminados,
+e "#" se parcialmente terminados.
 
-    Visitante(codigo, nome, sobrenome, genero)
+    !Visitante(codigo, nome, sobrenome, genero)
 
-    Visita( cod_visitante#, cod_hangar#, data_ingresso, tempo_estadia)
+    !Visita(cod_visitante#, cod_hangar#, data_ingresso, tempo_estadia)
         cod_visitante referencia Visitante.
         cod_hangar referencia Hangar.
 
-    Endereco(codigo, cidade, bairo, rua, numero_endereco)
+    !Endereco(codigo, cidade, bairro, rua, numero_endereco)
 
-    Hangar(codigo, bloco, qtd_vagas, largura_metros, comprimento_metros,
-        capacidade_visitantes, cod_departamento#, endereco#)
-        cod_departamento referencia Departamento.
-        endereco referencia Endereco.
+    !Hangar(codigo, bloco, qtd_vagas, largura_metros, comprimento_metros, capacidade_visitantes, cod_departamento#, endereco#)
+        !cod_departamento referencia Departamento.
+        !endereco referencia Endereco.
 
-    Departamento(codigo, data_criacao, orcamento)
+    !Departamento(codigo, data_criacao, orcamento)
 
     Empregado(CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco#, departamento#)
         endereco referencia Endereco.
