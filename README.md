@@ -23,21 +23,21 @@ e "#" se parcialmente terminados.
 
 !Departamento(codigo, data_criacao, orcamento)
 
-Empregado(CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco#, departamento#)
-    endereco referencia Endereco.
-    departamento referencia Departamento.
+!Empregado(CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco#, departamento#)
+    !endereco referencia Endereco.
+    !departamento referencia Departamento.
     
-    Engenheiro(CPF_empregado#, area_atuacao, CREA)
-        CPF_empregado referencia Empregado.
+    !Engenheiro(CPF_empregado#, area_atuacao, CREA)
+    !    CPF_empregado referencia Empregado.
     
-    Piloto(CPF_empregado#, CHT)
-        CPF_empregado referencia Empregado.
+    !Piloto(CPF_empregado#, CHT)
+    !    CPF_empregado referencia Empregado.
 
-    Historiador(CPF_empregado#, registro)
-        CPF_empregado referencia Empregado.
+    !Historiador(CPF_empregado#, registro)
+    !    CPF_empregado referencia Empregado.
 
-    Gerente(CPF_empregado#, inicio_gerencia)
-        CPF_empregado referencia Empregado.
+    !Gerente(CPF_empregado#, inicio_gerencia)
+    !    CPF_empregado referencia Empregado.
 
 !Modelo(codigo, marca, data_producao, comprimento_metros, largura_metros, historia_aviao, tipo, cod_hangar#)
     !cod_hangar referencia Hangar.
@@ -65,6 +65,6 @@ Pilota(CPF_piloto#, cod_aviao#)
 
 
 # Problemas a resolver
-- [ ] Organização de layout de classes
+- [X] Organização de layout de classes
 
 
