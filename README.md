@@ -55,7 +55,7 @@ Pilota(CPF_piloto#, cod_aviao#)
 
 # TODO
 - [ ] Criar o banco de dados
-- [ ] Criar a interface
+- [X] Criar a interface
 - [ ] Criar o sistema de login
 - [ ] Criar o sistema de gerenciamento de visitantes
 - [ ] Criar o sistema de gerenciamento de empregados
@@ -66,5 +66,4 @@ Pilota(CPF_piloto#, cod_aviao#)
 
 # Problemas a resolver
 - [X] Organização de layout de classes
-
-
+- [ ] Interoperabilidade entre NetBeans e IntelliJ
