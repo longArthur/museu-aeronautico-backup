@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 public class Piloto{
@@ -5,7 +7,7 @@ public class Piloto{
     private final String CHT;
 
     public Piloto(Empregado empregado, String CHT) {
-        Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
+        Objects.requireNonNull(empregado, "Logic.Empregado nao pode ser nulo");
         Objects.requireNonNull(CHT, "CHT nao pode ser nulo");
         if(CHT.equals("")) throw new IllegalArgumentException("CHT nao pode ser vazio");
 
@@ -36,7 +38,7 @@ public class Piloto{
 
     @Override
     public String toString() {
-        return "Piloto{" +
+        return "Logic.Piloto{" +
                 "empregado=" + empregado +
                 ", CHT='" + CHT + '\'' +
                 '}';

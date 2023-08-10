@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 public class Endereco {
@@ -63,7 +65,7 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Endereco{" +
+        return "Logic.Endereco{" +
                 "codigo=" + codigo +
                 ", cidade='" + cidade + '\'' +
                 ", rua='" + rua + '\'' +

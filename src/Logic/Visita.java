@@ -1,3 +1,5 @@
+package Logic;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -10,8 +12,8 @@ public class Visita {
 
     public Visita(LocalDateTime dataIngresso, Visitante visitante, Hangar hangar) {
         Objects.requireNonNull(dataIngresso, "Data de ingresso nao pode ser nula.");
-        Objects.requireNonNull(visitante, "Visitante nao pode ser nulo.");
-        Objects.requireNonNull(hangar, "Hangar nao pode ser nulo.");
+        Objects.requireNonNull(visitante, "Logic.Visitante nao pode ser nulo.");
+        Objects.requireNonNull(hangar, "Logic.Hangar nao pode ser nulo.");
 
         this.visitante = visitante;
         this.hangar = hangar;

@@ -1,3 +1,5 @@
+package Logic;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -47,7 +49,7 @@ public class Departamento {
 
     @Override
     public String toString() {
-        return "Departamento{" +
+        return "Logic.Departamento{" +
                 "codigo=" + codigo +
                 ", data_criacao=" + data_criacao +
                 ", orcamento=" + orcamento +

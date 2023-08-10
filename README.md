@@ -9,38 +9,38 @@ Aqui, indicamos o esquema logico-textual do Museu Aeronautico, demarcados com ! 
 e "#" se parcialmente terminados.
 
 ```
-!Visitante(codigo, nome, sobrenome, genero)
+!Logic.Visitante(codigo, nome, sobrenome, genero)
 
-!Visita(cod_visitante#, cod_hangar#, data_ingresso, tempo_estadia)
-    cod_visitante referencia Visitante.
-    cod_hangar referencia Hangar.
+!Logic.Visita(cod_visitante#, cod_hangar#, data_ingresso, tempo_estadia)
+    cod_visitante referencia Logic.Visitante.
+    cod_hangar referencia Logic.Hangar.
 
-!Endereco(codigo, cidade, bairro, rua, numero_endereco)
+!Logic.Endereco(codigo, cidade, bairro, rua, numero_endereco)
 
-!Hangar(codigo, bloco, qtd_vagas, largura_metros, comprimento_metros, capacidade_visitantes, cod_departamento#, endereco#)
-    !cod_departamento referencia Departamento.
-    !endereco referencia Endereco.
+!Logic.Hangar(codigo, bloco, qtd_vagas, largura_metros, comprimento_metros, capacidade_visitantes, cod_departamento#, endereco#)
+    !cod_departamento referencia Logic.Departamento.
+    !endereco referencia Logic.Endereco.
 
-!Departamento(codigo, data_criacao, orcamento)
+!Logic.Departamento(codigo, data_criacao, orcamento)
 
-!Empregado(CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco#, departamento#)
-    !endereco referencia Endereco.
-    !departamento referencia Departamento.
+!Logic.Empregado(Logic.CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco#, departamento#)
+    !endereco referencia Logic.Endereco.
+    !departamento referencia Logic.Departamento.
     
-    !Engenheiro(CPF_empregado#, area_atuacao, CREA)
-    !    CPF_empregado referencia Empregado.
+    !Logic.Engenheiro(CPF_empregado#, area_atuacao, CREA)
+    !    CPF_empregado referencia Logic.Empregado.
     
-    !Piloto(CPF_empregado#, CHT)
-    !    CPF_empregado referencia Empregado.
+    !Logic.Piloto(CPF_empregado#, CHT)
+    !    CPF_empregado referencia Logic.Empregado.
 
-    !Historiador(CPF_empregado#, registro)
-    !    CPF_empregado referencia Empregado.
+    !Logic.Historiador(CPF_empregado#, registro)
+    !    CPF_empregado referencia Logic.Empregado.
 
-    !Gerente(CPF_empregado#, inicio_gerencia)
-    !    CPF_empregado referencia Empregado.
+    !Logic.Gerente(CPF_empregado#, inicio_gerencia)
+    !    CPF_empregado referencia Logic.Empregado.
 
-!Modelo(codigo, marca, data_producao, comprimento_metros, largura_metros, historia_aviao, tipo, cod_hangar#)
-    !cod_hangar referencia Hangar.
+!Logic.Modelo(codigo, marca, data_producao, comprimento_metros, largura_metros, historia_aviao, tipo, cod_hangar#)
+    !cod_hangar referencia Logic.Hangar.
     
     !Aviao(cod_modelo#, area_atuacao)
         cod_modelo referencia modelo
@@ -49,7 +49,7 @@ e "#" se parcialmente terminados.
         cod_modelo referencia modelo.
 
 Pilota(CPF_piloto#, cod_aviao#)
-    CPF_piloto referencia Piloto.
+    CPF_piloto referencia Logic.Piloto.
     cod_aviao referencia Avião.
 ```
 

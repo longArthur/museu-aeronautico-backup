@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 
@@ -62,7 +64,7 @@ public class Visitante {
 
     @Override
     public String toString() {
-        return "Visitante{" +
+        return "Logic.Visitante{" +
                 "cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
                 ", sobrenome='" + sobrenome + '\'' +

@@ -1,3 +1,5 @@
+package Logic;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,13 +15,13 @@ public class Empregado {
 
     public Empregado(CPF cpf, LocalDate dataIngresso, String nome, String sobrenome, BigDecimal salario, Endereco endereco, Departamento departamento) {
         //reqnonnull
-        Objects.requireNonNull(cpf, "CPF nao pode ser nulo");
+        Objects.requireNonNull(cpf, "Logic.CPF nao pode ser nulo");
         Objects.requireNonNull(dataIngresso, "Data de ingresso nao pode ser nulo");
         Objects.requireNonNull(nome, "Nome nao pode ser nulo");
         Objects.requireNonNull(sobrenome, "Sobrenome nao pode ser nulo");
         Objects.requireNonNull(salario, "Salario nao pode ser nulo");
-        Objects.requireNonNull(endereco, "Endereco nao pode ser nulo");
-        Objects.requireNonNull(departamento, "Departamento nao pode ser nulo");
+        Objects.requireNonNull(endereco, "Logic.Endereco nao pode ser nulo");
+        Objects.requireNonNull(departamento, "Logic.Departamento nao pode ser nulo");
         if(nome.equals("")) throw new IllegalArgumentException("Nome nao pode ser vazio");
         if(sobrenome.equals("")) throw new IllegalArgumentException("Sobrenome nao pode ser vazio");
         if(salario.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Salario nao pode ser negativo");
@@ -76,7 +78,7 @@ public class Empregado {
 
     @Override
     public String toString() {
-        return "Empregado{" +
+        return "Logic.Empregado{" +
                 "cpf=" + cpf +
                 ", dataIngresso=" + dataIngresso +
                 ", nome='" + nome + '\'' +

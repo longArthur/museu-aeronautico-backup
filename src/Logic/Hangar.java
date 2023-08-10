@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 public class Hangar {
@@ -19,8 +21,8 @@ public class Hangar {
         if(larguraMetros <= 0) throw new IllegalArgumentException("Largura em metros nao pode ser menor ou igual a zero");
         if(comprimentoMetros <= 0) throw new IllegalArgumentException("Comprimento em metros nao pode ser menor ou igual a zero");
         if(capacidadeVisitantes <= 0) throw new IllegalArgumentException("Capacidade de visitantes nao pode ser menor ou igual a zero");
-        Objects.requireNonNull(endereco,"Endereco nao pode ser nulo");
-        Objects.requireNonNull(departamento, "Departamento nao pode ser nulo");
+        Objects.requireNonNull(endereco,"Logic.Endereco nao pode ser nulo");
+        Objects.requireNonNull(departamento, "Logic.Departamento nao pode ser nulo");
 
 
         this.codigo = codigo;

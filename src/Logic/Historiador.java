@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 public class Historiador {
@@ -5,7 +7,7 @@ public class Historiador {
     private final String registro;
 
     public Historiador(Empregado empregado, String registro) {
-        Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
+        Objects.requireNonNull(empregado, "Logic.Empregado nao pode ser nulo");
         Objects.requireNonNull(registro, "Registro nao pode ser nulo");
         if(registro.equals("")) throw new IllegalArgumentException("Registro nao pode ser vazio");
 
@@ -36,7 +38,7 @@ public class Historiador {
 
     @Override
     public String toString() {
-        return "Historiador{" +
+        return "Logic.Historiador{" +
                 "empregado=" + empregado +
                 ", registro='" + registro + '\'' +
                 '}';

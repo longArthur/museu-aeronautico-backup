@@ -1,3 +1,5 @@
+package Logic;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -98,7 +100,7 @@ public class Modelo {
 
     @Override
     public String toString() {
-        return "Modelo{" +
+        return "Logic.Modelo{" +
                 "codigo=" + codigo +
                 ", marca='" + marca + '\'' +
                 ", dataProducao=" + dataProducao +

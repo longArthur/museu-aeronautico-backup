@@ -1,3 +1,5 @@
+package Logic;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -7,7 +9,7 @@ public class Gerente {
 
     public Gerente(Empregado empregado, LocalDate inicio_gerencia) {
         //reqnonnull
-        Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
+        Objects.requireNonNull(empregado, "Logic.Empregado nao pode ser nulo");
         Objects.requireNonNull(inicio_gerencia, "Inicio de gerencia nao pode ser nulo");
 
         this.empregado = empregado;
@@ -37,7 +39,7 @@ public class Gerente {
 
     @Override
     public String toString() {
-        return "Gerente{" +
+        return "Logic.Gerente{" +
                 "empregado=" + empregado +
                 ", inicio_gerencia=" + inicio_gerencia +
                 '}';

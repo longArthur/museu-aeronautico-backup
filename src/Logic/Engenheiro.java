@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.Objects;
 
 public class Engenheiro {
@@ -6,7 +8,7 @@ public class Engenheiro {
     private final String areaAtuacao;
 
     public Engenheiro(Empregado empregado, String crea, String areaAtuacao) {
-        Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
+        Objects.requireNonNull(empregado, "Logic.Empregado nao pode ser nulo");
         Objects.requireNonNull(crea, "Crea nao pode ser nulo");
         Objects.requireNonNull(areaAtuacao, "Area de atuacao nao pode ser nulo");
         if(crea.equals("")) throw new IllegalArgumentException("Crea nao pode ser vazio");
@@ -45,7 +47,7 @@ public class Engenheiro {
 
     @Override
     public String toString() {
-        return "Engenheiro{" +
+        return "Logic.Engenheiro{" +
                 "empregado=" + empregado +
                 ", crea='" + crea + '\'' +
                 ", areaAtuacao='" + areaAtuacao + '\'' +

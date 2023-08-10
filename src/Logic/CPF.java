@@ -1,15 +1,15 @@
-
+package Logic;
 
 public class CPF {
     private final String cpf;
     public CPF(String stringCPF){
         stringCPF = stringCPF.replaceAll("\\D", "");
-        if(stringCPF.length() != 11) throw new IllegalArgumentException("CPF PRECISA TER 11 NUMEROS");
+        if(stringCPF.length() != 11) throw new IllegalArgumentException("Logic.CPF PRECISA TER 11 NUMEROS");
         if((stringCPF.equals("00000000000"))|(stringCPF.equals("11111111111"))|
             (stringCPF.equals("22222222222"))|(stringCPF.equals("33333333333"))|
             (stringCPF.equals("44444444444"))|(stringCPF.equals("55555555555"))|
             (stringCPF.equals("66666666666"))|(stringCPF.equals("77777777777"))|
-            (stringCPF.equals("88888888888"))|(stringCPF.equals("99999999999"))) throw new IllegalArgumentException("Os numeros do CPF nao podem ser todos iguais");
+            (stringCPF.equals("88888888888"))|(stringCPF.equals("99999999999"))) throw new IllegalArgumentException("Os numeros do Logic.CPF nao podem ser todos iguais");
 
         String meioDeCampo = stringCPF.substring(0,9);
 
