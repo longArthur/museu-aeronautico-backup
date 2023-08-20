@@ -18,12 +18,13 @@ public class Modelo {
     private final String areaAtuacao;
     private final String materialUsado;
     private final int codigoHangar;
+    private String estado;
 
-    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao, String materialUsado, int codigoHangar) {
-        if (marca == null || dataProducao == null || historia == null || tipo == null || areaAtuacao == null || materialUsado == null) {
+    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao, String materialUsado, int codigoHangar, String estado) {
+        if (marca == null || dataProducao == null || historia == null || tipo == null || areaAtuacao == null || materialUsado == null || estado == null) {
             throw new IllegalArgumentException("Argumentos não podem ser nulos");
         }
-        if (marca.isEmpty() || historia.isEmpty() || areaAtuacao.isEmpty() || materialUsado.isEmpty()) {
+        if (marca.isEmpty() || historia.isEmpty() || areaAtuacao.isEmpty() || materialUsado.isEmpty() || estado.isEmpty()) {
             throw new IllegalArgumentException("Argumentos não podem ser vazios");
         }
         if (comprimentoMetros <= 0 || envergaduraMetros <= 0 || codigoHangar <= 0) {
@@ -39,6 +40,7 @@ public class Modelo {
         this.areaAtuacao = areaAtuacao;
         this.materialUsado = materialUsado;
         this.codigoHangar = codigoHangar;
+        this.estado = estado;
     }
 
     public int getCodigo() {
@@ -81,8 +83,16 @@ public class Modelo {
         return codigoHangar;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -111,6 +121,7 @@ public class Modelo {
                 ", areaAtuacao='" + areaAtuacao + '\'' +
                 ", materialUsado='" + materialUsado + '\'' +
                 ", codigoHangar=" + codigoHangar +
+                ", estado=" + estado +
                 '}';
     }
 }
