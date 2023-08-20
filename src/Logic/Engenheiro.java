@@ -1,28 +1,25 @@
 package Logic;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class Engenheiro {
-    private final Empregado empregado;
+public class Engenheiro extends Empregado{
     private final String crea;
     private final String areaAtuacao;
 
-    public Engenheiro(Empregado empregado, String crea, String areaAtuacao) {
-        Objects.requireNonNull(empregado, "Logic.Empregado nao pode ser nulo");
+    public Engenheiro(CPF cpf, LocalDate dataIngresso, String nome, String sobrenome, BigDecimal salario, Endereco endereco, Departamento departamento, String crea, String areaAtuacao) {
+        super(cpf, dataIngresso, nome, sobrenome, salario, endereco, departamento);
         Objects.requireNonNull(crea, "Crea nao pode ser nulo");
         Objects.requireNonNull(areaAtuacao, "Area de atuacao nao pode ser nulo");
-        if(crea.equals("")) throw new IllegalArgumentException("Crea nao pode ser vazio");
-        if(areaAtuacao.equals("")) throw new IllegalArgumentException("Area de atuacao nao pode ser vazio");
+        if(crea.isEmpty()) throw new IllegalArgumentException("Crea nao pode ser vazio");
+        if(areaAtuacao.isEmpty()) throw new IllegalArgumentException("Area de atuacao nao pode ser vazio");
 
 
-        this.empregado = empregado;
         this.crea = crea;
         this.areaAtuacao = areaAtuacao;
     }
 
-    public Empregado getEmpregado() {
-        return empregado;
-    }
 
     public String getCrea() {
         return crea;
@@ -33,22 +30,9 @@ public class Engenheiro {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Engenheiro that)) return false;
-
-        return Objects.equals(empregado, that.empregado);
-    }
-
-    @Override
-    public int hashCode() {
-        return empregado != null ? empregado.hashCode() : 0;
-    }
-
-    @Override
     public String toString() {
-        return "Logic.Engenheiro{" +
-                "empregado=" + empregado +
+        return "Engenheiro{" +
+                "empregado=" + super.toString() +
                 ", crea='" + crea + '\'' +
                 ", areaAtuacao='" + areaAtuacao + '\'' +
                 '}';
