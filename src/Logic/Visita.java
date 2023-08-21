@@ -4,13 +4,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Visita {
+public class Visita implements Comparable<Visita> {
     private final LocalDateTime dataIngresso;
     private final Visitante visitante;
     private final Hangar hangar;
     private Duration tempoEstadia;
 
-    public Visita(LocalDateTime dataIngresso, Visitante visitante, Hangar hangar) {
+    public Visita(LocalDateTime dataIngresso, Visitante visi
+            {
         Objects.requireNonNull(dataIngresso, "Data de ingresso nao pode ser nula.");
         Objects.requireNonNull(visitante, "Logic.Visitante nao pode ser nulo.");
         Objects.requireNonNull(hangar, "Logic.Hangar nao pode ser nulo.");
@@ -39,5 +40,12 @@ public class Visita {
     public void setTempoEstadia(Duration tempoEstadia) {
         Objects.requireNonNull(tempoEstadia, "Tempo de Estadia nao pode ser nulo.");
         this.tempoEstadia = tempoEstadia;
+    }
+
+    @Override
+    public int compareTo(Visita o) {
+        if (!dataIngresso.isEqual(o.dataIngresso))
+            return dataIngresso.compareTo(o.dataIngresso);
+
     }
 }

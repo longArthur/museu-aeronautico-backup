@@ -11,12 +11,12 @@ public class Visitante {
         NAOBINARIO
     }
 
-    private final String cpf;
+    private final CPF cpf;
     private final String nome;
     private final String sobrenome;
     private final Genero genero;
 
-    public Visitante(String cpf, String nome, String sobrenome, Genero genero){
+    public Visitante(CPF cpf, String nome, String sobrenome, Genero genero){
         Objects.requireNonNull(cpf, "Cpf nao pode ser nulo");
         Objects.requireNonNull(nome, "Nome nao pode ser nulo");
         Objects.requireNonNull(sobrenome, "Sobrenome nao pode ser nulo");
@@ -30,7 +30,7 @@ public class Visitante {
         this.sobrenome = sobrenome;
     }
 
-    public String getCpf() {
+    public CPF getCpf() {
         return cpf;
     }
 

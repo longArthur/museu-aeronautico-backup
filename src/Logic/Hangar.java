@@ -1,8 +1,9 @@
 package Logic;
 
+import java.util.Collection;
 import java.util.Objects;
 
-public class Hangar {
+public class Hangar implements Comparable<Hangar> {
 
     private final int codigo;
     private final String bloco;
@@ -15,7 +16,7 @@ public class Hangar {
 
     public Hangar(int codigo, String bloco, int quantidadeVagas, double larguraMetros, double comprimentoMetros, int capacidadeVisitantes, Endereco endereco, Departamento departamento) {
         if(codigo <= 0) throw new IllegalArgumentException("Codigo nao pode ser menor ou igual a zero");
-        if(bloco.equals("")) throw new IllegalArgumentException("Bloco nao pode ser vazio");
+        if(bloco.isEmpty()) throw new IllegalArgumentException("Bloco nao pode ser vazio");
         Objects.requireNonNull(bloco,"Bloco nao pode ser nulo");
         if(quantidadeVagas <= 0) throw new IllegalArgumentException("Quantidade de vagas nao pode ser menor ou igual a zero");
         if(larguraMetros <= 0) throw new IllegalArgumentException("Largura em metros nao pode ser menor ou igual a zero");
@@ -78,5 +79,11 @@ public class Hangar {
     @Override
     public int hashCode() {
         return codigo;
+    }
+
+    @Override
+    public int compareTo(Hangar o) {
+        Integer cod = this.codigo;
+        return cod.compareTo(o.getCodigo());
     }
 }
