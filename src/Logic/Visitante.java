@@ -4,7 +4,7 @@ import java.util.Objects;
 
 
 
-public class Visitante {
+public class Visitante implements Comparable<Visitante> {
     public enum Genero {
         HOMEM,
         MULHER,
@@ -70,5 +70,10 @@ public class Visitante {
                 ", sobrenome='" + sobrenome + '\'' +
                 ", genero=" + genero +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Visitante o) {
+        return this.cpf.compareTo(o.getCpf());
     }
 }

@@ -10,8 +10,7 @@ public class Visita implements Comparable<Visita> {
     private final Hangar hangar;
     private Duration tempoEstadia;
 
-    public Visita(LocalDateTime dataIngresso, Visitante visi
-            {
+    public Visita(LocalDateTime dataIngresso, Visitante visitante, Hangar hangar) {
         Objects.requireNonNull(dataIngresso, "Data de ingresso nao pode ser nula.");
         Objects.requireNonNull(visitante, "Logic.Visitante nao pode ser nulo.");
         Objects.requireNonNull(hangar, "Logic.Hangar nao pode ser nulo.");
@@ -44,8 +43,15 @@ public class Visita implements Comparable<Visita> {
 
     @Override
     public int compareTo(Visita o) {
+        if (!hangar.equals(o.getHangar()))
+            return hangar.compareTo((o.getHangar()));
+
         if (!dataIngresso.isEqual(o.dataIngresso))
             return dataIngresso.compareTo(o.dataIngresso);
 
+        if (!visitante.equals(o.getVisitante()))
+            return visitante.compareTo(o.getVisitante());
+
+        return this.tempoEstadia.compareTo(o.getTempoEstadia());
     }
 }

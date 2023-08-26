@@ -2,7 +2,7 @@ package Logic;
 
 import java.util.Objects;
 
-public class CPF {
+public class CPF implements Comparable<CPF>{
     private final String cpf;
     public CPF(String stringCPF){
         stringCPF = stringCPF.replaceAll("\\D", "");
@@ -46,5 +46,10 @@ public class CPF {
     @Override
     public int hashCode() {
         return Objects.hash(cpf);
+    }
+
+    @Override
+    public int compareTo(CPF o) {
+        return cpf.compareTo(o.cpf);
     }
 }
