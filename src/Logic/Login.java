@@ -1,17 +1,19 @@
 package Logic;
 
+import javax.swing.*;
+import java.util.Arrays;
 import java.util.Objects;
+import java.security.MessageDigest;
 
 public class Login {
     private final Empregado empregado;
     private final byte[] senhaHash;
 
-    public Login(Empregado empregado, byte[] senhaHash) {
+    public Login(Empregado empregado, String senha) {
         Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
-        if(senhaHash.length != 64) throw new IllegalArgumentException("Hash tem que ser SHA512");
 
+        this.senhaHash = this.hash(senha);
         this.empregado = empregado;
-        this.senhaHash = senhaHash;
     }
 
     public Empregado getEmpregado() {
@@ -20,6 +22,21 @@ public class Login {
 
     public byte[] getSenhaHash() {
         return senhaHash;
+    }
+
+    private byte[] hash(String str){
+
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            return digest.digest(str.getBytes());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Contate um administrador, CODIGO \"512\".");
+        }
+        return new byte[0];
+    }
+
+    public boolean compareSenha(String senha){
+        return Arrays.equals(this.hash(senha), this.senhaHash);
     }
 
     @Override

@@ -52,4 +52,9 @@ public class CPF implements Comparable<CPF>{
     public int compareTo(CPF o) {
         return cpf.compareTo(o.cpf);
     }
+
+    @Override
+    public String toString() {
+        return cpf.substring(0,2)+"."+cpf.substring(3,5)+"."+cpf.substring(6,8)+"+"+cpf.substring(9);
+    }
 }
