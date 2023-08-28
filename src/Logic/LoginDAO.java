@@ -28,5 +28,5 @@ public class LoginDAO implements DAO {
     public Object pesquisar(Object obj) {
         return logins.get((CPF) obj);
     }
-    }
+
 }
