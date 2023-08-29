@@ -5,6 +5,18 @@ import java.util.TreeSet;
 public class VisitaDAO implements DAO{
     TreeSet<Visita> treeSet = new TreeSet<>();
 
+    private static VisitaDAO visitaDAO;
+
+    private static VisitaDAO getInstance() {
+        if(visitaDAO == null){
+            return new VisitaDAO();
+        }
+        return visitaDAO;
+    }
+
+    private VisitaDAO(){
+
+    }
     @Override
     public boolean inserir(Object obj) {
         if (!(obj instanceof Visita visita)) return false;

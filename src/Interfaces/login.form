@@ -169,7 +169,7 @@
                 </constraints>
                 <properties>
                   <background color="-5131596"/>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <foreground color="-15461356"/>
                   <requestFocusEnabled value="true"/>
                   <text value="Entrar"/>

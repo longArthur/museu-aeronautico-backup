@@ -1,6 +1,12 @@
 package Interfaces;
 
+import Logic.CPF;
+import Logic.Login;
+import Logic.LoginDAO;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -25,6 +31,25 @@ public class login {
                     senhaField.setEchoChar((char)0);
                 else
                     senhaField.setEchoChar('•');
+            }
+        });
+        Entrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginDAO loginDAO = LoginDAO.getInstance();
+
+                try{
+                    CPF cpf = new CPF(loginField.getText());
+                    Login pessoa = (Login) loginDAO.pesquisar(cpf);
+                    if(pessoa == null)
+                        JOptionPane.showMessageDialog(null, "Login ou Senha incorretos");
+                    else if (pessoa.compareSenha(String.valueOf(senhaField.getPassword())))
+                        JOptionPane.showMessageDialog(null, "Login ou Senha incorretos");
+                } catch (Exception exception){
+                    JOptionPane.showMessageDialog(null, exception.getMessage());
+                }
+
+
             }
         });
     }

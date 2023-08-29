@@ -5,6 +5,19 @@ import java.util.HashMap;
 public class LoginDAO implements DAO {
     private HashMap<CPF, Login> logins = new HashMap<>();
 
+
+    private static LoginDAO loginDAO;
+
+    public static LoginDAO getInstance() {
+        if(loginDAO == null){
+            return new LoginDAO();
+        }
+        return loginDAO;
+    }
+
+    private LoginDAO() {
+
+    }
     @Override
     public boolean inserir(Object obj) {
         Login l = (Login) obj;
