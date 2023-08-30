@@ -4,8 +4,11 @@ import Logic.Empregado;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.TableColumn;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 
 public class GerenteHomeI {
@@ -32,6 +35,7 @@ public class GerenteHomeI {
     private JTable table1;
     private Empregado empregado;
 
+    private JFrame frame;
 
 
 
@@ -39,11 +43,28 @@ public class GerenteHomeI {
         this.empregado = empregado;
         JFrame frame = new JFrame("Gerente Home");
         $$$setupUI$$$();
+        this.frame = frame;
+
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        voltarSairButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new login();
+                frame.dispose();
+            }
+        });
+        empregadoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EmpregadoHome(empregado);
+                frame.dispose();
+            }
+        });
     }
+
 
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNome() + " " + empregado.getSobrenome());
