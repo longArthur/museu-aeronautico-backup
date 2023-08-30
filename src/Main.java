@@ -17,6 +17,7 @@ public class Main {
         LoginDAO loginDAO = LoginDAO.getInstance();
         loginDAO.inserir(new Login(teste, "abacate"));
 
-        new Interfaces.login();
+        System.out.println(loginDAO);
+        Interfaces.login.main(args);
     }
 }

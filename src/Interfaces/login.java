@@ -41,10 +41,11 @@ public class login {
                 try{
                     CPF cpf = new CPF(loginField.getText());
                     Login pessoa = (Login) loginDAO.pesquisar(cpf);
+                    System.out.println(loginDAO);
                     if(pessoa == null)
-                        JOptionPane.showMessageDialog(null, "Login ou Senha incorretos");
+                        JOptionPane.showMessageDialog(null, "Login incorreto");
                     else if (pessoa.compareSenha(String.valueOf(senhaField.getPassword())))
-                        JOptionPane.showMessageDialog(null, "Login ou Senha incorretos");
+                        JOptionPane.showMessageDialog(null, "Senha incorreta");
                 } catch (Exception exception){
                     JOptionPane.showMessageDialog(null, exception.getMessage());
                 }

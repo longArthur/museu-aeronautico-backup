@@ -10,7 +10,7 @@ public class LoginDAO implements DAO {
 
     public static LoginDAO getInstance() {
         if(loginDAO == null){
-            return new LoginDAO();
+            loginDAO = new LoginDAO();
         }
         return loginDAO;
     }
