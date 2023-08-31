@@ -31,15 +31,15 @@ public class EmpregadoHome {
     private JButton visitantesCadastrados;
     private JTextField textFieldCPF;
     private JPanel panel7;
+    private JLabel empregadoNome;
     private JFrame frame;
     private Empregado empregado;
 
     public EmpregadoHome(Empregado empregado) {
         this.empregado = empregado;
-        JFrame frame = new JFrame("Empregado Home");
+        JFrame frame = new JFrame("Tabela de Visitas");
         $$$setupUI$$$();
         this.frame = frame;
-
         frame.setContentPane(panel10);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -47,11 +47,24 @@ public class EmpregadoHome {
         voltarSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (empregado instanceof Gerente) {
+                if (empregado instanceof Gerente)
                     new GerenteHomeI(empregado);
-                    frame.dispose();
-                } else
+                else
                     new login();
+
+                frame.dispose();
+            }
+        });
+        visitantesCadastrados.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EmpregadoTableI(empregado);
+            }
+        });
+        cadastrarVisitante.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EmpregadoVisitanteEditI(empregado);
             }
         });
     }
@@ -84,11 +97,10 @@ public class EmpregadoHome {
         panel3.add(panel4, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(1280, 160), new Dimension(1280, 160), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 4, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        Font NomeFont = this.$$$getFont$$$("Arial", Font.BOLD, 36, Nome.getFont());
-        if (NomeFont != null) Nome.setFont(NomeFont);
-        Nome.setForeground(new Color(-1));
-        Nome.setText("");
-        panel4.add(Nome, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        Font empregadoNomeFont = this.$$$getFont$$$("Arial", Font.BOLD, 36, empregadoNome.getFont());
+        if (empregadoNomeFont != null) empregadoNome.setFont(empregadoNomeFont);
+        empregadoNome.setForeground(new Color(-1));
+        panel4.add(empregadoNome, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, new Dimension(30, -1), new Dimension(35, -1), new Dimension(45, -1), 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
@@ -234,6 +246,7 @@ public class EmpregadoHome {
     }
 
     private void createUIComponents() {
-        Nome = new JLabel(this.empregado.getNome() + " " + this.empregado.getSobrenome());
+        this.empregadoNome = new JLabel(this.empregado.getNome() + " " + this.empregado.getSobrenome());
     }
+
 }

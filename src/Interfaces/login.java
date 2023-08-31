@@ -31,7 +31,7 @@ public class login {
 
 
     public login() {
-        JFrame frame = new JFrame("Gerente Home");
+        JFrame frame = new JFrame("Login");
         $$$setupUI$$$();
         checkBox1.addItemListener(new ItemListener() {
             @Override
@@ -60,17 +60,17 @@ public class login {
                         switch (login1.getEmpregado().getClass().getName()) {
                             case "Logic.Gerente":
                                 new GerenteHomeI(login1.getEmpregado());
-                                frame.dispose();
                                 break;
                             case "Logic.Engenheiro":
-                                EngenheiroI.main(args);
+                                new EngenheiroI(login1.getEmpregado());
                                 break;
                             case "Logic.Piloto":
-                                PilotoI.main(args);
+                                new PilotoI(login1.getEmpregado());
                                 break;
                             case "Logic.Empregado":
                                 new EmpregadoHome(login1.getEmpregado());
                         }
+                        frame.dispose();
                     }
                 } catch (Exception exception) {
                     JOptionPane.showMessageDialog(null, exception.getMessage());

@@ -46,6 +46,17 @@ public class Visitante implements Comparable<Visitante> {
         return genero;
     }
 
+    public String getNomeSobrenome(){
+        return nome + " " + sobrenome;
+    }
+
+    public String getGeneroString() {
+        switch (genero){
+            case HOMEM -> {return "Homem";}
+            case MULHER -> {return "Mulher";}
+            default -> {return "Nao-binario";}
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
