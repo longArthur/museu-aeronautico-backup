@@ -53,23 +53,15 @@ public class login {
                             JOptionPane.showMessageDialog(frame, "Agora realize seu login novamente!");
                         } else
                             JOptionPane.showMessageDialog(null, "Login incorreto");
-                    } else if (login1.compareSenha(String.valueOf(senhaField.getPassword())))
+                    } else if (!login1.compareSenha(String.valueOf(senhaField.getPassword())))
                         JOptionPane.showMessageDialog(null, "Senha incorreta");
                     else {
-                        String[] args = new String[1];
-                        args[0] = login1.getEmpregado().getNome();
+
                         switch (login1.getEmpregado().getClass().getName()) {
-                            case "Logic.Gerente":
-                                new GerenteHomeI(login1.getEmpregado());
-                                break;
-                            case "Logic.Engenheiro":
-                                new EngenheiroI(login1.getEmpregado());
-                                break;
-                            case "Logic.Piloto":
-                                new PilotoI(login1.getEmpregado());
-                                break;
-                            case "Logic.Empregado":
-                                new EmpregadoHome(login1.getEmpregado());
+                            case "Logic.Gerente" -> new GerenteHomeI(login1.getEmpregado());
+                            case "Logic.Engenheiro" -> new EngenheiroI(login1.getEmpregado());
+                            case "Logic.Piloto" -> new PilotoI(login1.getEmpregado());
+                            case "Logic.Empregado" -> new EmpregadoHome(login1.getEmpregado());
                         }
                         frame.dispose();
                     }

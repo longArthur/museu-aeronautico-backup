@@ -1,14 +1,21 @@
 package Interfaces;
 
-import Logic.Empregado;
-import Logic.Gerente;
+import Logic.*;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 public class EmpregadoHome {
@@ -39,7 +46,75 @@ public class EmpregadoHome {
         this.empregado = empregado;
         JFrame frame = new JFrame("Tabela de Visitas");
         $$$setupUI$$$();
-        this.frame = frame;
+
+
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem deletar = new JMenuItem("Deletar");
+        JMenuItem terminar = new JMenuItem("Terminar visita");
+
+        deletar.addActionListener(e -> {
+            VisitaDAO visitaDAO = VisitaDAO.getInstance();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+
+            LocalDateTime localDateTime = LocalDateTime.parse((String) tabela.getValueAt(tabela.getSelectedRow(), 0), format);
+
+            if (visitaDAO.excluir(visitaDAO.pesquisar(localDateTime, (CPF) tabela.getValueAt(tabela.getSelectedRow(), 1)))) {
+                JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
+                DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
+                tableModel.setRowCount(0);
+                for (Object[] objects : populateData()) {
+                    tableModel.addRow(objects);
+                }
+            } else
+                JOptionPane.showMessageDialog(frame, "Exclusao mal-sucedida");
+
+        });
+
+        terminar.addActionListener(e -> {
+            VisitaDAO visitaDAO = VisitaDAO.getInstance();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+
+            LocalDateTime localDateTime = LocalDateTime.parse((String) tabela.getValueAt(tabela.getSelectedRow(), 0), format);
+
+            Visita visita = visitaDAO.pesquisar(localDateTime, (CPF) tabela.getValueAt(tabela.getSelectedRow(), 1));
+            visita.setTempoEstadia(Duration.between(visita.getDataIngresso(), LocalDateTime.now()));
+            visitaDAO.editar(visita);
+            DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
+            tableModel.setRowCount(0);
+            for (Object[] objects : populateData()) {
+                tableModel.addRow(objects);
+            }
+
+        });
+
+        menu.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        int rowAtPoint = tabela.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), tabela));
+                        if (rowAtPoint > -1) {
+                            tabela.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+        });
+
+        menu.add(deletar);
+        menu.add(terminar);
+        tabela.setComponentPopupMenu(menu);
+
         frame.setContentPane(panel10);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -65,6 +140,29 @@ public class EmpregadoHome {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new EmpregadoVisitanteInserirI(empregado);
+            }
+        });
+        IniciarVisita.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(new CPF(textFieldCPF.getText()));
+                    Object[] nomesHangares = HangarDAO.getInstance().pesquisar().toArray();
+
+                    Hangar escolhaDeHangar = (Hangar) JOptionPane.showInputDialog(frame, "Escolha um Hangar", "Escolher", JOptionPane.INFORMATION_MESSAGE, null, nomesHangares, nomesHangares[0]);
+
+                    if (VisitaDAO.getInstance().inserir(new Visita(LocalDateTime.now(), visitante, escolhaDeHangar)))
+                        JOptionPane.showMessageDialog(frame, "Visita iniciada com sucesso!");
+
+                    DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
+                    tableModel.setRowCount(0);
+                    for (Object[] objects : populateData()) {
+                        tableModel.addRow(objects);
+                    }
+
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(frame, exception.getMessage());
+                }
             }
         });
     }
@@ -212,7 +310,6 @@ public class EmpregadoHome {
         scrollPane1.setAutoscrolls(true);
         scrollPane1.setBackground(new Color(-11842739));
         panel5.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        tabela = new JTable();
         scrollPane1.setViewportView(tabela);
     }
 
@@ -245,8 +342,33 @@ public class EmpregadoHome {
         return panel10;
     }
 
+    private String formatDuration(Duration duration) {
+        if (duration.toDays() > 1)
+            return duration.toDays() + "D " + duration.toHoursPart() + ":" + duration.toMinutesPart() + ":" + duration.toSecondsPart();
+        return duration.toHoursPart() + ":" + duration.toMinutesPart() + ":" + duration.toSecondsPart();
+    }
+
+    private Object[][] populateData() {
+        List<Visita> visitas = VisitaDAO.getInstance().pesquisar();
+        Object[][] dados = new Object[visitas.size()][4];
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+
+        for (int i = 0; i < visitas.size(); i++)
+            dados[i] = new Object[]{visitas.get(i).getDataIngresso().format(format), visitas.get(i).getVisitante().getCpf(),
+                    visitas.get(i).getVisitante().getNomeSobrenome(), visitas.get(i).getHangar(),
+                    (visitas.get(i).getTempoEstadia() != null) ? formatDuration(visitas.get(i).getTempoEstadia()) : "Nao terminada."};
+        return dados;
+    }
+
     private void createUIComponents() {
         this.empregadoNome = new JLabel(empregado.getNomeSobrenome());
+
+        String[] colunas = {"Data Ingresso", "CPF", "Nome Completo", "Hangar", "Tempo Estadia"};
+        Object[][] dados = populateData();
+
+        tabela = new JTable(new DefaultTableModel(dados, colunas));
+        tabela.setDefaultEditor(Object.class, null);
     }
 
 }

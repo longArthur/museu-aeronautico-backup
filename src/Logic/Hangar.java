@@ -69,6 +69,11 @@ public class Hangar implements Comparable<Hangar> {
     }
 
     @Override
+    public String toString() {
+        return "Hangar codigo " + codigo + ", da " + endereco.getRua();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hangar hangar)) return false;

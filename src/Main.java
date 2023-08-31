@@ -15,7 +15,9 @@ public class Main {
                 BigDecimal.valueOf(1000.20), new Endereco("Capao da canoa", "Bacacaca", "guri", "2222"),
                 departamento);
 
-        HangarDAO hangarDAO;
+        HangarDAO hangarDAO = HangarDAO.getInstance();
+        hangarDAO.inserir(new Hangar(1, "C", 20, 20.3, 40.4, 100,
+                new Endereco("Porto Alegre", "Osvaldo Aranha", "Zona sul", "2002"), departamento));
 
         EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
         empregadoDAO.inserir(teste);

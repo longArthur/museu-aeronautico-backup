@@ -49,9 +49,8 @@ public class Visita implements Comparable<Visita> {
         if (!dataIngresso.isEqual(o.dataIngresso))
             return dataIngresso.compareTo(o.dataIngresso);
 
-        if (!visitante.equals(o.getVisitante()))
-            return visitante.compareTo(o.getVisitante());
 
-        return this.tempoEstadia.compareTo(o.getTempoEstadia());
+        return visitante.compareTo(o.getVisitante());
+
     }
 }

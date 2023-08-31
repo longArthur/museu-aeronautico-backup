@@ -68,13 +68,15 @@ public class EmpregadoVisitanteInserirI {
                             genero = Visitante.Genero.NAOBINARIO;
                         }
                     }
-                    VisitanteDAO.getInstance()
-                            .inserir(new Visitante(new CPF(cpfField.getText()), nomeField.getText(), sobrenomeField.getText(), genero));
-                    JOptionPane.showMessageDialog(frame, "Visitante inserido com sucesso!");
-                    cpfField.setText("");
-                    nomeField.setText("");
-                    sobrenomeField.setText("");
-                    GeneroComboBox.setSelectedIndex(0);
+                    if (VisitanteDAO.getInstance().inserir(new Visitante(new CPF(cpfField.getText()), nomeField.getText(), sobrenomeField.getText(), genero))) {
+                        JOptionPane.showMessageDialog(frame, "Visitante inserido com sucesso!");
+                        cpfField.setText("");
+                        nomeField.setText("");
+                        sobrenomeField.setText("");
+                        GeneroComboBox.setSelectedIndex(0);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Visitante nao pode ser inserido!\nPossivelmente ha visitante com o mesmo CPF.");
+                    }
                 } catch (Exception exception) {
                     JOptionPane.showMessageDialog(frame, exception.getMessage());
                 }

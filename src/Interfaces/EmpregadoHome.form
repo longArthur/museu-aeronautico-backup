@@ -320,7 +320,7 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="d32c" class="javax.swing.JTable" binding="tabela">
+                      <component id="d32c" class="javax.swing.JTable" binding="tabela" custom-create="true">
                         <constraints/>
                         <properties/>
                       </component>

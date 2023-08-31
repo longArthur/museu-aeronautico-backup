@@ -36,7 +36,7 @@ public class Login {
     }
 
     public boolean compareSenha(String senha){
-        return this.hash(senha).equals(this.senhaHash);
+        return Arrays.equals(this.hash(senha), this.senhaHash);
     }
 
     @Override
