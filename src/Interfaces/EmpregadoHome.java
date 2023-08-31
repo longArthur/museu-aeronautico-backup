@@ -64,7 +64,7 @@ public class EmpregadoHome {
         cadastrarVisitante.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EmpregadoVisitanteEditI(empregado);
+                new EmpregadoVisitanteInserirI(empregado);
             }
         });
     }
@@ -246,7 +246,7 @@ public class EmpregadoHome {
     }
 
     private void createUIComponents() {
-        this.empregadoNome = new JLabel(this.empregado.getNome() + " " + this.empregado.getSobrenome());
+        this.empregadoNome = new JLabel(empregado.getNomeSobrenome());
     }
 
 }

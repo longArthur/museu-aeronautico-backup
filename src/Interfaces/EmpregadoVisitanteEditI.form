@@ -301,7 +301,7 @@
                           <text value="Inserir"/>
                         </properties>
                       </component>
-                      <component id="ba29f" class="javax.swing.JTextField" binding="nomeField1">
+                      <component id="ba29f" class="javax.swing.JTextField" binding="nomeField1" custom-create="true">
                         <constraints>
                           <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -309,7 +309,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="8194" class="javax.swing.JTextField" binding="cpfField1">
+                      <component id="d9a5c" class="javax.swing.JLabel" binding="cpfField1" custom-create="true">
                         <constraints>
                           <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -317,7 +317,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="81652" class="javax.swing.JTextField" binding="sobrenomeField1">
+                      <component id="81652" class="javax.swing.JTextField" binding="sobrenomeField1" custom-create="true">
                         <constraints>
                           <grid row="2" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>

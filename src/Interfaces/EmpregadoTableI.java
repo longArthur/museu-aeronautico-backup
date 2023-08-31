@@ -4,11 +4,16 @@ import Logic.*;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 public class EmpregadoTableI {
     private JPanel panel1;
@@ -40,6 +45,47 @@ public class EmpregadoTableI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
+            }
+        });
+        tableVisitantes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    if (visitante == null)
+                        JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
+                    else new EmpregadoVisitanteInfoI(empregado, visitante);
+                    frame.dispose();
+                }
+            }
+        });
+        pesquisarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisar();
+                    Visitante visitante = visitantes.stream().filter(visitanteInterno -> visitanteInterno.getCpf().equals(new CPF(buscaField.getText()))).findFirst().get();
+
+                    DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
+                    tableModel.setRowCount(0);
+
+                    tableModel.addRow(new Object[]{visitante.getCpf(), visitante.getNomeSobrenome(), visitante.getGeneroString()});
+                } catch (NoSuchElementException exception) {
+                    JOptionPane.showMessageDialog(frame, "CPF nao encontrado.");
+                } catch (Exception exception) {
+                    if (buscaField.getText().isEmpty()) {
+                        DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
+                        tableModel.setRowCount(0);
+                        for (Object[] objects : populateData()) {
+                            tableModel.addRow(objects);
+                        }
+                    }
+                    else
+                        JOptionPane.showMessageDialog(frame, exception.getMessage());
+                }
             }
         });
     }
@@ -182,17 +228,22 @@ public class EmpregadoTableI {
         return panel1;
     }
 
-    private void createUIComponents() {
-        nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
+    private Object[][] populateData() {
         java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisar();
-
-        String[] colunas = {"CPF", "Nome Completo", "Genero"};
         Object[][] dados = new Object[visitantes.size()][3];
-
         for (int i = 0; i < visitantes.size(); i++)
             dados[i] = new Object[]{visitantes.get(i).getCpf(), visitantes.get(i).getNomeSobrenome(),
                     visitantes.get(i).getGeneroString()};
+        return dados;
+    }
 
-        tableVisitantes = new JTable(dados, colunas);
+    private void createUIComponents() {
+        nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
+
+        String[] colunas = {"CPF", "Nome Completo", "Genero"};
+        Object[][] dados = populateData();
+
+        tableVisitantes = new JTable(new DefaultTableModel(dados, colunas));
+        tableVisitantes.setDefaultEditor(Object.class, null);
     }
 }

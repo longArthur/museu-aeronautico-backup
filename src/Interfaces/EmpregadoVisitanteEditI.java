@@ -32,14 +32,15 @@ public class EmpregadoVisitanteEditI {
     private JLabel CPFLabel;
     private JLabel nomeLabel;
     private JTextField nomeField1;
-    private JTextField cpfField1;
+    private JLabel cpfField1;
     private JTextField sobrenomeField1;
     private JComboBox GeneroComboBox1;
     private Empregado empregado;
+    private Visitante visitante;
 
-    public EmpregadoVisitanteEditI(Empregado empregado) {
-        //TODO: mover este codigo para o EmpregadoVisitanteInserirI.java
+    public EmpregadoVisitanteEditI(Empregado empregado, Visitante visitante) {
         this.empregado = empregado;
+        this.visitante = visitante;
         JFrame frame = new JFrame("Tabela de Visitantes");
         $$$setupUI$$$();
 
@@ -50,6 +51,7 @@ public class EmpregadoVisitanteEditI {
         VoltarSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new EmpregadoTableI(empregado);
                 frame.dispose();
             }
         });
@@ -70,12 +72,10 @@ public class EmpregadoVisitanteEditI {
                         }
                     }
                     VisitanteDAO.getInstance()
-                            .inserir(new Visitante(new CPF(cpfField1.getText()), nomeField1.getText(), sobrenomeField1.getText(), genero));
-                    JOptionPane.showMessageDialog(frame, "Visitante inserido com sucesso!");
-                    cpfField1.setText("");
-                    nomeField1.setText("");
-                    sobrenomeField1.setText("");
-                    GeneroComboBox1.setSelectedIndex(0);
+                            .editar(new Visitante(visitante.getCpf(), nomeField1.getText(), sobrenomeField1.getText(), genero));
+                    JOptionPane.showMessageDialog(frame, "Visitante editado com sucesso!");
+                    new EmpregadoTableI(empregado);
+                    frame.dispose();
                 } catch (Exception exception) {
                     JOptionPane.showMessageDialog(frame, exception.getMessage());
                 }
@@ -220,11 +220,8 @@ public class EmpregadoVisitanteEditI {
         Inserir = new JButton();
         Inserir.setText("Inserir");
         panel7.add(Inserir, new com.intellij.uiDesigner.core.GridConstraints(7, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        nomeField1 = new JTextField();
         panel7.add(nomeField1, new com.intellij.uiDesigner.core.GridConstraints(2, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        cpfField1 = new JTextField();
         panel7.add(cpfField1, new com.intellij.uiDesigner.core.GridConstraints(4, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        sobrenomeField1 = new JTextField();
         panel7.add(sobrenomeField1, new com.intellij.uiDesigner.core.GridConstraints(2, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         panel7.add(GeneroComboBox1, new com.intellij.uiDesigner.core.GridConstraints(4, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer22 = new com.intellij.uiDesigner.core.Spacer();
@@ -268,5 +265,19 @@ public class EmpregadoVisitanteEditI {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
 
         GeneroComboBox1 = new JComboBox(new String[]{"Masculino", "Feminino", "Nao-binario"});
+
+        int generoIndex;
+
+        switch (visitante.getGenero()) {
+            case HOMEM -> generoIndex = 0;
+            case MULHER -> generoIndex = 1;
+            default -> generoIndex = 2;
+        }
+
+        GeneroComboBox1.setSelectedIndex(generoIndex);
+
+        nomeField1 = new JTextField(visitante.getNome());
+        sobrenomeField1 = new JTextField(visitante.getSobrenome());
+        cpfField1 = new JLabel(visitante.getCpf().toString());
     }
 }
