@@ -15,6 +15,8 @@ public class Main {
                 BigDecimal.valueOf(1000.20), new Endereco("Capao da canoa", "Bacacaca", "guri", "2222"),
                 departamento);
 
+        HangarDAO hangarDAO;
+
         EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
         empregadoDAO.inserir(teste);
         empregadoDAO.inserir(empregado);
