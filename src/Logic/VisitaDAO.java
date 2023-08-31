@@ -1,5 +1,6 @@
 package Logic;
 
+import java.util.List;
 import java.util.TreeSet;
 
 public class VisitaDAO implements DAO{
@@ -42,5 +43,9 @@ public class VisitaDAO implements DAO{
     public Object pesquisar(Object obj) {
         if (!(obj instanceof Visitante visitante)) return false;
         return treeSet.stream().filter(visita -> visitante.equals(visita.getVisitante())).findAny();
+    }
+
+    public List<Visita> pesquisar(){
+        return treeSet.stream().toList();
     }
 }

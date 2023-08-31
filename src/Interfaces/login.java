@@ -1,9 +1,6 @@
 package Interfaces;
 
-import Logic.CPF;
-import Logic.Empregado;
-import Logic.Login;
-import Logic.LoginDAO;
+import Logic.*;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -29,7 +26,6 @@ public class login {
     private JButton Entrar;
 
 
-
     public login() {
         JFrame frame = new JFrame("Login");
         $$$setupUI$$$();
@@ -46,13 +42,18 @@ public class login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoginDAO loginDAO = LoginDAO.getInstance();
-
                 try {
                     CPF cpf = new CPF(loginField.getText());
                     Login login1 = (Login) loginDAO.pesquisar(cpf);
-                    if (login1 == null)
-                        JOptionPane.showMessageDialog(null, "Login incorreto");
-                    else if (login1.compareSenha(String.valueOf(senhaField.getPassword())))
+                    if (login1 == null) {
+                        Empregado empregado = (Empregado) EmpregadoDAO.getInstance().pesquisar(cpf);
+                        if (empregado != null) {
+                            String senha = JOptionPane.showInputDialog(frame, "Insira sua nova senha!");
+                            loginDAO.inserir(new Login(empregado, senha));
+                            JOptionPane.showMessageDialog(frame, "Agora realize seu login novamente!");
+                        } else
+                            JOptionPane.showMessageDialog(null, "Login incorreto");
+                    } else if (login1.compareSenha(String.valueOf(senhaField.getPassword())))
                         JOptionPane.showMessageDialog(null, "Senha incorreta");
                     else {
                         String[] args = new String[1];

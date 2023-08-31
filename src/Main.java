@@ -20,7 +20,6 @@ public class Main {
         empregadoDAO.inserir(empregado);
 
         LoginDAO loginDAO = LoginDAO.getInstance();
-        loginDAO.inserir(new Login(teste, "abacate"));
         loginDAO.inserir(new Login(empregado, "abacate"));
 
         new Interfaces.login();
