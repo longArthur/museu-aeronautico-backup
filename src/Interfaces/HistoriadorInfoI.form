@@ -50,14 +50,13 @@
                       <grid row="1" column="2" row-span="4" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                   </hspacer>
-                  <component id="3b8c7" class="javax.swing.JLabel" binding="nomeIndividuoLabel">
+                  <component id="3b8c7" class="javax.swing.JLabel" binding="nomeIndividuoLabel" custom-create="true">
                     <constraints>
                       <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <font name="Arial" size="36" style="1"/>
                       <foreground color="-1"/>
-                      <text value="Nome Individuo"/>
                     </properties>
                   </component>
                   <hspacer id="13e1b">
@@ -145,7 +144,7 @@
                       <enabled value="true"/>
                       <font name="Arial" size="36" style="1"/>
                       <foreground color="-1"/>
-                      <text value="Engenheiro"/>
+                      <text value="Historiador"/>
                     </properties>
                   </component>
                   <hspacer id="23cf0">
@@ -243,13 +242,12 @@
                           <grid row="10" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                       </hspacer>
-                      <component id="30093" class="javax.swing.JLabel" binding="CODIGOLabel">
+                      <component id="30093" class="javax.swing.JLabel" binding="CODIGOLabel" custom-create="true">
                         <constraints>
                           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="CODIGO"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <vspacer id="44a1a">
@@ -266,13 +264,12 @@
                           <text value="Marca:"/>
                         </properties>
                       </component>
-                      <component id="dc3dc" class="javax.swing.JLabel" binding="MARCARLabel">
+                      <component id="dc3dc" class="javax.swing.JLabel" binding="MARCARLabel" custom-create="true">
                         <constraints>
                           <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="MARCAR"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <vspacer id="9b32a">
@@ -289,13 +286,12 @@
                           <text value="Data de Produçã:"/>
                         </properties>
                       </component>
-                      <component id="d9a88" class="javax.swing.JLabel" binding="DATALabel">
+                      <component id="d9a88" class="javax.swing.JLabel" binding="DATALabel" custom-create="true">
                         <constraints>
                           <grid row="1" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="DATA"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="c7fda" class="javax.swing.JLabel" binding="comprimentoMLabel">
@@ -307,13 +303,12 @@
                           <text value="Comprimento (m):"/>
                         </properties>
                       </component>
-                      <component id="7fcd9" class="javax.swing.JLabel" binding="comprimentoField">
+                      <component id="7fcd9" class="javax.swing.JLabel" binding="comprimentoField" custom-create="true">
                         <constraints>
                           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="123"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="f62cb" class="javax.swing.JLabel" binding="envergaduraMLabel">
@@ -331,25 +326,23 @@
                         </constraints>
                         <properties>
                           <font size="20"/>
-                          <text value="Codigo Hangar"/>
+                          <text value="Hangar"/>
                         </properties>
                       </component>
-                      <component id="3eafb" class="javax.swing.JLabel" binding="envergaduraField">
+                      <component id="3eafb" class="javax.swing.JLabel" binding="envergaduraField" custom-create="true">
                         <constraints>
                           <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="123"/>
+                          <font size="14"/>
                         </properties>
                       </component>
-                      <component id="a99f2" class="javax.swing.JLabel" binding="codigoHangar">
+                      <component id="a99f2" class="javax.swing.JLabel" binding="codigoHangar" custom-create="true">
                         <constraints>
                           <grid row="2" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="1234"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="84024" class="javax.swing.JLabel" binding="tipoLabel">
@@ -361,13 +354,12 @@
                           <text value="Tipo:"/>
                         </properties>
                       </component>
-                      <component id="e1f5a" class="javax.swing.JLabel" binding="tipoField">
+                      <component id="e1f5a" class="javax.swing.JLabel" binding="tipoField" custom-create="true">
                         <constraints>
                           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="TIPO"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="fa317" class="javax.swing.JLabel" binding="áreaDeAtuaçãoLabel">
@@ -379,13 +371,12 @@
                           <text value="Área de Atuação"/>
                         </properties>
                       </component>
-                      <component id="55e8c" class="javax.swing.JLabel" binding="areaAtuacaoField">
+                      <component id="55e8c" class="javax.swing.JLabel" binding="areaAtuacaoField" custom-create="true">
                         <constraints>
                           <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="AREA"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="8d12b" class="javax.swing.JLabel" binding="materialUsadoLabel">
@@ -397,13 +388,12 @@
                           <text value="Material Usado:"/>
                         </properties>
                       </component>
-                      <component id="aa263" class="javax.swing.JLabel" binding="materialField">
+                      <component id="aa263" class="javax.swing.JLabel" binding="materialField" custom-create="true">
                         <constraints>
                           <grid row="3" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="Material"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                       <component id="6d37d" class="javax.swing.JLabel" binding="codigoLabel">
@@ -415,13 +405,15 @@
                           <text value="Codigo:"/>
                         </properties>
                       </component>
-                      <component id="d3018" class="javax.swing.JTextPane" binding="HistoriadortextPane">
+                      <component id="d3018" class="javax.swing.JTextPane" binding="HistoriadortextPane" custom-create="true">
                         <constraints>
                           <grid row="5" column="2" row-span="5" col-span="6" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="10"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <editable value="false"/>
+                        </properties>
                       </component>
                       <component id="fcda7" class="javax.swing.JLabel" binding="historiaLabel">
                         <constraints>
@@ -449,13 +441,12 @@
                           <text value="Estado:"/>
                         </properties>
                       </component>
-                      <component id="1aa8e" class="javax.swing.JLabel" binding="estadoField">
+                      <component id="1aa8e" class="javax.swing.JLabel" binding="estadoField" custom-create="true">
                         <constraints>
                           <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <font size="10"/>
-                          <text value="Funcional"/>
+                          <font size="14"/>
                         </properties>
                       </component>
                     </children>

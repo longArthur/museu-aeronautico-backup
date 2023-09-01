@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Modelo {
-    enum Tipo {
+    public enum Tipo {
         AVIAO, REPLICA
     }
 
@@ -17,17 +17,17 @@ public class Modelo {
     private final Tipo tipo;
     private final String areaAtuacao;
     private final String materialUsado;
-    private final int codigoHangar;
+    private final Hangar hangar;
     private String estado;
 
-    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao, String materialUsado, int codigoHangar, String estado) {
-        if (marca == null || dataProducao == null || historia == null || tipo == null || areaAtuacao == null || materialUsado == null || estado == null) {
+    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao, String materialUsado, Hangar hangar, String estado) {
+        if (marca == null || dataProducao == null || historia == null || tipo == null || areaAtuacao == null || materialUsado == null || estado == null || hangar == null) {
             throw new IllegalArgumentException("Argumentos não podem ser nulos");
         }
         if (marca.isEmpty() || historia.isEmpty() || areaAtuacao.isEmpty() || materialUsado.isEmpty() || estado.isEmpty()) {
             throw new IllegalArgumentException("Argumentos não podem ser vazios");
         }
-        if (comprimentoMetros <= 0 || envergaduraMetros <= 0 || codigoHangar <= 0) {
+        if (comprimentoMetros <= 0 || envergaduraMetros <= 0) {
             throw new IllegalArgumentException("Argumentos não podem ser menores ou iguais a zero");
         }
 
@@ -39,7 +39,7 @@ public class Modelo {
         this.tipo = tipo;
         this.areaAtuacao = areaAtuacao;
         this.materialUsado = materialUsado;
-        this.codigoHangar = codigoHangar;
+        this.hangar = hangar;
         this.estado = estado;
     }
 
@@ -79,14 +79,20 @@ public class Modelo {
         return materialUsado;
     }
 
-    public int getCodigoHangar() {
-        return codigoHangar;
+    public Hangar getHangar() {
+        return hangar;
     }
 
     public String getEstado() {
         return estado;
     }
 
+    public String getTipoString(){
+        if (Objects.requireNonNull(tipo) == Tipo.AVIAO) {
+            return "Avião";
+        }
+        return "Modelo";
+    };
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
@@ -120,7 +126,7 @@ public class Modelo {
                 ", tipo=" + tipo +
                 ", areaAtuacao='" + areaAtuacao + '\'' +
                 ", materialUsado='" + materialUsado + '\'' +
-                ", codigoHangar=" + codigoHangar +
+                ", hangar=" + hangar +
                 ", estado=" + estado +
                 '}';
     }

@@ -47,15 +47,15 @@ public class EmpregadoTableI {
             VisitanteDAO visitanteDAO = VisitanteDAO.getInstance();
             int rowAtPoint = tableVisitantes.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), tableVisitantes));
 
-                if (visitanteDAO.excluir(tableVisitantes.getValueAt(tableVisitantes.getSelectedRow(), 0))) {
-                    JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
-                    DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
-                    tableModel.setRowCount(0);
-                    for (Object[] objects : populateData()) {
-                        tableModel.addRow(objects);
-                    }
-                } else
-                   JOptionPane.showMessageDialog(frame, "Exclusao mal-sucedida");
+            if (visitanteDAO.excluir(tableVisitantes.getValueAt(tableVisitantes.getSelectedRow(), 0))) {
+                JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
+                DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
+                tableModel.setRowCount(0);
+                for (Object[] objects : populateData()) {
+                    tableModel.addRow(objects);
+                }
+            } else
+                JOptionPane.showMessageDialog(frame, "Exclusao mal-sucedida");
 
         });
 
@@ -244,7 +244,9 @@ public class EmpregadoTableI {
         panel6.add(pesquisarButton, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(100, -1), new Dimension(100, -1), new Dimension(100, -1), 0, false));
         buscaField = new JTextField();
         panel6.add(buscaField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 56, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        panel6.add(tableVisitantes, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel6.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane1.setViewportView(tableVisitantes);
     }
 
     /**
