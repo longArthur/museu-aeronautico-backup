@@ -65,12 +65,8 @@ public class Endereco {
 
     @Override
     public String toString() {
-        return "Logic.Endereco{" +
-                "codigo=" + codigo +
-                ", cidade='" + cidade + '\'' +
-                ", rua='" + rua + '\'' +
-                ", bairro='" + bairro + '\'' +
-                ", numero_endereco='" + numero_endereco + '\'' +
-                '}';
+        return  cidade + ", Rua " + rua
+                + ", bairro " + bairro +
+                ", numero " + numero_endereco;
     }
 }
