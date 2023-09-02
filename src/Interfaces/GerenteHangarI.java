@@ -11,6 +11,8 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -97,6 +99,22 @@ public class GerenteHangarI {
             public void actionPerformed(ActionEvent e) {
                 new GerenteHangarInserirI(empregado);
                 frame.dispose();
+            }
+        });
+
+        tabela.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    Hangar hangar = (Hangar) HangarDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    if (hangar == null)
+                        JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
+                    else new GerenteHangarInfoI(empregado, hangar);
+                    frame.dispose();
+                }
             }
         });
 

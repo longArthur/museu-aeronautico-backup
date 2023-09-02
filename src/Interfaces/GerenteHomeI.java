@@ -1,16 +1,21 @@
 package Interfaces;
 
-import Logic.Empregado;
-import Logic.EmpregadoDAO;
+import Logic.*;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 public class GerenteHomeI {
     private JPanel panel1;
@@ -42,6 +47,53 @@ public class GerenteHomeI {
         this.empregado = empregado;
         JFrame frame = new JFrame("Tabela de Empregados");
         $$$setupUI$$$();
+
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem deletar = new JMenuItem("Deletar");
+
+        deletar.addActionListener(e -> {
+            EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
+            int rowAtPoint = table1.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), table1));
+
+            if (empregadoDAO.excluir(table1.getValueAt(table1.getSelectedRow(), 0))) {
+                JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
+                DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
+                tableModel.setRowCount(0);
+                for (Object[] objects : populateData()) {
+                    tableModel.addRow(objects);
+                }
+            } else
+                JOptionPane.showMessageDialog(frame, "Exclusao mal-sucedida");
+
+        });
+
+        menu.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        int rowAtPoint = table1.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), table1));
+                        if (rowAtPoint > -1) {
+                            table1.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+        });
+
+        menu.add(deletar);
+        table1.setComponentPopupMenu(menu);
+
         this.frame = frame;
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,6 +106,25 @@ public class GerenteHomeI {
                 frame.dispose();
             }
         });
+
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    if (empregado1 == null)
+                        JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
+                    else {
+                        new GerenteInfoI(empregado, empregado1);
+                        frame.dispose();
+                    }
+                }
+            }
+        });
+
         empregadoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,16 +160,44 @@ public class GerenteHomeI {
                 frame.dispose();
             }
         });
+        inserirEmpregadoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GerenteInserirI(empregado);
+                frame.dispose();
+            }
+        });
+
+        pesquisarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    java.util.List<Empregado> empregados = EmpregadoDAO.getInstance().pesquisar();
+                    Empregado empregado1 = empregados.stream().filter(empregado2 -> empregado2.getCpf().equals(new CPF(textField1.getText()))).findFirst().get();
+
+                    DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
+                    tableModel.setRowCount(0);
+
+                    tableModel.addRow(new Object[]{empregado1.getCpf(), empregado1.getNomeSobrenome(), empregado.getClass().getName().substring(6)});
+                } catch (NoSuchElementException exception) {
+                    JOptionPane.showMessageDialog(frame, "CPF nao encontrado.");
+                } catch (Exception exception) {
+                    if (textField1.getText().isEmpty()) {
+                        DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
+                        tableModel.setRowCount(0);
+                        for (Object[] objects : populateData()) {
+                            tableModel.addRow(objects);
+                        }
+                    } else
+                        JOptionPane.showMessageDialog(frame, exception.getMessage());
+                }
+            }
+        });
     }
 
 
-    private void createUIComponents() {
-        EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
-        nomeIndividuoLabel = new JLabel(empregado.getNome() + " " + empregado.getSobrenome());
-
-        java.util.List<Empregado> empregadoList = empregadoDAO.pesquisar();
-
-        String[] colunas = {"CPF", "Nome completo", "Cargo"};
+    private Object[][] populateData() {
+        java.util.List<Empregado> empregadoList = EmpregadoDAO.getInstance().pesquisar();
         Object[][] dados = new Object[empregadoList.size()][3];
 
         for (int i = 0; i < empregadoList.size(); i++) {
@@ -108,7 +207,21 @@ public class GerenteHomeI {
                             empregadoList.get(i).getClass().getName().substring(6)};
         }
 
-        table1 = new JTable(dados, colunas);
+        return dados;
+    }
+
+    private void createUIComponents() {
+        EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
+        nomeIndividuoLabel = new JLabel(empregado.getNome() + " " + empregado.getSobrenome());
+
+
+
+        String[] colunas = {"CPF", "Nome completo", "Cargo"};
+        Object[][] dados = populateData();
+
+
+
+        table1 = new JTable(new DefaultTableModel(dados, colunas));
         table1.setDefaultEditor(Object.class, null);
     }
 

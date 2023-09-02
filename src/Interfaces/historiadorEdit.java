@@ -66,11 +66,11 @@ public class historiadorEdit {
                     Modelo.Tipo tipo = (tipoComboBox.getSelectedIndex() == 0) ? Modelo.Tipo.AVIAO : Modelo.Tipo.REPLICA;
 
 
-                    Modelo modelo = new Modelo(marcaTextField.getText(), LocalDate.parse(dataDeProducao.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), Double.parseDouble(comprimentotextField.getText()),
+                    Modelo modeloInterno = new Modelo(marcaTextField.getText(), LocalDate.parse(dataDeProducao.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), Double.parseDouble(comprimentotextField.getText()),
                             Double.parseDouble(envergaduraTextField.getText()), historicoTextPane.getText(), tipo, areaDeAtuacaoField.getText(),
                             materialUsadoField.getText(), ((Hangar) hangarComboBox.getSelectedItem()), estadoField.getText());
-                    modelo.setCodigo(modelo.getCodigo());
-                    if (ModeloDAO.getInstance().editar(modelo)) {
+                    modeloInterno.setCodigo(modelo.getCodigo());
+                    if (ModeloDAO.getInstance().editar(modeloInterno)) {
                         JOptionPane.showMessageDialog(frame, "Modelo editado com sucesso!");
                         new HistoriadorI(empregado);
                         frame.dispose();

@@ -3,6 +3,8 @@ package Interfaces;
 import Logic.*;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
@@ -38,6 +40,49 @@ public class HistoriadorI {
         this.empregado = empregado;
         JFrame frame = new JFrame("Empregado Home");
         $$$setupUI$$$();
+
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem deletar = new JMenuItem("Deletar");
+
+        deletar.addActionListener(e -> {
+            if (ModeloDAO.getInstance().excluir(tabela.getValueAt(tabela.getSelectedRow(), 0))) {
+                JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
+                DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
+                tableModel.setRowCount(0);
+                for (Object[] objects : populateData()) {
+                    tableModel.addRow(objects);
+                }
+            } else
+                JOptionPane.showMessageDialog(frame, "Exclusao mal-sucedida");
+
+        });
+
+        menu.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        int rowAtPoint = tabela.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), tabela));
+                        if (rowAtPoint > -1) {
+                            tabela.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+        });
+
+        menu.add(deletar);
+        tabela.setComponentPopupMenu(menu);
 
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

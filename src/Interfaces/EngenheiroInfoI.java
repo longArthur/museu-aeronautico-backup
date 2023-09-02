@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class PilotoInfoI {
+public class EngenheiroInfoI {
 
     private JPanel panel1;
     private JPanel panel2;
@@ -52,7 +52,7 @@ public class PilotoInfoI {
     private Empregado empregado;
     private Modelo modelo;
 
-    public PilotoInfoI(Empregado empregado, Modelo modelo) {
+    public EngenheiroInfoI(Empregado empregado, Modelo modelo) {
         this.empregado = empregado;
         this.modelo = modelo;
         JFrame frame = new JFrame("Inserir Hangar");
@@ -64,13 +64,13 @@ public class PilotoInfoI {
         frame.setVisible(true);
 
         voltarSairButton.addActionListener(e -> {
-            new PilotoI(empregado);
+            new EngenheiroI(empregado);
             frame.dispose();
         });
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PilotoEditI(empregado, modelo);
+                new EngenheiroEditI(empregado, modelo);
                 frame.dispose();
             }
         });
@@ -148,7 +148,7 @@ public class PilotoInfoI {
         Font engenheiroLabelFont = this.$$$getFont$$$("Arial", Font.BOLD, 36, engenheiroLabel.getFont());
         if (engenheiroLabelFont != null) engenheiroLabel.setFont(engenheiroLabelFont);
         engenheiroLabel.setForeground(new Color(-1));
-        engenheiroLabel.setText("Piloto");
+        engenheiroLabel.setText("Engenheiro");
         panel4.add(engenheiroLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer11 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer11, new com.intellij.uiDesigner.core.GridConstraints(3, 6, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));

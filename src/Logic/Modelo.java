@@ -20,7 +20,8 @@ public class Modelo {
     private final Hangar hangar;
     private String estado;
 
-    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao, String materialUsado, Hangar hangar, String estado) {
+    public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao,
+                  String materialUsado, Hangar hangar, String estado) {
         if (marca == null || dataProducao == null || historia == null || tipo == null || areaAtuacao == null || materialUsado == null || estado == null || hangar == null) {
             throw new IllegalArgumentException("Argumentos não podem ser nulos");
         }

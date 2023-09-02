@@ -8,51 +8,37 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class HistoriadorInserirI {
+public class GerenteHangarInfoI {
+    private JPanel panel5;
+    private JPanel panel6;
+    private JLabel codigoField;
+    private JLabel larguraField;
+    private JLabel cidadeField;
+    private JLabel comprimentoField;
+    private JLabel qtdVagasField;
+    private JLabel capVisitanteField;
+    private JLabel departamentoComboBox;
+    private JButton inserirButton;
+    private JButton voltarSairButton;
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
     private JPanel panel4;
     private JLabel nomeIndividuoLabel;
-    private JLabel logo;
-    private JButton Config;
-    private JLabel historiadorLabel;
-    private JPanel panel5;
-    private JPanel panel6;
-    private JPanel panel7;
-    private JLabel marcaLabel;
-    private JLabel dataDeProduçãoLabel;
-    private JLabel comprimentoMLabel;
-    private JLabel envergaduraMLabel;
-    private JLabel codigoHangarLabel;
-    private JLabel tipoLabel;
-    private JLabel áreaDeAtuaçãoLabel;
-    private JLabel materialUsadoLabel;
-    private JLabel codigoLabel;
-    private JTextField codigoField;
-    private JTextField marcaField;
-    private JTextField envergaduraField;
-    private JTextField areaAtuacaoField;
-    private JTextField dataProducaoField;
-    private JTextField materialUsadoField;
-    private JComboBox codeHangarComboBox;
-    private JComboBox tipoComboBox;
-    private JTextField estadoField;
-    private JTextField comprimentoField;
-    private JButton inserirButton;
-    private JTextPane historicoTextPane;
-    private JLabel historicoLabel;
-    private JButton voltarSairButton;
+    private JLabel label1;
+    private JLabel blocoLabel;
+    private JLabel ruaField;
+    private JLabel bairroField;
+    private JLabel numeroField;
     private Empregado empregado;
+    private Hangar hangar;
 
-    public HistoriadorInserirI(Empregado empregado) {
+    public GerenteHangarInfoI(Empregado empregado, Hangar hangar) {
         this.empregado = empregado;
+        this.hangar = hangar;
         JFrame frame = new JFrame("Inserir Hangar");
         $$$setupUI$$$();
 
@@ -62,54 +48,26 @@ public class HistoriadorInserirI {
         frame.setVisible(true);
 
         voltarSairButton.addActionListener(e -> {
-            new HistoriadorI(empregado);
+            new GerenteHangarI(empregado);
             frame.dispose();
         });
-        inserirButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Modelo.Tipo tipo = (tipoComboBox.getSelectedIndex() == 0) ? Modelo.Tipo.AVIAO : Modelo.Tipo.REPLICA;
-
-
-                    Modelo modelo = new Modelo(marcaField.getText(), LocalDate.parse(dataProducaoField.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), Double.parseDouble(comprimentoField.getText()),
-                            Double.parseDouble(envergaduraField.getText()), historicoTextPane.getText(), tipo, areaAtuacaoField.getText(),
-                            materialUsadoField.getText(), ((Hangar) codeHangarComboBox.getSelectedItem()), estadoField.getText());
-                    modelo.setCodigo(Integer.parseInt(codigoField.getText()));
-                    if (ModeloDAO.getInstance().inserir(modelo)) {
-                        JOptionPane.showMessageDialog(frame, "Modelo inserido com sucesso!");
-                        codigoField.setText("");
-                        marcaField.setText("");
-                        dataProducaoField.setText("dd/MM/aaaa");
-                        materialUsadoField.setText("");
-                        envergaduraField.setText("");
-                        comprimentoField.setText("");
-                        historicoTextPane.setText("");
-                        areaAtuacaoField.setText("");
-                        estadoField.setText("");
-                        codeHangarComboBox.setSelectedIndex(0);
-                        tipoComboBox.setSelectedIndex(0);
-                    } else
-                        JOptionPane.showMessageDialog(frame, "Inserção de modelo mal-sucedida.");
-                } catch (DateTimeParseException exception) {
-                    JOptionPane.showMessageDialog(frame, "A data está errada de alguma maneira.");
-                } catch (NumberFormatException exception) {
-                    JOptionPane.showMessageDialog(frame, "Campos numericos precisam ter numeros.");
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(frame, exception.getMessage());
-                }
-            }
-        });
+        inserirButton.addActionListener(e -> new GerenteHangarEditarI(empregado, hangar));
     }
 
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
 
-        dataProducaoField = new JTextField("dd/mm/aaaa");
-
-        codeHangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisar().toArray());
-
-        tipoComboBox = new JComboBox<>(new String[]{"Aviao", "Modelo"});
+        codigoField = new JLabel(String.valueOf(hangar.getCodigo()));
+        blocoLabel = new JLabel(hangar.getBloco());
+        qtdVagasField = new JLabel(String.valueOf(hangar.getQuantidadeVagas()));
+        larguraField = new JLabel(String.valueOf(hangar.getLarguraMetros()));
+        comprimentoField = new JLabel(String.valueOf(hangar.getComprimentoMetros()));
+        capVisitanteField = new JLabel(String.valueOf(hangar.getCapacidadeVisitantes()));
+        cidadeField = new JLabel(hangar.getEndereco().getCidade());
+        ruaField = new JLabel(hangar.getEndereco().getRua());
+        bairroField = new JLabel(hangar.getEndereco().getBairro());
+        numeroField = new JLabel(hangar.getEndereco().getNumero_endereco());
+        departamentoComboBox = new JLabel(hangar.getDepartamento().getNome());
     }
 
     /**
@@ -134,7 +92,7 @@ public class HistoriadorInserirI {
         panel3.setEnabled(false);
         panel2.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(1280, 720), null, null, 0, false));
         panel4 = new JPanel();
-        panel4.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(8, 11, new Insets(0, 0, 0, 0), -1, -1));
+        panel4.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(8, 10, new Insets(0, 0, 0, 0), -1, -1));
         panel4.setBackground(new Color(-349868));
         panel3.add(panel4, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(1280, 160), new Dimension(1280, 160), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
@@ -150,7 +108,7 @@ public class HistoriadorInserirI {
         final com.intellij.uiDesigner.core.Spacer spacer4 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer4, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer5 = new com.intellij.uiDesigner.core.Spacer();
-        panel4.add(spacer5, new com.intellij.uiDesigner.core.GridConstraints(4, 10, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel4.add(spacer5, new com.intellij.uiDesigner.core.GridConstraints(4, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer6 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer6, new com.intellij.uiDesigner.core.GridConstraints(4, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer7 = new com.intellij.uiDesigner.core.Spacer();
@@ -160,32 +118,20 @@ public class HistoriadorInserirI {
         final com.intellij.uiDesigner.core.Spacer spacer9 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer9, new com.intellij.uiDesigner.core.GridConstraints(6, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer10 = new com.intellij.uiDesigner.core.Spacer();
-        panel4.add(spacer10, new com.intellij.uiDesigner.core.GridConstraints(5, 9, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        logo = new JLabel();
-        logo.setIcon(new ImageIcon(getClass().getResource("/Interfaces/Img/logoP.png")));
-        logo.setInheritsPopupMenu(false);
-        logo.setText("");
-        panel4.add(logo, new com.intellij.uiDesigner.core.GridConstraints(2, 9, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        Config = new JButton();
-        Config.setAutoscrolls(false);
-        Config.setBackground(new Color(-349868));
-        Config.setBorderPainted(false);
-        Config.setContentAreaFilled(true);
-        Config.setEnabled(false);
-        Config.setHideActionText(true);
-        Config.setIcon(new ImageIcon(getClass().getResource("/Interfaces/Img/CONFIG.png")));
-        Config.setText("");
-        Config.setVerifyInputWhenFocusTarget(false);
-        Config.setVisible(true);
-        panel4.add(Config, new com.intellij.uiDesigner.core.GridConstraints(2, 8, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        historiadorLabel = new JLabel();
-        historiadorLabel.setBackground(new Color(-1));
-        historiadorLabel.setEnabled(true);
-        Font historiadorLabelFont = this.$$$getFont$$$("Arial", Font.BOLD, 36, historiadorLabel.getFont());
-        if (historiadorLabelFont != null) historiadorLabel.setFont(historiadorLabelFont);
-        historiadorLabel.setForeground(new Color(-1));
-        historiadorLabel.setText("Historiador");
-        panel4.add(historiadorLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel4.add(spacer10, new com.intellij.uiDesigner.core.GridConstraints(5, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        label1 = new JLabel();
+        label1.setIcon(new ImageIcon(getClass().getResource("/Interfaces/Img/logoP.png")));
+        label1.setInheritsPopupMenu(false);
+        label1.setText("");
+        panel4.add(label1, new com.intellij.uiDesigner.core.GridConstraints(2, 8, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setBackground(new Color(-1));
+        label2.setEnabled(true);
+        Font label2Font = this.$$$getFont$$$("Arial", Font.BOLD, 36, label2.getFont());
+        if (label2Font != null) label2.setFont(label2Font);
+        label2.setForeground(new Color(-1));
+        label2.setText("Gerente");
+        panel4.add(label2, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer11 = new com.intellij.uiDesigner.core.Spacer();
         panel4.add(spacer11, new com.intellij.uiDesigner.core.GridConstraints(3, 6, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer12 = new com.intellij.uiDesigner.core.Spacer();
@@ -207,7 +153,7 @@ public class HistoriadorInserirI {
         panel3.add(panel6, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(12, 504), new Dimension(12, 504), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer14 = new com.intellij.uiDesigner.core.Spacer();
         panel6.add(spacer14, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        panel7 = new JPanel();
+        final JPanel panel7 = new JPanel();
         panel7.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(11, 10, new Insets(0, 0, 0, 0), -1, -1));
         Font panel7Font = this.$$$getFont$$$(null, -1, 10, panel7.getFont());
         if (panel7Font != null) panel7.setFont(panel7Font);
@@ -222,85 +168,77 @@ public class HistoriadorInserirI {
         panel7.add(spacer18, new com.intellij.uiDesigner.core.GridConstraints(10, 1, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer19 = new com.intellij.uiDesigner.core.Spacer();
         panel7.add(spacer19, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 3, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        marcaLabel = new JLabel();
-        Font marcaLabelFont = this.$$$getFont$$$(null, -1, 20, marcaLabel.getFont());
-        if (marcaLabelFont != null) marcaLabel.setFont(marcaLabelFont);
-        marcaLabel.setText("Marca:");
-        panel7.add(marcaLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer20 = new com.intellij.uiDesigner.core.Spacer();
         panel7.add(spacer20, new com.intellij.uiDesigner.core.GridConstraints(1, 6, 3, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        dataDeProduçãoLabel = new JLabel();
-        Font dataDeProduçãoLabelFont = this.$$$getFont$$$(null, -1, 20, dataDeProduçãoLabel.getFont());
-        if (dataDeProduçãoLabelFont != null) dataDeProduçãoLabel.setFont(dataDeProduçãoLabelFont);
-        dataDeProduçãoLabel.setText("Data de Produção:");
-        panel7.add(dataDeProduçãoLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        comprimentoMLabel = new JLabel();
-        Font comprimentoMLabelFont = this.$$$getFont$$$(null, -1, 20, comprimentoMLabel.getFont());
-        if (comprimentoMLabelFont != null) comprimentoMLabel.setFont(comprimentoMLabelFont);
-        comprimentoMLabel.setText("Comprimento (m):");
-        panel7.add(comprimentoMLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        envergaduraMLabel = new JLabel();
-        Font envergaduraMLabelFont = this.$$$getFont$$$(null, -1, 20, envergaduraMLabel.getFont());
-        if (envergaduraMLabelFont != null) envergaduraMLabel.setFont(envergaduraMLabelFont);
-        envergaduraMLabel.setText("Envergadura (m)");
-        panel7.add(envergaduraMLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        codigoHangarLabel = new JLabel();
-        Font codigoHangarLabelFont = this.$$$getFont$$$(null, -1, 20, codigoHangarLabel.getFont());
-        if (codigoHangarLabelFont != null) codigoHangarLabel.setFont(codigoHangarLabelFont);
-        codigoHangarLabel.setText("Hangar:");
-        panel7.add(codigoHangarLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        tipoLabel = new JLabel();
-        Font tipoLabelFont = this.$$$getFont$$$(null, -1, 20, tipoLabel.getFont());
-        if (tipoLabelFont != null) tipoLabel.setFont(tipoLabelFont);
-        tipoLabel.setText("Tipo:");
-        panel7.add(tipoLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        áreaDeAtuaçãoLabel = new JLabel();
-        Font áreaDeAtuaçãoLabelFont = this.$$$getFont$$$(null, -1, 20, áreaDeAtuaçãoLabel.getFont());
-        if (áreaDeAtuaçãoLabelFont != null) áreaDeAtuaçãoLabel.setFont(áreaDeAtuaçãoLabelFont);
-        áreaDeAtuaçãoLabel.setText("Área de Atuação");
-        panel7.add(áreaDeAtuaçãoLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        materialUsadoLabel = new JLabel();
-        Font materialUsadoLabelFont = this.$$$getFont$$$(null, -1, 20, materialUsadoLabel.getFont());
-        if (materialUsadoLabelFont != null) materialUsadoLabel.setFont(materialUsadoLabelFont);
-        materialUsadoLabel.setText("Material Usado:");
-        panel7.add(materialUsadoLabel, new com.intellij.uiDesigner.core.GridConstraints(3, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        codigoLabel = new JLabel();
-        Font codigoLabelFont = this.$$$getFont$$$(null, -1, 20, codigoLabel.getFont());
-        if (codigoLabelFont != null) codigoLabel.setFont(codigoLabelFont);
-        codigoLabel.setText("Codigo:");
-        panel7.add(codigoLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        historicoTextPane = new JTextPane();
-        panel7.add(historicoTextPane, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 5, 6, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 10), null, 0, false));
-        historicoLabel = new JLabel();
-        Font historicoLabelFont = this.$$$getFont$$$(null, -1, 20, historicoLabel.getFont());
-        if (historicoLabelFont != null) historicoLabel.setFont(historicoLabelFont);
-        historicoLabel.setText("Historico");
-        panel7.add(historicoLabel, new com.intellij.uiDesigner.core.GridConstraints(6, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        codigoField = new JTextField();
+        final JLabel label3 = new JLabel();
+        Font label3Font = this.$$$getFont$$$(null, -1, 20, label3.getFont());
+        if (label3Font != null) label3.setFont(label3Font);
+        label3.setText("Quantidade de Vagas:");
+        panel7.add(label3, new com.intellij.uiDesigner.core.GridConstraints(1, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        Font label4Font = this.$$$getFont$$$(null, -1, 20, label4.getFont());
+        if (label4Font != null) label4.setFont(label4Font);
+        label4.setText("Largura (m):");
+        panel7.add(label4, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label5 = new JLabel();
+        Font label5Font = this.$$$getFont$$$(null, -1, 20, label5.getFont());
+        if (label5Font != null) label5.setFont(label5Font);
+        label5.setText("Comprimento (m):");
+        panel7.add(label5, new com.intellij.uiDesigner.core.GridConstraints(2, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        Font label6Font = this.$$$getFont$$$(null, -1, 20, label6.getFont());
+        if (label6Font != null) label6.setFont(label6Font);
+        label6.setText("Capacidade de Visitantes:");
+        panel7.add(label6, new com.intellij.uiDesigner.core.GridConstraints(2, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label7 = new JLabel();
+        Font label7Font = this.$$$getFont$$$(null, -1, 20, label7.getFont());
+        if (label7Font != null) label7.setFont(label7Font);
+        label7.setText("Departamento:");
+        panel7.add(label7, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label8 = new JLabel();
+        Font label8Font = this.$$$getFont$$$(null, -1, 20, label8.getFont());
+        if (label8Font != null) label8.setFont(label8Font);
+        label8.setText("Codigo:");
+        panel7.add(label8, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel7.add(codigoField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
-        comprimentoField = new JTextField();
-        panel7.add(comprimentoField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
-        marcaField = new JTextField();
-        panel7.add(marcaField, new com.intellij.uiDesigner.core.GridConstraints(1, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        envergaduraField = new JTextField();
-        panel7.add(envergaduraField, new com.intellij.uiDesigner.core.GridConstraints(2, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        areaAtuacaoField = new JTextField();
-        panel7.add(areaAtuacaoField, new com.intellij.uiDesigner.core.GridConstraints(3, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        panel7.add(dataProducaoField, new com.intellij.uiDesigner.core.GridConstraints(1, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        materialUsadoField = new JTextField();
-        panel7.add(materialUsadoField, new com.intellij.uiDesigner.core.GridConstraints(3, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        panel7.add(codeHangarComboBox, new com.intellij.uiDesigner.core.GridConstraints(2, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        panel7.add(tipoComboBox, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(larguraField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
+        panel7.add(comprimentoField, new com.intellij.uiDesigner.core.GridConstraints(2, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel7.add(qtdVagasField, new com.intellij.uiDesigner.core.GridConstraints(1, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel7.add(capVisitanteField, new com.intellij.uiDesigner.core.GridConstraints(2, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(departamentoComboBox, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         inserirButton = new JButton();
-        inserirButton.setText("Inserir");
+        inserirButton.setText("Editar");
         panel7.add(inserirButton, new com.intellij.uiDesigner.core.GridConstraints(8, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        Font label1Font = this.$$$getFont$$$(null, -1, 20, label1.getFont());
-        if (label1Font != null) label1.setFont(label1Font);
-        label1.setText("Estado:");
-        panel7.add(label1, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        estadoField = new JTextField();
-        panel7.add(estadoField, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label9 = new JLabel();
+        Font label9Font = this.$$$getFont$$$(null, -1, 20, label9.getFont());
+        if (label9Font != null) label9.setFont(label9Font);
+        label9.setText("Bloco:");
+        panel7.add(label9, new com.intellij.uiDesigner.core.GridConstraints(1, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(blocoLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel7.add(cidadeField, new com.intellij.uiDesigner.core.GridConstraints(3, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label10 = new JLabel();
+        Font label10Font = this.$$$getFont$$$(null, -1, 20, label10.getFont());
+        if (label10Font != null) label10.setFont(label10Font);
+        label10.setText("Cidade:");
+        panel7.add(label10, new com.intellij.uiDesigner.core.GridConstraints(3, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label11 = new JLabel();
+        Font label11Font = this.$$$getFont$$$(null, -1, 20, label11.getFont());
+        if (label11Font != null) label11.setFont(label11Font);
+        label11.setText("Rua:");
+        panel7.add(label11, new com.intellij.uiDesigner.core.GridConstraints(3, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(ruaField, new com.intellij.uiDesigner.core.GridConstraints(3, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label12 = new JLabel();
+        Font label12Font = this.$$$getFont$$$(null, -1, 20, label12.getFont());
+        if (label12Font != null) label12.setFont(label12Font);
+        label12.setText("Bairro:");
+        panel7.add(label12, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(bairroField, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label13 = new JLabel();
+        Font label13Font = this.$$$getFont$$$(null, -1, 20, label13.getFont());
+        if (label13Font != null) label13.setFont(label13Font);
+        label13.setText("Numero:");
+        panel7.add(label13, new com.intellij.uiDesigner.core.GridConstraints(4, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(numeroField, new com.intellij.uiDesigner.core.GridConstraints(4, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer21 = new com.intellij.uiDesigner.core.Spacer();
         panel6.add(spacer21, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer22 = new com.intellij.uiDesigner.core.Spacer();

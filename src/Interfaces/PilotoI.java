@@ -2,14 +2,21 @@ package Interfaces;
 
 import Logic.Empregado;
 import Logic.Gerente;
+import Logic.Modelo;
+import Logic.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class PilotoI {
     private JPanel panel1;
@@ -46,6 +53,69 @@ public class PilotoI {
                 frame.dispose();
             }
         });
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    if (modelo == null)
+                        JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
+                    else new PilotoInfoI(empregado, modelo);
+                    frame.dispose();
+                }
+            }
+        });
+
+        pesquisarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisarField.getText()));
+                    Objects.requireNonNull(modelo, "Modelo nao encontrado!");
+
+                    DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                    tableModel.setRowCount(0);
+
+                    tableModel.addRow(new Object[]{modelo.getCodigo(), modelo.getMarca(), modelo.getTipoString(), modelo.getHangar()});
+                } catch (NumberFormatException exception) {
+                    if (pesquisarField.getText().isEmpty()) {
+                        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                        tableModel.setRowCount(0);
+                        for (Object[] objects : populateData()) {
+                            tableModel.addRow(objects);
+                        }
+                    } else
+                        JOptionPane.showMessageDialog(frame, "Utilize numeros para a pesquisa.");
+                } catch (NoSuchElementException exception) {
+                    JOptionPane.showMessageDialog(frame, "Codigo nao encontrado.");
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(frame, exception.getMessage());
+                }
+            }
+        });
+    }
+
+    private void createUIComponents() {
+        nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
+
+        String[] colunas = {"Código", "Marca", "Tipo", "Hangar"};
+        Object[][] dados = populateData();
+
+        table = new JTable(new DefaultTableModel(dados, colunas));
+        table.setDefaultEditor(Object.class, null);
+    }
+
+    private Object[][] populateData() {
+        java.util.List<Modelo> modelos = ModeloDAO.getInstance().pesquisar();
+        Object[][] dados = new Object[modelos.size()][3];
+        for (int i = 0; i < modelos.size(); i++)
+            dados[i] = new Object[]{modelos.get(i).getCodigo(), modelos.get(i).getMarca(),
+                    modelos.get(i).getTipoString(), modelos.get(i).getHangar().toString()};
+        return dados;
     }
 
 
@@ -155,8 +225,9 @@ public class PilotoI {
         panel6.add(pesquisarButton, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(100, -1), new Dimension(100, -1), new Dimension(100, -1), 0, false));
         pesquisarField = new JTextField();
         panel6.add(pesquisarField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 56, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        table = new JTable();
-        panel6.add(table, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel6.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane1.setViewportView(table);
     }
 
     /**
@@ -188,7 +259,5 @@ public class PilotoI {
         return panel1;
     }
 
-    private void createUIComponents() {
-        nomeIndividuoLabel = new JLabel(empregado.getNome() + " " + empregado.getSobrenome());
-    }
+
 }

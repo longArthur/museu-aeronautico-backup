@@ -2,14 +2,19 @@ package Interfaces;
 
 import Logic.Empregado;
 import Logic.Gerente;
+import Logic.Modelo;
+import Logic.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class EngenheiroI {
     private JPanel panel1;
@@ -37,21 +42,75 @@ public class EngenheiroI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        voltarSair.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (empregado instanceof Gerente)
-                    new GerenteHomeI(empregado);
-                else
-                    new login();
 
-                frame.dispose();
+        voltarSair.addActionListener(e -> {
+            if (empregado instanceof Gerente)
+                new GerenteHomeI(empregado);
+            else
+                new login();
+
+            frame.dispose();
+        });
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JTable table = (JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    if (modelo == null)
+                        JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
+                    else new EngenheiroInfoI(empregado, modelo);
+                    frame.dispose();
+                }
+            }
+        });
+
+        Pesquisar.addActionListener(e -> {
+            try {
+                Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisaField.getText()));
+                Objects.requireNonNull(modelo, "Modelo nao encontrado!");
+
+                DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                tableModel.setRowCount(0);
+
+                tableModel.addRow(new Object[]{modelo.getCodigo(), modelo.getMarca(), modelo.getTipoString(), modelo.getHangar()});
+            } catch (NumberFormatException exception) {
+                if (pesquisaField.getText().isEmpty()) {
+                    DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                    tableModel.setRowCount(0);
+                    for (Object[] objects : populateData()) {
+                        tableModel.addRow(objects);
+                    }
+                } else
+                    JOptionPane.showMessageDialog(frame, "Utilize numeros para a pesquisa.");
+            } catch (NoSuchElementException exception) {
+                JOptionPane.showMessageDialog(frame, "Codigo nao encontrado.");
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(frame, exception.getMessage());
             }
         });
     }
 
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
+
+        String[] colunas = {"Código", "Marca", "Tipo", "Hangar"};
+        Object[][] dados = populateData();
+
+        table = new JTable(new DefaultTableModel(dados, colunas));
+        table.setDefaultEditor(Object.class, null);
+    }
+
+    private Object[][] populateData() {
+        java.util.List<Modelo> modelos = ModeloDAO.getInstance().pesquisar();
+        Object[][] dados = new Object[modelos.size()][3];
+        for (int i = 0; i < modelos.size(); i++)
+            dados[i] = new Object[]{modelos.get(i).getCodigo(), modelos.get(i).getMarca(),
+                    modelos.get(i).getTipoString(), modelos.get(i).getHangar().toString()};
+        return dados;
     }
 
     /**
@@ -154,14 +213,15 @@ public class EngenheiroI {
         final com.intellij.uiDesigner.core.Spacer spacer16 = new com.intellij.uiDesigner.core.Spacer();
         panel6.add(spacer16, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer17 = new com.intellij.uiDesigner.core.Spacer();
-        panel6.add(spacer17, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel6.add(spacer17, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, new Dimension(14, 22), null, 0, false));
         Pesquisar = new JButton();
         Pesquisar.setText("Pesquisar");
         panel6.add(Pesquisar, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(100, -1), new Dimension(100, -1), new Dimension(100, -1), 0, false));
         pesquisaField = new JTextField();
         panel6.add(pesquisaField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 56, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        table = new JTable();
-        panel6.add(table, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel6.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 57, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane1.setViewportView(table);
     }
 
     /**

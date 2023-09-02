@@ -331,6 +331,7 @@ public class HistoriadorInfoI {
         comprimentoField = new JLabel(String.valueOf(modelo.getComprimentoMetros()));
         HistoriadortextPane = new JTextPane();
         HistoriadortextPane.setText(modelo.getHistoria());
+        HistoriadortextPane.setEditable(false);
         areaAtuacaoField = new JLabel(modelo.getAreaAtuacao());
         estadoField = new JLabel(modelo.getEstado());
         codigoHangar = new JLabel(modelo.getHangar().toString());

@@ -62,6 +62,7 @@ public class login {
                             case "Logic.Engenheiro" -> new EngenheiroI(login1.getEmpregado());
                             case "Logic.Piloto" -> new PilotoI(login1.getEmpregado());
                             case "Logic.Empregado" -> new EmpregadoHome(login1.getEmpregado());
+                            case "Logic.Historiador" -> new HistoriadorI(login1.getEmpregado());
                         }
                         frame.dispose();
                     }
