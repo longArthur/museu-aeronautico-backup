@@ -60,7 +60,7 @@ public class GerenteInserirI {
         frame.setVisible(true);
 
         voltarSairButton.addActionListener(e -> {
-            new HistoriadorI(empregado);
+            new GerenteHomeI(empregado);
             frame.dispose();
         });
         inserirButton.addActionListener(new ActionListener() {

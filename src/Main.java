@@ -1,4 +1,5 @@
 import Logic.*;
+import Interfaces.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -42,6 +43,6 @@ public class Main {
         LoginDAO loginDAO = LoginDAO.getInstance();
         loginDAO.inserir(new Login(teste, "a"));
 
-        new Interfaces.login();
+        new login();
     }
 }
