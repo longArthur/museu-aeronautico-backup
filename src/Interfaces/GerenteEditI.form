@@ -57,7 +57,6 @@
                     <properties>
                       <font name="Arial" size="36" style="1"/>
                       <foreground color="-1"/>
-                      <text value="Nome Individuo"/>
                     </properties>
                   </component>
                   <hspacer id="13e1b">
