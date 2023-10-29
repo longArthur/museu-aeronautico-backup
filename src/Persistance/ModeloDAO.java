@@ -1,26 +1,30 @@
-package Logic;
+package Persistance;
+
+import Logic.DAO;
+import Logic.Modelo;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class HangarDAO implements DAO{
-    HashMap<Integer, Hangar> hashMap = new HashMap<>();
+public class ModeloDAO implements DAO {
+    //todo change to mysql
+    HashMap<Integer, Modelo> hashMap = new HashMap<>();
 
-    private static HangarDAO hangarDAO;
+    private static ModeloDAO modeloDAO;
 
-    public static HangarDAO getInstance(){
-        if (hangarDAO == null){
-            hangarDAO = new HangarDAO();
+    public static ModeloDAO getInstance(){
+        if (modeloDAO == null){
+            modeloDAO = new ModeloDAO();
         }
-        return hangarDAO;
+        return modeloDAO;
     }
-    private HangarDAO(){
+    private ModeloDAO(){
 
     }
 
     @Override
     public boolean inserir(Object obj) {
-        Hangar e = (Hangar) obj;
+        Modelo e = (Modelo) obj;
         if (e==null) return false;
         return !hashMap.containsKey(e.getCodigo()) && (hashMap.put(e.getCodigo(), e) == null);
     }
@@ -33,7 +37,7 @@ public class HangarDAO implements DAO{
 
     @Override
     public boolean editar(Object obj) {
-        Hangar e = (Hangar) obj;
+        Modelo e = (Modelo) obj;
         return excluir(e.getCodigo()) && inserir(e);
     }
 
@@ -42,7 +46,7 @@ public class HangarDAO implements DAO{
         return hashMap.get((Integer) obj);
     }
 
-    public List<Hangar> pesquisar(){
+    public List<Modelo> pesquisar(){
         return hashMap.values().stream().toList();
     }
 }

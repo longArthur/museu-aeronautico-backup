@@ -3,7 +3,7 @@ package Interfaces;
 import Logic.Empregado;
 import Logic.Gerente;
 import Logic.Modelo;
-import Logic.ModeloDAO;
+import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

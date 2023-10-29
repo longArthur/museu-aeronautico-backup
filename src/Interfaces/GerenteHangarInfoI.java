@@ -66,7 +66,7 @@ public class GerenteHangarInfoI {
         cidadeField = new JLabel(hangar.getEndereco().getCidade());
         ruaField = new JLabel(hangar.getEndereco().getRua());
         bairroField = new JLabel(hangar.getEndereco().getBairro());
-        numeroField = new JLabel(hangar.getEndereco().getNumero_endereco());
+        numeroField = new JLabel(String.valueOf(hangar.getEndereco().getNumero_endereco()));
         departamentoComboBox = new JLabel(hangar.getDepartamento().getNome());
     }
 

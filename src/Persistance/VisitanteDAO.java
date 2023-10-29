@@ -1,9 +1,14 @@
-package Logic;
+package Persistance;
+
+import Logic.CPF;
+import Logic.DAO;
+import Logic.Visitante;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class VisitanteDAO implements DAO{
+public class VisitanteDAO implements DAO {
+    //todo change to mysql
     HashMap<CPF, Visitante> visitantes = new HashMap<>();
 
     private static VisitanteDAO visitanteDAO;

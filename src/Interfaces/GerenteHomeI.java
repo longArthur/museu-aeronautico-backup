@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.*;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -14,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -55,7 +57,7 @@ public class GerenteHomeI {
             EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
             int rowAtPoint = table1.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), table1));
 
-            if (empregadoDAO.excluir(table1.getValueAt(table1.getSelectedRow(), 0))) {
+            if (empregadoDAO.excluir(new CPF((String) table1.getValueAt(table1.getSelectedRow(), 0)))) {
                 JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
                 DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
                 tableModel.setRowCount(0);
@@ -114,7 +116,7 @@ public class GerenteHomeI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar(new CPF((String) table.getValueAt(table.getSelectedRow(), 0)));
                     if (empregado1 == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else {
@@ -168,11 +170,11 @@ public class GerenteHomeI {
             }
         });
 
-        pesquisarButton.addActionListener(new ActionListener() {
-            @Override
+                    pesquisarButton.addActionListener(new ActionListener() {
+                @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    java.util.List<Empregado> empregados = EmpregadoDAO.getInstance().pesquisar();
+                    java.util.List<Empregado> empregados = EmpregadoDAO.getInstance().pesquisarTudo();
                     Empregado empregado1 = empregados.stream().filter(empregado2 -> empregado2.getCpf().equals(new CPF(textField1.getText()))).findFirst().get();
 
                     DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
@@ -197,7 +199,8 @@ public class GerenteHomeI {
 
 
     private Object[][] populateData() {
-        java.util.List<Empregado> empregadoList = EmpregadoDAO.getInstance().pesquisar();
+        ArrayList<Empregado> empregadoList = EmpregadoDAO.getInstance().pesquisarTudo();
+        System.out.println(empregadoList);
         Object[][] dados = new Object[empregadoList.size()][3];
 
         for (int i = 0; i < empregadoList.size(); i++) {

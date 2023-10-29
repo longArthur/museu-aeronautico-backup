@@ -1,9 +1,13 @@
-package Logic;
+package Persistance;
+
+import Logic.DAO;
+import Logic.Departamento;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class DepartamentoDAO implements DAO{
+public class DepartamentoDAO implements DAO {
+    //todo change to mysql
     HashMap<Integer, Departamento> hashMap = new HashMap<>();
 
     private static DepartamentoDAO departamentoDAO;

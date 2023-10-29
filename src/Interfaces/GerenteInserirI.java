@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.*;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -47,6 +48,9 @@ public class GerenteInserirI {
     private JTextField ruaField;
     private JTextField bairroField;
     private JTextField numeroField;
+    private JTextField estadoField;
+    private JTextField cepField;
+    private JTextField compField;
     private Empregado empregado;
 
     public GerenteInserirI(Empregado empregado) {
@@ -73,14 +77,14 @@ public class GerenteInserirI {
                             empregado1 = new Empregado(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()));
                         }
                         case 1 -> {
                             empregado1 = new Piloto(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira sua CHT"));
                         }
@@ -88,7 +92,7 @@ public class GerenteInserirI {
                             empregado1 = new Historiador(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu registro"));
                         }
@@ -96,7 +100,7 @@ public class GerenteInserirI {
                             empregado1 = new Engenheiro(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu CREA"),
                                     JOptionPane.showInputDialog("Insira sua área de atuação"));
@@ -105,7 +109,7 @@ public class GerenteInserirI {
                             empregado1 = new Gerente(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
                                     LocalDate.parse(JOptionPane.showInputDialog("Insira a data de inicio da gerenia (dd/MM/aaaa)"),
                                             DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -317,6 +321,27 @@ public class GerenteInserirI {
         panel7.add(bairroField, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         numeroField = new JTextField();
         panel7.add(numeroField, new com.intellij.uiDesigner.core.GridConstraints(4, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        estadoField = new JTextField();
+        panel7.add(estadoField, new com.intellij.uiDesigner.core.GridConstraints(4, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        compField = new JTextField();
+        panel7.add(compField, new com.intellij.uiDesigner.core.GridConstraints(5, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        cepField = new JTextField();
+        panel7.add(cepField, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label6 = new JLabel();
+        Font label6Font = this.$$$getFont$$$(null, -1, 20, label6.getFont());
+        if (label6Font != null) label6.setFont(label6Font);
+        label6.setText("Estado:");
+        panel7.add(label6, new com.intellij.uiDesigner.core.GridConstraints(4, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label7 = new JLabel();
+        Font label7Font = this.$$$getFont$$$(null, -1, 20, label7.getFont());
+        if (label7Font != null) label7.setFont(label7Font);
+        label7.setText("Complemento:");
+        panel7.add(label7, new com.intellij.uiDesigner.core.GridConstraints(5, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label8 = new JLabel();
+        Font label8Font = this.$$$getFont$$$(null, -1, 20, label8.getFont());
+        if (label8Font != null) label8.setFont(label8Font);
+        label8.setText("CEP:");
+        panel7.add(label8, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer21 = new com.intellij.uiDesigner.core.Spacer();
         panel6.add(spacer21, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer22 = new com.intellij.uiDesigner.core.Spacer();

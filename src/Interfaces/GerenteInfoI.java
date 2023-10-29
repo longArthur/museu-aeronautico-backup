@@ -315,7 +315,7 @@ public class GerenteInfoI {
         cidadeField = new JLabel(editado.getEndereco().getCidade());
         ruaField = new JLabel(editado.getEndereco().getRua());
         bairroField = new JLabel(editado.getEndereco().getBairro());
-        numeroField = new JLabel(editado.getEndereco().getNumero_endereco());
+        numeroField = new JLabel(String.valueOf(editado.getEndereco().getNumero_endereco()));
         generic1A = new JLabel();
         generic1B = new JLabel();
         generic2A = new JLabel();

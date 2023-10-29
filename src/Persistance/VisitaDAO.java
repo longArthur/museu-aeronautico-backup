@@ -1,12 +1,16 @@
-package Logic;
+package Persistance;
+
+import Logic.CPF;
+import Logic.DAO;
+import Logic.Visita;
+import Logic.Visitante;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.TreeSet;
-import java.util.stream.Stream;
 
-public class VisitaDAO implements DAO{
+public class VisitaDAO implements DAO {
+    //todo change to mysql
     TreeSet<Visita> treeSet = new TreeSet<>();
 
     private static VisitaDAO visitaDAO;

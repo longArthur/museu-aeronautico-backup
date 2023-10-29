@@ -1,6 +1,8 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.DepartamentoDAO;
+import Persistance.HangarDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -33,6 +35,9 @@ public class GerenteHangarEditarI {
     private JTextField ruaField;
     private JTextField bairroField;
     private JTextField numeroField;
+    private JTextField estadoField;
+    private JTextField cepField;
+    private JTextField compField;
     private Empregado empregado;
     private Hangar hangar;
 
@@ -58,7 +63,8 @@ public class GerenteHangarEditarI {
                     Hangar hangarInterno = new Hangar(hangar.getCodigo(), blocoLabel.getText(),
                             Integer.parseInt(qtdVagasField.getText()), Double.parseDouble(larguraField.getText()),
                             Double.parseDouble(comprimentoField.getText()), Integer.parseInt(capVisitanteField.getText()),
-                            new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), numeroField.getText()),
+                            new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()),
+                                    cepField.getText(), estadoField.getText(), compField.getText()),
                             DepartamentoDAO.getInstance().pesquisar().get(departamentoComboBox.getSelectedIndex()));
                     if (HangarDAO.getInstance().editar(hangarInterno)) {
                         JOptionPane.showMessageDialog(frame, "Hangar editado com sucesso!");
@@ -92,6 +98,10 @@ public class GerenteHangarEditarI {
         ruaField = new JTextField(hangar.getEndereco().getRua());
         bairroField = new JTextField(hangar.getEndereco().getBairro());
         numeroField = new JTextField(hangar.getEndereco().getNumero_endereco());
+        estadoField = new JTextField(hangar.getEndereco().getEstado());
+        cepField = new JTextField(hangar.getEndereco().getCep());
+        compField = new JTextField(hangar.getEndereco().getComplemento());
+
     }
 
     /**
@@ -263,6 +273,24 @@ public class GerenteHangarEditarI {
         label13.setText("Numero:");
         panel7.add(label13, new com.intellij.uiDesigner.core.GridConstraints(4, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel7.add(numeroField, new com.intellij.uiDesigner.core.GridConstraints(4, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label14 = new JLabel();
+        Font label14Font = this.$$$getFont$$$(null, -1, 20, label14.getFont());
+        if (label14Font != null) label14.setFont(label14Font);
+        label14.setText("Estado:");
+        panel7.add(label14, new com.intellij.uiDesigner.core.GridConstraints(4, 7, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label15 = new JLabel();
+        Font label15Font = this.$$$getFont$$$(null, -1, 20, label15.getFont());
+        if (label15Font != null) label15.setFont(label15Font);
+        label15.setText("CEP:");
+        panel7.add(label15, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label16 = new JLabel();
+        Font label16Font = this.$$$getFont$$$(null, -1, 20, label16.getFont());
+        if (label16Font != null) label16.setFont(label16Font);
+        label16.setText("Complemento:");
+        panel7.add(label16, new com.intellij.uiDesigner.core.GridConstraints(5, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel7.add(estadoField, new com.intellij.uiDesigner.core.GridConstraints(4, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel7.add(cepField, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel7.add(compField, new com.intellij.uiDesigner.core.GridConstraints(5, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer21 = new com.intellij.uiDesigner.core.Spacer();
         panel6.add(spacer21, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer22 = new com.intellij.uiDesigner.core.Spacer();

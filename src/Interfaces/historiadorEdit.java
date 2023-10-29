@@ -1,6 +1,8 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.HangarDAO;
+import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

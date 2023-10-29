@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.HangarDAO;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;

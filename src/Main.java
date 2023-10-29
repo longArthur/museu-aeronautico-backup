@@ -2,31 +2,29 @@ import Logic.*;
 import Interfaces.*;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import Persistance.*;
 
 public class Main {
     public static void main(String[] args) {
         Departamento departamento = new Departamento(LocalDateTime.now(), BigDecimal.valueOf(2022), "Roxo");
-        Gerente teste = new Gerente(new CPF("10010010017"), LocalDate.now(), "Josnei", "Birimbau", BigDecimal.valueOf(2000),
-                new Endereco("Osorio", "Costa Gama", "Albatroz", "2022A"),
-                departamento, LocalDate.now());
 
-        Empregado empregado = new Empregado(new CPF("20020020023"), LocalDate.now(), "Cardoso", "cornelio",
-                BigDecimal.valueOf(1000.20), new Endereco("Capao da canoa", "Bacacaca", "guri", "2222"),
-                departamento);
-
+        departamento.setCodigo(1);
         DepartamentoDAO.getInstance().inserir(departamento);
-        DepartamentoDAO.getInstance().inserir(new Departamento(LocalDateTime.now(), BigDecimal.valueOf(3003), "Verde"));
+        Departamento departamento2 = new Departamento(LocalDateTime.now(), BigDecimal.valueOf(22222), "Azul");
+        departamento2.setCodigo(2);
+        DepartamentoDAO.getInstance().inserir(departamento2);
+        DepartamentoDAO.getInstance().inserir(new Departamento(LocalDateTime.now(), BigDecimal.valueOf(22222), "Azul"));
 
         Hangar hangar = new Hangar(1, "C", 20, 20.3, 40.4, 100,
-                new Endereco("Porto Alegre", "Osvaldo Aranha", "Zona sul", "2002"), departamento);
+                new Endereco("Porto Alegre", "Osvaldo Aranha", "Zona sul", 202, "95520000", "RS", null), departamento);
         HangarDAO hangarDAO = HangarDAO.getInstance();
         hangarDAO.inserir(hangar);
 
         EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
-        empregadoDAO.inserir(teste);
-        empregadoDAO.inserir(empregado);
+
 
         Modelo modelo = new Modelo("ford", LocalDate.now(), 12.2, 12.2, "pinoquio",
                 Modelo.Tipo.AVIAO, "eeee", "roxo", hangar,"Utilizavel");
@@ -39,9 +37,11 @@ public class Main {
         modeloDAO.inserir(modelo);
         modeloDAO.inserir(modelo2);
 
-
-        LoginDAO loginDAO = LoginDAO.getInstance();
-        loginDAO.inserir(new Login(teste, "a"));
+        try {
+            ConnectBD connectBD = ConnectBD.getInstance();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
 
         new login();
     }

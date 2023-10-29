@@ -1,6 +1,8 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.*;
+
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -49,7 +51,7 @@ public class login {
                         Empregado empregado = (Empregado) EmpregadoDAO.getInstance().pesquisar(cpf);
                         if (empregado != null) {
                             String senha = JOptionPane.showInputDialog(frame, "Insira sua nova senha!");
-                            loginDAO.inserir(new Login(empregado, senha));
+                            loginDAO.inserir(new Login(empregado, Login.hash(senha)));
                             JOptionPane.showMessageDialog(frame, "Agora realize seu login novamente!");
                         } else
                             JOptionPane.showMessageDialog(null, "Login incorreto");

@@ -1,9 +1,8 @@
 package Interfaces;
 
-import Logic.CPF;
 import Logic.Empregado;
 import Logic.Visitante;
-import Logic.VisitanteDAO;
+import Persistance.VisitanteDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

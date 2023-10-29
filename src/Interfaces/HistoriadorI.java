@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;

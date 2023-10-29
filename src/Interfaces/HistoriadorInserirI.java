@@ -1,6 +1,8 @@
 package Interfaces;
 
 import Logic.*;
+import Persistance.HangarDAO;
+import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -11,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class HistoriadorInserirI {

@@ -7,23 +7,33 @@ public class Endereco {
     private final String cidade;
     private final String rua;
     private final String bairro;
-    private final String numero_endereco;
+    private final int numero_endereco;
+    private final String cep;
+    private final String estado;
+    private final String complemento;
 
-    public Endereco(String cidade, String rua, String bairro, String numero_endereco){
+
+    public Endereco(String cidade, String rua, String bairro, int numero_endereco, String cep, String estado, String complemento){
         Objects.requireNonNull(cidade, "Cidade nao pode ser nula");
         Objects.requireNonNull(rua, "Rua nao pode ser nula");
         Objects.requireNonNull(bairro, "Bairro nao pode ser nulo");
-        Objects.requireNonNull(numero_endereco, "Numero de endereco nao pode ser nulo");
+        Objects.requireNonNull(cep, "Cep nao pode ser nulo");
+        Objects.requireNonNull(estado, "Estado nao pode ser nulo");
         if(cidade.isEmpty()) throw new IllegalArgumentException("Cidade nao pode ser vazia");
         if(rua.isEmpty()) throw new IllegalArgumentException("Rua nao pode ser vazia");
         if(bairro.isEmpty()) throw new IllegalArgumentException("Bairro nao pode ser vazio");
-        if(numero_endereco.isEmpty()) throw new IllegalArgumentException("Numero de endereco nao pode ser vazio");
-
+        if(numero_endereco <= 0) throw new IllegalArgumentException("Numero tem que ser maior do que 0");
+        if(cep.isEmpty()) throw new IllegalArgumentException("Cep nao pode ser vazio");
+        if(estado.isEmpty()) throw new IllegalArgumentException("Estado nao pode ser vazio");
 
         this.cidade = cidade;
         this.rua = rua;
         this.bairro = bairro;
         this.numero_endereco = numero_endereco;
+        this.cep = cep;
+        this.estado = estado;
+        this.complemento = complemento;
+
     }
 
     public int getCodigo() {
@@ -42,8 +52,20 @@ public class Endereco {
         return bairro;
     }
 
-    public String getNumero_endereco() {
+    public int getNumero_endereco() {
         return numero_endereco;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getComplemento() {
+        return complemento;
     }
 
     public void setCodigo(int codigo) {

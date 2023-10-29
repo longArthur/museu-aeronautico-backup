@@ -2,14 +2,12 @@ package Interfaces;
 
 import Logic.Empregado;
 import Logic.Modelo;
-import Logic.ModeloDAO;
+import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 

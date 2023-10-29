@@ -9,10 +9,10 @@ public class Login {
     private final Empregado empregado;
     private final byte[] senhaHash;
 
-    public Login(Empregado empregado, String senha) {
+    public Login(Empregado empregado, byte[] senha) {
         Objects.requireNonNull(empregado, "Empregado nao pode ser nulo");
 
-        this.senhaHash = this.hash(senha);
+        this.senhaHash = senha;
         this.empregado = empregado;
     }
 
@@ -24,7 +24,7 @@ public class Login {
         return senhaHash;
     }
 
-    private byte[] hash(String str){
+    public static byte[] hash(String str){
 
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -32,6 +32,7 @@ public class Login {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Contate um administrador, CODIGO \"512\".");
         }
+
         return new byte[0];
     }
 
