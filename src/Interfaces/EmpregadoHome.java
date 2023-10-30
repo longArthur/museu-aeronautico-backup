@@ -60,7 +60,7 @@ public class EmpregadoHome {
 
             LocalDateTime localDateTime = LocalDateTime.parse((String) tabela.getValueAt(tabela.getSelectedRow(), 0), format);
 
-            if (visitaDAO.excluir(visitaDAO.pesquisar(localDateTime, (CPF) tabela.getValueAt(tabela.getSelectedRow(), 1)))) {
+            if (visitaDAO.excluir((CPF) tabela.getValueAt(tabela.getSelectedRow(), 1))) {
                 JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
                 DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
                 tableModel.setRowCount(0);
@@ -78,7 +78,7 @@ public class EmpregadoHome {
 
             LocalDateTime localDateTime = LocalDateTime.parse((String) tabela.getValueAt(tabela.getSelectedRow(), 0), format);
 
-            Visita visita = visitaDAO.pesquisar(localDateTime, (CPF) tabela.getValueAt(tabela.getSelectedRow(), 1));
+            Visita visita = visitaDAO.pesquisar((CPF) tabela.getValueAt(tabela.getSelectedRow(), 1));
             visita.setTempoEstadia(Duration.between(visita.getDataIngresso(), LocalDateTime.now()));
             visitaDAO.editar(visita);
             DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
@@ -149,7 +149,7 @@ public class EmpregadoHome {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(new CPF(textFieldCPF.getText()));
-                    Object[] nomesHangares = HangarDAO.getInstance().pesquisar().toArray();
+                    Object[] nomesHangares = HangarDAO.getInstance().pesquisarTudo().toArray();
 
                     Hangar escolhaDeHangar = (Hangar) JOptionPane.showInputDialog(frame, "Escolha um Hangar", "Escolher", JOptionPane.INFORMATION_MESSAGE, null, nomesHangares, nomesHangares[0]);
 
@@ -351,7 +351,7 @@ public class EmpregadoHome {
     }
 
     private Object[][] populateData() {
-        List<Visita> visitas = VisitaDAO.getInstance().pesquisar();
+        List<Visita> visitas = VisitaDAO.getInstance().pesquisarTudo();
         Object[][] dados = new Object[visitas.size()][4];
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");

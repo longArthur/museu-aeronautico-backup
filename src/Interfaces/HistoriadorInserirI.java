@@ -108,7 +108,7 @@ public class HistoriadorInserirI {
 
         dataProducaoField = new JTextField("dd/mm/aaaa");
 
-        codeHangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisar().toArray());
+        codeHangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisarTudo().toArray());
 
         tipoComboBox = new JComboBox<>(new String[]{"Aviao", "Modelo"});
     }

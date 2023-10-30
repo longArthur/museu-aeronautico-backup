@@ -94,13 +94,13 @@ public class historiadorEdit {
 
         int indice = 0;
 
-        for (Hangar hangar : HangarDAO.getInstance().pesquisar()) {
+        for (Hangar hangar : HangarDAO.getInstance().pesquisarTudo()) {
             if (hangar.equals(modelo.getHangar())) break;
             indice++;
         }
 
 
-        hangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisar().toArray());
+        hangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisarTudo().toArray());
         hangarComboBox.setSelectedIndex(indice);
 
         tipoComboBox = new JComboBox<>(new String[]{"Aviao", "Modelo"});

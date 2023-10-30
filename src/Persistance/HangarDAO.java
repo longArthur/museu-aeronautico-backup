@@ -1,52 +1,107 @@
 package Persistance;
 
-import Logic.DAO;
 import Logic.Hangar;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HangarDAO implements DAO {
-    //todo change to mysql
-    HashMap<Integer, Hangar> hashMap = new HashMap<>();
-
+public class HangarDAO implements DAO<Hangar, Integer> {
     private static HangarDAO hangarDAO;
+    private static Connection conexao;
 
-    public static HangarDAO getInstance(){
-        if (hangarDAO == null){
+    public static HangarDAO getInstance() {
+        if(hangarDAO == null){
             hangarDAO = new HangarDAO();
         }
         return hangarDAO;
     }
-    private HangarDAO(){
 
+    private HangarDAO() {
+        try {
+            ConnectBD bd = ConnectBD.getInstance();
+            conexao = ConnectBD.getConexao();
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println("Erro = " + ex);
+        }
     }
 
     @Override
-    public boolean inserir(Object obj) {
-        Hangar e = (Hangar) obj;
-        if (e==null) return false;
-        return !hashMap.containsKey(e.getCodigo()) && (hashMap.put(e.getCodigo(), e) == null);
+    public boolean inserir(Hangar obj) {
+        if(obj == null) return false;
+        String sql = "INSERT INTO hangar (bloco, qtd_vagas, largura_metros, comprimento_metros, capacidade_visitantes, cod_departamento, endereco)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.getBloco());
+            pstmt.setInt(2, obj.getQuantidadeVagas());
+            pstmt.setDouble(3, obj.getLarguraMetros());
+            pstmt.setDouble(4, obj.getComprimentoMetros());
+            pstmt.setInt(5, obj.getCapacidadeVisitantes());
+            pstmt.setInt(6, obj.getDepartamento().getCodigo());
+            pstmt.setInt(7, obj.getEndereco().getCodigo());
+            pstmt.executeUpdate();
+
+            return true;
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return false;
     }
 
     @Override
-    public boolean excluir(Object obj) {
-        Integer c = (Integer) obj;
-        return hashMap.remove(c) != null;
+    public boolean excluir(Integer obj) {
+        return false;
     }
 
     @Override
-    public boolean editar(Object obj) {
-        Hangar e = (Hangar) obj;
-        return excluir(e.getCodigo()) && inserir(e);
+    public boolean editar(Hangar obj) {
+        return false;
     }
 
     @Override
-    public Object pesquisar(Object obj) {
-        return hashMap.get((Integer) obj);
+    public Hangar pesquisar(Integer obj) {
+        if(obj == null) return null;
+        String sql = "SELECT * FROM hangar WHERE codigo = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setInt(1, obj);
+            var rs = pstmt.executeQuery();
+            if(rs.next()){
+                Hangar hangar = new Hangar(rs.getString("bloco"), rs.getInt("qtd_vagas"), rs.getDouble("largura_metros"),
+                        rs.getDouble("comprimento_metros"), rs.getInt("capacidade_visitantes"),
+                        EnderecoDAO.getInstance().pesquisar(rs.getInt("endereco")),
+                        DepartamentoDAO.getInstance().pesquisar(rs.getInt("cod_departamento")));
+                hangar.setCodigo(rs.getInt("codigo"));
+                return hangar;
+            }
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return null;
     }
 
-    public List<Hangar> pesquisar(){
-        return hashMap.values().stream().toList();
+    @Override
+    public ArrayList<Hangar> pesquisarTudo() {
+        ArrayList<Hangar> hangares = new ArrayList<>();
+        String sql = "SELECT * FROM hangar";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            var rs = pstmt.executeQuery();
+            while(rs.next()){
+                Hangar hangar = new Hangar(rs.getString("bloco"), rs.getInt("qtd_vagas"), rs.getDouble("largura_metros"),
+                        rs.getDouble("comprimento_metros"), rs.getInt("capacidade_visitantes"),
+                        EnderecoDAO.getInstance().pesquisar(rs.getInt("endereco")),
+                        DepartamentoDAO.getInstance().pesquisar(rs.getInt("cod_departamento")));
+                hangar.setCodigo(rs.getInt("codigo"));
+                hangares.add(hangar);
+            }
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return hangares;
     }
 }

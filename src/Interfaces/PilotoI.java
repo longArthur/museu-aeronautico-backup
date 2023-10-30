@@ -61,7 +61,7 @@ public class PilotoI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
                     if (modelo == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new PilotoInfoI(empregado, modelo);
@@ -110,7 +110,7 @@ public class PilotoI {
     }
 
     private Object[][] populateData() {
-        java.util.List<Modelo> modelos = ModeloDAO.getInstance().pesquisar();
+        java.util.List<Modelo> modelos = ModeloDAO.getInstance().pesquisarTudo();
         Object[][] dados = new Object[modelos.size()][3];
         for (int i = 0; i < modelos.size(); i++)
             dados[i] = new Object[]{modelos.get(i).getCodigo(), modelos.get(i).getMarca(),

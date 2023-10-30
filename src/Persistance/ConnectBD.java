@@ -2,8 +2,6 @@ package Persistance;
 
 import java.sql.*; // para manipulação do JDBC
 
-//how do use the mysql driver in intellij?
-//https://stackoverflow.com/questions/1051640/correct-way-to-add-external-jars-lib-jar-to-an-intellij-idea-project
 
 /**
  *

@@ -47,7 +47,7 @@ public class GerenteHangarI {
             HangarDAO hangarDAO = HangarDAO.getInstance();
             int rowAtPoint = tabela.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), tabela));
 
-            if (hangarDAO.excluir(tabela.getValueAt(tabela.getSelectedRow(), 0))) {
+            if (hangarDAO.excluir((Integer) tabela.getValueAt(tabela.getSelectedRow(), 0))) {
                 JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
                 DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
                 tableModel.setRowCount(0);
@@ -110,7 +110,7 @@ public class GerenteHangarI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Hangar hangar = (Hangar) HangarDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    Hangar hangar = (Hangar) HangarDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
                     if (hangar == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new GerenteHangarInfoI(empregado, hangar);
@@ -123,7 +123,7 @@ public class GerenteHangarI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    java.util.List<Hangar> hangars = HangarDAO.getInstance().pesquisar();
+                    java.util.List<Hangar> hangars = HangarDAO.getInstance().pesquisarTudo();
                     Hangar hangar = hangars.stream().filter(hangarInterno -> hangarInterno.getCodigo() == Integer.parseInt(barraDePesquisa.getText())).findFirst().get();
 
                     DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
@@ -150,7 +150,7 @@ public class GerenteHangarI {
     }
 
     private Object[][] populateData() {
-        java.util.List<Hangar> hangares = HangarDAO.getInstance().pesquisar();
+        java.util.List<Hangar> hangares = HangarDAO.getInstance().pesquisarTudo();
         Object[][] dados = new Object[hangares.size()][3];
         for (int i = 0; i < hangares.size(); i++)
             dados[i] = new Object[]{hangares.get(i).getCodigo(), hangares.get(i).getEndereco(),

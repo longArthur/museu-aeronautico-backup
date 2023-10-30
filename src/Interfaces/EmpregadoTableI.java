@@ -47,7 +47,7 @@ public class EmpregadoTableI {
             VisitanteDAO visitanteDAO = VisitanteDAO.getInstance();
             int rowAtPoint = tableVisitantes.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), tableVisitantes));
 
-            if (visitanteDAO.excluir(tableVisitantes.getValueAt(tableVisitantes.getSelectedRow(), 0))) {
+            if (visitanteDAO.excluir(new CPF((String) tableVisitantes.getValueAt(tableVisitantes.getSelectedRow(), 0)))) {
                 JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
                 DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
                 tableModel.setRowCount(0);
@@ -103,7 +103,7 @@ public class EmpregadoTableI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(table.getValueAt(table.getSelectedRow(), 0));
+                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(new CPF((String) table.getValueAt(table.getSelectedRow(), 0)));
                     if (visitante == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new EmpregadoVisitanteInfoI(empregado, visitante);
@@ -115,7 +115,7 @@ public class EmpregadoTableI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisar();
+                    java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisarTudo();
                     Visitante visitante = visitantes.stream().filter(visitanteInterno -> visitanteInterno.getCpf().equals(new CPF(buscaField.getText()))).findFirst().get();
 
                     DefaultTableModel tableModel = (DefaultTableModel) tableVisitantes.getModel();
@@ -279,7 +279,7 @@ public class EmpregadoTableI {
     }
 
     private Object[][] populateData() {
-        java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisar();
+        java.util.List<Visitante> visitantes = VisitanteDAO.getInstance().pesquisarTudo();
         Object[][] dados = new Object[visitantes.size()][3];
         for (int i = 0; i < visitantes.size(); i++)
             dados[i] = new Object[]{visitantes.get(i).getCpf(), visitantes.get(i).getNomeSobrenome(),

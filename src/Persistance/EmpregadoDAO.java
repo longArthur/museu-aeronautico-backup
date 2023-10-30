@@ -45,8 +45,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
         if(emp instanceof Gerente gerente){
             try {
-                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, inicio_gerencia)"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, inicio_gerencia, endereco, departamento)"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, cpf);
                 pstmt.setDate(2, java.sql.Date.valueOf(data_ingresso));
                 pstmt.setString(3, nome);
@@ -54,6 +54,9 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 pstmt.setBigDecimal(5, salario);
                 pstmt.setString(6, "gerente");
                 pstmt.setDate(7, java.sql.Date.valueOf(gerente.getInicio_gerencia()));
+                pstmt.setInt(8, endereco);
+                pstmt.setInt(9, departamento);
+
 
                 EnderecoDAO.getInstance().inserir(gerente.getEndereco());
 
@@ -66,8 +69,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
         }
         if(emp instanceof Engenheiro engenheiro){
             try {
-                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, CREA, area_atuacao)"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, CREA, area_atuacao, endereco, departamento)"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, cpf);
                 pstmt.setDate(2, java.sql.Date.valueOf(data_ingresso));
                 pstmt.setString(3, nome);
@@ -76,6 +79,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 pstmt.setString(6, "engenheiro");
                 pstmt.setString(7, engenheiro.getCrea());
                 pstmt.setString(8, engenheiro.getAreaAtuacao());
+                pstmt.setInt(9, endereco);
+                pstmt.setInt(10, departamento);
 
                 EnderecoDAO.getInstance().inserir(engenheiro.getEndereco());
 
@@ -88,8 +93,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
         }
         if(emp instanceof Piloto piloto){
             try {
-                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, CHT)"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, CHT, endereco, departamento)"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, cpf);
                 pstmt.setDate(2, java.sql.Date.valueOf(data_ingresso));
                 pstmt.setString(3, nome);
@@ -97,6 +102,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 pstmt.setBigDecimal(5, salario);
                 pstmt.setString(6, "piloto");
                 pstmt.setString(7, piloto.getCHT());
+                pstmt.setInt(8, endereco);
+                pstmt.setInt(9, departamento);
 
                 EnderecoDAO.getInstance().inserir(piloto.getEndereco());
 
@@ -109,8 +116,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
         }
         if(emp instanceof Historiador historiador){
             try {
-                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, registro)"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, registro, endereco, departamento)"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, cpf);
                 pstmt.setDate(2, java.sql.Date.valueOf(data_ingresso));
                 pstmt.setString(3, nome);
@@ -118,6 +125,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 pstmt.setBigDecimal(5, salario);
                 pstmt.setString(6, "historiador");
                 pstmt.setString(7, historiador.getRegistro());
+                pstmt.setInt(8, endereco);
+                pstmt.setInt(9, departamento);
 
                 EnderecoDAO.getInstance().inserir(historiador.getEndereco());
 
@@ -130,8 +139,8 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
             }
         }
         try {
-            PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo)"
-                    + "VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement pstmt = conexao.prepareStatement("INSERT INTO empregado (CPF, data_ingressao, nome, sobrenome, salario, tipo, endereco, departamento)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, cpf);
             pstmt.setDate(2, java.sql.Date.valueOf(data_ingresso));
             pstmt.setString(3, nome);
@@ -178,10 +187,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 Endereco endereco = EnderecoDAO.getInstance().pesquisar(resultado.getInt("endereco"));
                 Departamento departamento = (Departamento) DepartamentoDAO.getInstance().pesquisar(resultado.getInt("departamento"));
 
-                for(Departamento departamento1 : DepartamentoDAO.getInstance().pesquisar()){
-                    System.out.println(departamento1);
-                }
-                System.out.println(departamento);
+                
 
                 if(tipo.equals("gerente")){
                     LocalDate inicio_gerencia = resultado.getDate("inicio_gerencia").toLocalDate();

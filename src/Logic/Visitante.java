@@ -8,7 +8,9 @@ public class Visitante implements Comparable<Visitante> {
     public enum Genero {
         HOMEM,
         MULHER,
-        NAOBINARIO
+        NAOBINARIO,
+
+
     }
 
     private final CPF cpf;

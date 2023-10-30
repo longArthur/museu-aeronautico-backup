@@ -27,7 +27,7 @@ public class CPF implements Comparable<CPF>{
         for(int i = 0; i < operando.length(); i++){
             subTotal += (((int) operando.charAt(i)) - 48) * (operando.length()+1-i);
         }
-        return ""+((11-(subTotal%11) == 10) ? (0) : ((11-(subTotal%11))));
+        return ""+((11-(subTotal%11) >= 10) ? (0) : ((11-(subTotal%11))));
     }
 
 

@@ -78,14 +78,14 @@ public class GerenteInserirI {
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
                                     new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
-                                    DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()));
+                                    DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()));
                         }
                         case 1 -> {
                             empregado1 = new Piloto(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
                                     new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
-                                    DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
+                                    DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira sua CHT"));
                         }
                         case 2 -> {
@@ -93,7 +93,7 @@ public class GerenteInserirI {
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
                                     new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
-                                    DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
+                                    DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu registro"));
                         }
                         case 3 -> {
@@ -101,7 +101,7 @@ public class GerenteInserirI {
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
                                     new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
-                                    DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
+                                    DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu CREA"),
                                     JOptionPane.showInputDialog("Insira sua área de atuação"));
                         }
@@ -110,7 +110,7 @@ public class GerenteInserirI {
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
                                     new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
-                                    DepartamentoDAO.getInstance().pesquisar().get(DepartamentoComboBox.getSelectedIndex()),
+                                    DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     LocalDate.parse(JOptionPane.showInputDialog("Insira a data de inicio da gerenia (dd/MM/aaaa)"),
                                             DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         }
@@ -385,7 +385,7 @@ public class GerenteInserirI {
         dataIngresso = new JTextField("dd/mm/aaaa");
 
         ArrayList<String> nomesDepartamentos = new ArrayList<>();
-        DepartamentoDAO.getInstance().pesquisar().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
+        DepartamentoDAO.getInstance().pesquisarTudo().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
 
         DepartamentoComboBox = new JComboBox<>(nomesDepartamentos.toArray());
 

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Hangar implements Comparable<Hangar> {
 
-    private final int codigo;
+    private int codigo;
     private final String bloco;
     private final Endereco endereco;
     private final Departamento departamento;
@@ -14,8 +14,8 @@ public class Hangar implements Comparable<Hangar> {
     private final double comprimentoMetros;
     private final int capacidadeVisitantes;
 
-    public Hangar(int codigo, String bloco, int quantidadeVagas, double larguraMetros, double comprimentoMetros, int capacidadeVisitantes, Endereco endereco, Departamento departamento) {
-        if(codigo <= 0) throw new IllegalArgumentException("Codigo nao pode ser menor ou igual a zero");
+    public Hangar( String bloco, int quantidadeVagas, double larguraMetros, double comprimentoMetros, int capacidadeVisitantes, Endereco endereco, Departamento departamento) {
+
         if(bloco.isEmpty()) throw new IllegalArgumentException("Bloco nao pode ser vazio");
         Objects.requireNonNull(bloco,"Bloco nao pode ser nulo");
         if(quantidadeVagas <= 0) throw new IllegalArgumentException("Quantidade de vagas nao pode ser menor ou igual a zero");
@@ -25,8 +25,6 @@ public class Hangar implements Comparable<Hangar> {
         Objects.requireNonNull(endereco,"Logic.Endereco nao pode ser nulo");
         Objects.requireNonNull(departamento, "Logic.Departamento nao pode ser nulo");
 
-
-        this.codigo = codigo;
         this.bloco = bloco;
         this.quantidadeVagas = quantidadeVagas;
         this.larguraMetros = larguraMetros;
@@ -38,6 +36,10 @@ public class Hangar implements Comparable<Hangar> {
 
     public int getCodigo() {
         return codigo;
+    }
+    public void setCodigo(int codigo) {
+        if(codigo <= 0) throw new IllegalArgumentException("Codigo nao pode ser menor ou igual a zero");
+        this.codigo = codigo;
     }
 
     public String getBloco() {

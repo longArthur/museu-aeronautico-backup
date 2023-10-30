@@ -60,12 +60,13 @@ public class GerenteHangarEditarI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Hangar hangarInterno = new Hangar(hangar.getCodigo(), blocoLabel.getText(),
+                    Hangar hangarInterno = new Hangar(blocoLabel.getText(),
                             Integer.parseInt(qtdVagasField.getText()), Double.parseDouble(larguraField.getText()),
                             Double.parseDouble(comprimentoField.getText()), Integer.parseInt(capVisitanteField.getText()),
                             new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()),
                                     cepField.getText(), estadoField.getText(), compField.getText()),
-                            DepartamentoDAO.getInstance().pesquisar().get(departamentoComboBox.getSelectedIndex()));
+                            DepartamentoDAO.getInstance().pesquisarTudo().get(departamentoComboBox.getSelectedIndex()));
+                    hangarInterno.setCodigo(Integer.parseInt(codigoField.getText()));
                     if (HangarDAO.getInstance().editar(hangarInterno)) {
                         JOptionPane.showMessageDialog(frame, "Hangar editado com sucesso!");
                         new GerenteHangarI(empregado);
@@ -85,7 +86,7 @@ public class GerenteHangarEditarI {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
 
         ArrayList<String> nomesDepartamentos = new ArrayList<>();
-        DepartamentoDAO.getInstance().pesquisar().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
+        DepartamentoDAO.getInstance().pesquisarTudo().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
 
         departamentoComboBox = new JComboBox<>(nomesDepartamentos.toArray());
         codigoField = new JTextField(String.valueOf(hangar.getCodigo()));
