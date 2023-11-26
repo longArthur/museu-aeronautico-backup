@@ -153,7 +153,7 @@ public class EmpregadoHome {
 
                     Hangar escolhaDeHangar = (Hangar) JOptionPane.showInputDialog(frame, "Escolha um Hangar", "Escolher", JOptionPane.INFORMATION_MESSAGE, null, nomesHangares, nomesHangares[0]);
 
-                    if (VisitaDAO.getInstance().inserir(new Visita(LocalDateTime.now(), visitante, escolhaDeHangar)))
+                    if (VisitaDAO.getInstance().inserir(new Visita(LocalDateTime.now(), visitante, escolhaDeHangar)) != null)
                         JOptionPane.showMessageDialog(frame, "Visita iniciada com sucesso!");
 
                     DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();

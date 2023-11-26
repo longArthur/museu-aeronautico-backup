@@ -68,7 +68,7 @@ public class EmpregadoVisitanteInserirI {
                             genero = Visitante.Genero.NAOBINARIO;
                         }
                     }
-                    if (VisitanteDAO.getInstance().inserir(new Visitante(new CPF(cpfField.getText()), nomeField.getText(), sobrenomeField.getText(), genero))) {
+                    if (VisitanteDAO.getInstance().inserir(new Visitante(new CPF(cpfField.getText()), nomeField.getText(), sobrenomeField.getText(), genero)) != null) {
                         JOptionPane.showMessageDialog(frame, "Visitante inserido com sucesso!");
                         cpfField.setText("");
                         nomeField.setText("");

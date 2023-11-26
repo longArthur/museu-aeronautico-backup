@@ -1,6 +1,9 @@
 package Persistance;
 
-import java.sql.*; // para manipulação do JDBC
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 /**

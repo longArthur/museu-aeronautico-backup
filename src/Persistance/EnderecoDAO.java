@@ -1,5 +1,6 @@
 package Persistance;
-import Logic.*;
+
+import Logic.Endereco;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,23 +29,43 @@ public class EnderecoDAO implements DAO<Endereco, Integer> {
     }
 
     @Override
-    public boolean inserir(Endereco endereco) {
-        if (endereco == null) return false;
+    public Integer inserir(Endereco endereco) {
+        if (endereco == null) return null;
         String sql = "INSERT INTO endereco (rua, numero_endereco, bairro, cidade, estado, cep, complemento)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            PreparedStatement pstmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, endereco.getRua());
             pstmt.setInt(2, endereco.getNumero_endereco());
             pstmt.setString(3, endereco.getBairro());
             pstmt.setString(4, endereco.getCidade());
-            pstmt.setString(5, endereco.getEstado());
+            pstmt.setString(5, endereco.getEstado().toUpperCase().substring(0, 2));
             pstmt.setString(6, endereco.getCep());
             pstmt.setString(7, endereco.getComplemento());
 
             pstmt.executeUpdate();
 
-            return true;
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                endereco.setCodigo(rs.getInt(1));
+                return rs.getInt(1);
+            }
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean excluir(Integer obj) {
+        if (obj == null) return false;
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement("DELETE FROM endereco WHERE codigo = ?");
+            pstmt.setInt(1, obj);
+
+            int resultado = pstmt.executeUpdate();
+
+            return resultado != 0;
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
@@ -52,12 +73,25 @@ public class EnderecoDAO implements DAO<Endereco, Integer> {
     }
 
     @Override
-    public boolean excluir(Integer obj) {
-        return false;
-    }
-
-    @Override
     public boolean editar(Endereco obj) {
+        if (obj == null) return false;
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement("UPDATE endereco SET rua = ?, numero_endereco = ?, bairro = ?, cidade = ?, estado = ?, cep = ?, complemento = ? WHERE codigo = ?");
+            pstmt.setString(1, obj.getRua());
+            pstmt.setInt(2, obj.getNumero_endereco());
+            pstmt.setString(3, obj.getBairro());
+            pstmt.setString(4, obj.getCidade());
+            pstmt.setString(5, obj.getEstado().toUpperCase().substring(0, 2));
+            pstmt.setString(6, obj.getCep());
+            pstmt.setString(7, obj.getComplemento());
+            pstmt.setInt(8, obj.getCodigo());
+
+            int resultado = pstmt.executeUpdate();
+
+            return resultado != 0;
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 

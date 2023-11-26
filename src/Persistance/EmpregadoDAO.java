@@ -1,5 +1,7 @@
 package Persistance;
 
+import Logic.*;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import Logic.*;
 
 public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
@@ -32,15 +32,16 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
     }
 
     @Override
-    public boolean inserir(Empregado emp) {
-        if (emp == null) return false;
+    public CPF inserir(Empregado emp) {
+        if (emp == null) return null;
+
+        int endereco = emp.getEndereco().getCodigo() == 0 ? EnderecoDAO.getInstance().inserir(emp.getEndereco()) : emp.getEndereco().getCodigo();
 
         String cpf = emp.getCpf().toStringNaoFormatado();
         LocalDate data_ingresso = emp.getDataIngresso();
         String nome = emp.getNome();
         String sobrenome = emp.getSobrenome();
         BigDecimal salario = emp.getSalario();
-        int endereco = emp.getEndereco().getCodigo();
         int departamento = emp.getDepartamento().getCodigo();
 
         if(emp instanceof Gerente gerente){
@@ -62,7 +63,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
                 pstmt.executeUpdate();
 
-                return true;
+                return emp.getCpf();
             } catch (SQLException sqe) {
                 System.out.println("Erro = " + sqe);
             }
@@ -86,7 +87,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
                 pstmt.executeUpdate();
 
-                return true;
+                return emp.getCpf();
             } catch (SQLException sqe) {
                 System.out.println("Erro = " + sqe);
             }
@@ -109,7 +110,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
                 pstmt.executeUpdate();
 
-                return true;
+                return emp.getCpf();
             } catch (SQLException sqe) {
                 System.out.println("Erro = " + sqe);
             }
@@ -133,7 +134,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
 
                 pstmt.executeUpdate();
 
-                return true;
+                return emp.getCpf();
             } catch (SQLException sqe) {
                 System.out.println("Erro = " + sqe);
             }
@@ -147,12 +148,33 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
             pstmt.setString(4, sobrenome);
             pstmt.setBigDecimal(5, salario);
             pstmt.setString(6, "empregado");
+            pstmt.setInt(7, endereco);
+            pstmt.setInt(8, departamento);
 
-            EnderecoDAO.getInstance().inserir(emp.getEndereco());
+
 
             pstmt.executeUpdate();
 
-            return true;
+            return emp.getCpf();
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean excluir(CPF obj) {
+        if(obj == null) return false;
+        String sql = "DELETE FROM empregado WHERE CPF = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, obj.toStringNaoFormatado());
+
+            pstmt.executeUpdate();
+
+            if (pstmt.getUpdateCount() > 0) {
+                return true;
+            }
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
@@ -160,12 +182,28 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
     }
 
     @Override
-    public boolean excluir(CPF obj) {
-        return false;
-    }
-
-    @Override
     public boolean editar(Empregado obj) {
+        if(obj == null) return false;
+        String sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+            pstmt.setString(2, obj.getNome());
+            pstmt.setString(3, obj.getSobrenome());
+            pstmt.setBigDecimal(4, obj.getSalario());
+            pstmt.setString(5, "empregado");
+            pstmt.setInt(6, obj.getEndereco().getCodigo());
+            pstmt.setInt(7, obj.getDepartamento().getCodigo());
+            pstmt.setString(8, obj.getCpf().toStringNaoFormatado());
+
+            pstmt.executeUpdate();
+
+            if (pstmt.getUpdateCount() > 0) {
+                return true;
+            }
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 
@@ -235,20 +273,21 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                     LocalDate inicio_gerencia = resultado.getDate("inicio_gerencia").toLocalDate();
                     empregados.add(new Gerente(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento, inicio_gerencia));
                 }
-                if(tipo.equals("engenheiro")){
+                else if(tipo.equals("engenheiro")){
                     String crea = resultado.getString("CREA");
                     String area_atuacao = resultado.getString("area_atuacao");
                     empregados.add(new Engenheiro(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento, crea, area_atuacao));
                 }
-                if(tipo.equals("piloto")){
+                else if(tipo.equals("piloto")){
                     String CHT = resultado.getString("CHT");
                     empregados.add(new Piloto(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento, CHT));
                 }
-                if(tipo.equals("historiador")){
+                else if(tipo.equals("historiador")){
                     String registro = resultado.getString("registro");
                     empregados.add(new Historiador(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento, registro));
                 }
-                empregados.add(new Empregado(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento));
+                else
+                    empregados.add(new Empregado(new CPF(cpf), data_ingresso, nome, sobrenome, salario, endereco, departamento));
             }
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);

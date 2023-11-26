@@ -1,6 +1,8 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.Empregado;
+import Logic.Hangar;
+import Logic.Modelo;
 import Persistance.HangarDAO;
 import Persistance.ModeloDAO;
 

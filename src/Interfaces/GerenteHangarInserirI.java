@@ -1,6 +1,8 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.Empregado;
+import Logic.Endereco;
+import Logic.Hangar;
 import Persistance.DepartamentoDAO;
 import Persistance.HangarDAO;
 
@@ -64,7 +66,7 @@ public class GerenteHangarInserirI {
                             new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText(), 10),
                                     cepField.getText(), estadoField.getText(), compField.getText()),
                             DepartamentoDAO.getInstance().pesquisarTudo().get(departamentoComboBox.getSelectedIndex()));
-                    if (HangarDAO.getInstance().inserir(hangar)) {
+                    if (HangarDAO.getInstance().inserir(hangar) != null) {
                         JOptionPane.showMessageDialog(frame, "Hangar inserido com sucesso!");
                         codigoField.setText("");
                         blocoLabel.setText("");

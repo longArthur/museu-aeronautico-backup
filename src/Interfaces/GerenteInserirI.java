@@ -1,7 +1,8 @@
 package Interfaces;
 
 import Logic.*;
-import Persistance.*;
+import Persistance.DepartamentoDAO;
+import Persistance.EmpregadoDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -115,7 +116,7 @@ public class GerenteInserirI {
                                             DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         }
                     }
-                    if (EmpregadoDAO.getInstance().inserir(empregado1)) {
+                    if (EmpregadoDAO.getInstance().inserir(empregado1) != null) {
                         JOptionPane.showMessageDialog(frame, "Empregado inserido com sucesso!");
                         new GerenteHomeI(empregado);
                         frame.dispose();

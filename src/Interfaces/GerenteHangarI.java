@@ -1,6 +1,7 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.Empregado;
+import Logic.Hangar;
 import Persistance.HangarDAO;
 
 import javax.swing.*;

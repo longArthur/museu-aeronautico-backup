@@ -1,6 +1,8 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.Empregado;
+import Logic.Hangar;
+import Logic.Modelo;
 import Persistance.HangarDAO;
 import Persistance.ModeloDAO;
 
@@ -77,7 +79,7 @@ public class HistoriadorInserirI {
                             Double.parseDouble(envergaduraField.getText()), historicoTextPane.getText(), tipo, areaAtuacaoField.getText(),
                             materialUsadoField.getText(), ((Hangar) codeHangarComboBox.getSelectedItem()), estadoField.getText());
                     modelo.setCodigo(Integer.parseInt(codigoField.getText()));
-                    if (ModeloDAO.getInstance().inserir(modelo)) {
+                    if (ModeloDAO.getInstance().inserir(modelo) != null) {
                         JOptionPane.showMessageDialog(frame, "Modelo inserido com sucesso!");
                         codigoField.setText("");
                         marcaField.setText("");

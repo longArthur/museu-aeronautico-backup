@@ -1,6 +1,8 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.CPF;
+import Logic.Empregado;
+import Logic.Visitante;
 import Persistance.VisitanteDAO;
 
 import javax.swing.*;
@@ -103,7 +105,7 @@ public class EmpregadoTableI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(new CPF((String) table.getValueAt(table.getSelectedRow(), 0)));
+                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar((CPF) table.getValueAt(table.getSelectedRow(), 0));
                     if (visitante == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new EmpregadoVisitanteInfoI(empregado, visitante);

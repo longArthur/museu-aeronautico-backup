@@ -1,7 +1,8 @@
 package Interfaces;
 
 import Logic.*;
-import Persistance.*;
+import Persistance.DepartamentoDAO;
+import Persistance.EmpregadoDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

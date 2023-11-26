@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/MuseuAeronautico_jar</output-path>
     <root id="archive" name="MuseuAeronautico.jar">
       <element id="module-output" name="MuseuAeronautico" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mysql-connector-j-8.2.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

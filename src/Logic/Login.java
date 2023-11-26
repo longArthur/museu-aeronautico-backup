@@ -1,9 +1,9 @@
 package Logic;
 
 import javax.swing.*;
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Objects;
-import java.security.MessageDigest;
 
 public class Login {
     private final Empregado empregado;

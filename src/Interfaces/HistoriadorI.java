@@ -1,6 +1,8 @@
 package Interfaces;
 
-import Logic.*;
+import Logic.Empregado;
+import Logic.Gerente;
+import Logic.Modelo;
 import Persistance.ModeloDAO;
 
 import javax.swing.*;

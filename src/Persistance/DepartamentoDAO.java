@@ -5,11 +5,9 @@ import Logic.Departamento;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class DepartamentoDAO implements DAO<Departamento, Integer> {
-    //todo change to mysql
+
     private Connection conexao;
     private static DepartamentoDAO departamentoDAO;
 
@@ -30,8 +28,8 @@ public class DepartamentoDAO implements DAO<Departamento, Integer> {
     }
 
     @Override
-    public boolean inserir(Departamento obj) {
-        if (obj == null) return false;
+    public Integer inserir(Departamento obj) {
+        if (obj == null) return null;
         String sql = "INSERT INTO departamento (nome, data_criacao, orcamento)"
                 + "VALUES (?, ?, ?)";
         try {
@@ -39,6 +37,27 @@ public class DepartamentoDAO implements DAO<Departamento, Integer> {
             pstmt.setString(1, obj.getNome());
             pstmt.setDate(2, Date.valueOf(obj.getData_criacao().toLocalDate()));
             pstmt.setBigDecimal(3, obj.getOrcamento());
+
+            pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean excluir(Integer obj) {
+        //TODO: audit code
+        if(obj == null) return false;
+        String sql = "DELETE FROM departamento WHERE codigo = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setInt(1, obj);
 
             pstmt.executeUpdate();
 
@@ -50,12 +69,23 @@ public class DepartamentoDAO implements DAO<Departamento, Integer> {
     }
 
     @Override
-    public boolean excluir(Integer obj) {
-        return false;
-    }
-
-    @Override
     public boolean editar(Departamento obj) {
+        //TODO: audit code
+        if(obj == null) return false;
+        String sql = "UPDATE departamento SET nome = ?, data_criacao = ?, orcamento = ? WHERE codigo = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.getNome());
+            pstmt.setDate(2, Date.valueOf(obj.getData_criacao().toLocalDate()));
+            pstmt.setBigDecimal(3, obj.getOrcamento());
+            pstmt.setInt(4, obj.getCodigo());
+
+            pstmt.executeUpdate();
+
+            return true;
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 
@@ -72,7 +102,9 @@ public class DepartamentoDAO implements DAO<Departamento, Integer> {
 
             //public Departamento(LocalDateTime data_criacao, BigDecimal orcamento, String nome)
             if (rs.next()) {
-                Departamento departamento = new Departamento(rs.getDate("data_criacao").toLocalDate().atStartOfDay(), rs.getBigDecimal("orcamento"), rs.getString("nome"));
+                Departamento departamento = new Departamento(rs.getDate("data_criacao")
+                        .toLocalDate().atStartOfDay(), rs.getBigDecimal("orcamento"),
+                        rs.getString("nome"));
                 departamento.setCodigo(rs.getInt("codigo"));
 
 

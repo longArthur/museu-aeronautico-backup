@@ -1,11 +1,11 @@
 package Persistance;
 
-import Logic.*;
-import Persistance.*;
+import Logic.CPF;
+import Logic.Empregado;
+import Logic.Login;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LoginDAO implements DAO<Login, CPF> {
 
@@ -30,8 +30,8 @@ public class LoginDAO implements DAO<Login, CPF> {
     }
 
     @Override
-    public boolean inserir(Login login) {
-        if (login == null) return false;
+    public CPF inserir(Login login) {
+        if (login == null) return null;
         String sql = "INSERT INTO login (CPFEmpregado, senha)"
                 + "VALUES (?, ?)";
         try {
@@ -41,11 +41,11 @@ public class LoginDAO implements DAO<Login, CPF> {
 
             pstmt.executeUpdate();
 
-            return true;
+            return login.getEmpregado().getCpf();
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
-        return false;
+        return null;
     }
 
     @Override

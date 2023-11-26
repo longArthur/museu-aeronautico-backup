@@ -3,10 +3,11 @@ package Persistance;
 
 import Logic.Modelo;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ModeloDAO implements DAO<Modelo, Integer> {
     private static ModeloDAO modeloDAO;
@@ -29,8 +30,8 @@ public class ModeloDAO implements DAO<Modelo, Integer> {
     }
 
     @Override
-    public boolean inserir(Modelo obj) {
-        if (obj == null) return false;
+    public Integer inserir(Modelo obj) {
+        if (obj == null) return null;
         // public Modelo(String marca, LocalDate dataProducao, double comprimentoMetros, double envergaduraMetros, String historia, Tipo tipo, String areaAtuacao,
         //                  String materialUsado, Hangar hangar, String estado)
         String sql = "INSERT INTO modelo (marca, data_producao, comprimento_metros, largura_metros, historia_aviao, tipo, cod_hangar, area_atuacao, material_usado, estado) VALUES"
@@ -50,11 +51,14 @@ public class ModeloDAO implements DAO<Modelo, Integer> {
 
             pstmt.executeUpdate();
 
-            return true;
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
-        return false;
+        return null;
     }
 
     @Override

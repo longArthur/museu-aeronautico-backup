@@ -22,9 +22,8 @@ public class Visitante implements Comparable<Visitante> {
         Objects.requireNonNull(cpf, "Cpf nao pode ser nulo");
         Objects.requireNonNull(nome, "Nome nao pode ser nulo");
         Objects.requireNonNull(sobrenome, "Sobrenome nao pode ser nulo");
-        if(cpf.equals("")) throw new IllegalArgumentException("Cpf nao pode ser vazio");
-        if(nome.equals("")) throw new IllegalArgumentException("Nome nao pode ser vazio");
-        if(sobrenome.equals("")) throw new IllegalArgumentException("Sobrenome nao pode ser vazio");
+        if(nome.isEmpty()) throw new IllegalArgumentException("Nome nao pode ser vazio");
+        if(sobrenome.isEmpty()) throw new IllegalArgumentException("Sobrenome nao pode ser vazio");
 
         this.genero = genero;
         this.cpf = cpf;

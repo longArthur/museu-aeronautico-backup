@@ -1,16 +1,11 @@
 package Persistance;
 
 import Logic.CPF;
-
 import Logic.Visita;
-import Logic.Visitante;
 
 import java.sql.Connection;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
 
 public class VisitaDAO implements DAO<Visita, CPF> {
     private static VisitaDAO visitaDAO;
@@ -33,8 +28,8 @@ public class VisitaDAO implements DAO<Visita, CPF> {
     }
 
     @Override
-    public boolean inserir(Visita obj) {
-        if(obj == null) return false;
+    public CPF inserir(Visita obj) {
+        if(obj == null) return null;
         String sql = "INSERT INTO visita (cpf_visitante, cod_hangar, data_ingresso, tempo_estadia)"
                 + "VALUES (?, ?, ?, ?)";
         try {
@@ -46,11 +41,11 @@ public class VisitaDAO implements DAO<Visita, CPF> {
 
             pstmt.executeUpdate();
 
-            return true;
+            return obj.getVisitante().getCpf();
         } catch (java.sql.SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
-        return false;
+        return null;
     }
 
     @Override

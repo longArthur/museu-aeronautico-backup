@@ -8,8 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class VisitanteDAO implements DAO<Visitante, CPF> {
     private static VisitanteDAO visitanteDAO;
@@ -32,8 +30,8 @@ public class VisitanteDAO implements DAO<Visitante, CPF> {
     }
 
     @Override
-    public boolean inserir(Visitante obj) {
-        if(obj == null) return false;
+    public CPF inserir(Visitante obj) {
+        if(obj == null) return null;
         String sql = "INSERT INTO visitante (cpf, nome, sobrenome, genero)"
                 + "VALUES (?, ?, ?, ?)";
         try {
@@ -45,11 +43,11 @@ public class VisitanteDAO implements DAO<Visitante, CPF> {
 
             pstmt.executeUpdate();
 
-            return true;
+            return obj.getCpf();
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
-        return false;
+        return null;
     }
 
     @Override

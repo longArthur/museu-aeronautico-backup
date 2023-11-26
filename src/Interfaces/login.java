@@ -1,8 +1,10 @@
 package Interfaces;
 
-import Logic.*;
-import Persistance.*;
-
+import Logic.CPF;
+import Logic.Empregado;
+import Logic.Login;
+import Persistance.EmpregadoDAO;
+import Persistance.LoginDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

@@ -1,14 +1,14 @@
 package Interfaces;
 
-import Logic.*;
-import Persistance.*;
+import Logic.CPF;
+import Logic.Empregado;
+import Persistance.EmpregadoDAO;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,7 +57,7 @@ public class GerenteHomeI {
             EmpregadoDAO empregadoDAO = EmpregadoDAO.getInstance();
             int rowAtPoint = table1.rowAtPoint(SwingUtilities.convertPoint(menu, new Point(0, 0), table1));
 
-            if (empregadoDAO.excluir(new CPF((String) table1.getValueAt(table1.getSelectedRow(), 0)))) {
+            if (empregadoDAO.excluir((CPF) table1.getValueAt(table1.getSelectedRow(), 0))) {
                 JOptionPane.showMessageDialog(frame, "Exclusao bem-sucedida!");
                 DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
                 tableModel.setRowCount(0);
@@ -116,7 +116,7 @@ public class GerenteHomeI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar(new CPF((String) table.getValueAt(table.getSelectedRow(), 0)));
+                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar((CPF) table.getValueAt(table.getSelectedRow(), 0));
                     if (empregado1 == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else {

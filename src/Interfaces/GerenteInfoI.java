@@ -8,9 +8,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.time.format.DateTimeFormatter;
-
 import java.util.Locale;
 
 public class GerenteInfoI {

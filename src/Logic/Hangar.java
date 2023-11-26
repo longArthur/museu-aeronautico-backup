@@ -1,6 +1,5 @@
 package Logic;
 
-import java.util.Collection;
 import java.util.Objects;
 
 public class Hangar implements Comparable<Hangar> {
