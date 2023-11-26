@@ -50,11 +50,30 @@ public class LoginDAO implements DAO<Login, CPF> {
 
     @Override
     public boolean excluir(CPF obj) {
+        if (obj == null) return false;
+        String sql = "DELETE FROM login WHERE CPFEmpregado = '" + obj.toStringNaoFormatado() + "'";
+        try {
+            Statement stmt = conexao.createStatement();
+            stmt.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro = " + e);
+        }
         return false;
     }
 
     @Override
     public boolean editar(Login obj) {
+        if (obj == null) return false;
+        String sql = "UPDATE login SET senha = ? WHERE CPFEmpregado = '" + obj.getEmpregado().getCpf().toStringNaoFormatado() + "'";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setBytes(1, obj.getSenhaHash());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro = " + e);
+        }
         return false;
     }
 

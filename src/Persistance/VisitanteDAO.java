@@ -52,11 +52,36 @@ public class VisitanteDAO implements DAO<Visitante, CPF> {
 
     @Override
     public boolean excluir(CPF obj) {
+        if(obj == null) return false;
+        if(pesquisar(obj) == null) return false;
+        String sql = "DELETE FROM visitante WHERE cpf = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.toStringNaoFormatado());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 
     @Override
     public boolean editar(Visitante obj) {
+        if(obj == null) return false;
+        if(pesquisar(obj.getCpf()) == null) return false;
+        String sql = "UPDATE visitante SET nome = ?, sobrenome = ?, genero = ? WHERE cpf = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.getNome());
+            pstmt.setString(2, obj.getSobrenome());
+            pstmt.setString(3, obj.getGenero().toString());
+            pstmt.setString(4, obj.getCpf().toStringNaoFormatado());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 

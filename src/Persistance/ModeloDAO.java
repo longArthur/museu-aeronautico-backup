@@ -37,7 +37,7 @@ public class ModeloDAO implements DAO<Modelo, Integer> {
         String sql = "INSERT INTO modelo (marca, data_producao, comprimento_metros, largura_metros, historia_aviao, tipo, cod_hangar, area_atuacao, material_usado, estado) VALUES"
                 + " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            PreparedStatement pstmt = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, obj.getMarca());
             pstmt.setDate(2, java.sql.Date.valueOf(obj.getDataProducao()));
             pstmt.setDouble(3, obj.getComprimentoMetros());
@@ -63,11 +63,43 @@ public class ModeloDAO implements DAO<Modelo, Integer> {
 
     @Override
     public boolean excluir(Integer obj) {
+        if (obj == null) return false;
+        if (this.pesquisar(obj) == null) return false;
+        String sql = "DELETE FROM modelo WHERE codigo = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setInt(1, obj);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro = " + e);
+        }
         return false;
     }
 
     @Override
     public boolean editar(Modelo obj) {
+        if (obj == null) return false;
+        if (this.pesquisar(obj.getCodigo()) == null) return false;
+        String sql = "UPDATE modelo SET marca = ?, data_producao = ?, comprimento_metros = ?, largura_metros = ?, historia_aviao = ?, tipo = ?, cod_hangar = ?, area_atuacao = ?, material_usado = ?, estado = ? WHERE codigo = ?";
+        try {
+            PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.getMarca());
+            pstmt.setDate(2, java.sql.Date.valueOf(obj.getDataProducao()));
+            pstmt.setDouble(3, obj.getComprimentoMetros());
+            pstmt.setDouble(4, obj.getEnvergaduraMetros());
+            pstmt.setString(5, obj.getHistoria());
+            pstmt.setString(6, obj.getTipo().toString());
+            pstmt.setInt(7, obj.getHangar().getCodigo());
+            pstmt.setString(8, obj.getAreaAtuacao());
+            pstmt.setString(9, obj.getMaterialUsado());
+            pstmt.setString(10, obj.getEstado());
+            pstmt.setInt(11, obj.getCodigo());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro = " + e);
+        }
         return false;
     }
 

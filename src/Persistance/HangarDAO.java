@@ -31,6 +31,7 @@ public class HangarDAO implements DAO<Hangar, Integer> {
     @Override
     public Integer inserir(Hangar obj) {
         if(obj == null) return null;
+        if (this.pesquisar(obj.getCodigo()) != null) return null; // Hangar já existe (chave primária
         String sql = "INSERT INTO hangar (bloco, qtd_vagas, largura_metros, comprimento_metros, capacidade_visitantes, cod_departamento, endereco)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {

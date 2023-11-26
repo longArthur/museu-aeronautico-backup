@@ -37,7 +37,12 @@ public class VisitaDAO implements DAO<Visita, CPF> {
             pstmt.setString(1, obj.getVisitante().getCpf().toStringNaoFormatado());
             pstmt.setInt(2, obj.getHangar().getCodigo());
             pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(obj.getDataIngresso()));
-            pstmt.setInt(4, (int) obj.getTempoEstadia().toSeconds());
+
+            if (obj.getTempoEstadia() == null) {
+                pstmt.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                pstmt.setInt(4, (int) obj.getTempoEstadia().toSeconds());
+            }
 
             pstmt.executeUpdate();
 
@@ -50,11 +55,42 @@ public class VisitaDAO implements DAO<Visita, CPF> {
 
     @Override
     public boolean excluir(CPF obj) {
+        if(obj == null) return false;
+        if(pesquisar(obj) == null) return false;
+        String sql = "DELETE FROM visita WHERE cpf_visitante = ?";
+        try {
+            java.sql.PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setString(1, obj.toStringNaoFormatado());
+            pstmt.executeUpdate();
+            return true;
+        } catch (java.sql.SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 
     @Override
     public boolean editar(Visita obj) {
+        if(obj == null) return false;
+        if(pesquisar(obj.getVisitante().getCpf()) == null) return false;
+        String sql = "UPDATE visita SET cod_hangar = ?, tempo_estadia = ? WHERE cpf_visitante = ? AND data_ingresso = ?";
+        try {
+            java.sql.PreparedStatement pstmt = conexao.prepareStatement(sql);
+            pstmt.setInt(1, obj.getHangar().getCodigo());
+            if (obj.getTempoEstadia() == null) {
+                pstmt.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                pstmt.setInt(2, (int) obj.getTempoEstadia().toSeconds());
+            }
+            pstmt.setString(3, obj.getVisitante().getCpf().toStringNaoFormatado());
+            pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(obj.getDataIngresso()));
+
+
+            pstmt.executeUpdate();
+            return true;
+        } catch (java.sql.SQLException sqe) {
+            System.out.println("Erro = " + sqe);
+        }
         return false;
     }
 
