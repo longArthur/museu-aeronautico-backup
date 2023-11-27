@@ -8,10 +8,12 @@ import Persistance.HangarDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,9 +40,9 @@ public class GerenteHangarInserirI {
     private JTextField bairroField;
     private JTextField numeroField;
     private JTextField estadoField;
-    private JTextField cepField;
+    private JFormattedTextField cepField;
     private JTextField compField;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public GerenteHangarInserirI(Empregado empregado) {
         this.empregado = empregado;
@@ -64,7 +66,7 @@ public class GerenteHangarInserirI {
                             Integer.parseInt(qtdVagasField.getText()), Double.parseDouble(larguraField.getText()),
                             Double.parseDouble(comprimentoField.getText()), Integer.parseInt(capVisitanteField.getText()),
                             new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText(), 10),
-                                    cepField.getText(), estadoField.getText(), compField.getText()),
+                                    cepField.getText().replaceAll("-", ""), estadoField.getText(), compField.getText()),
                             DepartamentoDAO.getInstance().pesquisarTudo().get(departamentoComboBox.getSelectedIndex()));
                     if (HangarDAO.getInstance().inserir(hangar) != null) {
                         JOptionPane.showMessageDialog(frame, "Hangar inserido com sucesso!");
@@ -97,6 +99,12 @@ public class GerenteHangarInserirI {
         DepartamentoDAO.getInstance().pesquisarTudo().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
 
         departamentoComboBox = new JComboBox<>(nomesDepartamentos.toArray());
+
+        try {
+            cepField = new JFormattedTextField(new MaskFormatter("#####-###"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -270,7 +278,6 @@ public class GerenteHangarInserirI {
         if (label12Font != null) label12.setFont(label12Font);
         label12.setText("CEP:");
         panel7.add(label12, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        cepField = new JTextField();
         panel7.add(cepField, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JLabel label13 = new JLabel();
         Font label13Font = this.$$$getFont$$$(null, -1, 20, label13.getFont());

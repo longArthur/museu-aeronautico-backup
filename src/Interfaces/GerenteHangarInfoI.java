@@ -31,8 +31,8 @@ public class GerenteHangarInfoI {
     private JLabel ruaField;
     private JLabel bairroField;
     private JLabel numeroField;
-    private Empregado empregado;
-    private Hangar hangar;
+    private final Empregado empregado;
+    private final Hangar hangar;
 
     public GerenteHangarInfoI(Empregado empregado, Hangar hangar) {
         this.empregado = empregado;

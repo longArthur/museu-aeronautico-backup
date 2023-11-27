@@ -42,7 +42,7 @@ public class EmpregadoHome {
     private JPanel panel7;
     private JLabel empregadoNome;
     private JFrame frame;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public EmpregadoHome(Empregado empregado) {
         this.empregado = empregado;
@@ -148,7 +148,7 @@ public class EmpregadoHome {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Visitante visitante = (Visitante) VisitanteDAO.getInstance().pesquisar(new CPF(textFieldCPF.getText()));
+                    Visitante visitante = VisitanteDAO.getInstance().pesquisar(new CPF(textFieldCPF.getText()));
                     Object[] nomesHangares = HangarDAO.getInstance().pesquisarTudo().toArray();
 
                     Hangar escolhaDeHangar = (Hangar) JOptionPane.showInputDialog(frame, "Escolha um Hangar", "Escolher", JOptionPane.INFORMATION_MESSAGE, null, nomesHangares, nomesHangares[0]);

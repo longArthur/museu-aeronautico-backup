@@ -29,8 +29,8 @@ public class EngenheiroI {
     private JButton Pesquisar;
     private JTextField pesquisaField;
     private JTable table;
-    private Empregado empregado;
-    private JFrame frame;
+    private final Empregado empregado;
+    private final JFrame frame;
 
     public EngenheiroI(Empregado empregado) {
         this.empregado = empregado;
@@ -59,7 +59,7 @@ public class EngenheiroI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
+                    Modelo modelo = ModeloDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
                     if (modelo == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new EngenheiroInfoI(empregado, modelo);
@@ -70,7 +70,7 @@ public class EngenheiroI {
 
         Pesquisar.addActionListener(e -> {
             try {
-                Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisaField.getText()));
+                Modelo modelo = ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisaField.getText()));
                 Objects.requireNonNull(modelo, "Modelo nao encontrado!");
 
                 DefaultTableModel tableModel = (DefaultTableModel) table.getModel();

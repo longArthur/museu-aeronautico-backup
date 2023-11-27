@@ -48,8 +48,8 @@ public class EngenheiroEditI {
     private JButton editarButton;
     private JLabel estadoLabel;
     private JTextField estadoField;
-    private Empregado empregado;
-    private Modelo modelo;
+    private final Empregado empregado;
+    private final Modelo modelo;
 
     public EngenheiroEditI(Empregado empregado, Modelo modelo) {
         this.empregado = empregado;

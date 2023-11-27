@@ -48,8 +48,8 @@ public class PilotoEditI {
     private JButton editarButton;
     private JLabel estadoLabel;
     private JTextField estadoField;
-    private Empregado empregado;
-    private Modelo modelo;
+    private final Empregado empregado;
+    private final Modelo modelo;
 
     public PilotoEditI(Empregado empregado, Modelo modelo) {
         this.empregado = empregado;

@@ -34,7 +34,7 @@ public class GerenteHangarI {
     private JTextField barraDePesquisa;
     private JTable tabela;
     private JPanel panel6;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public GerenteHangarI(Empregado empregado) {
         this.empregado = empregado;
@@ -111,7 +111,7 @@ public class GerenteHangarI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Hangar hangar = (Hangar) HangarDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
+                    Hangar hangar = HangarDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
                     if (hangar == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new GerenteHangarInfoI(empregado, hangar);

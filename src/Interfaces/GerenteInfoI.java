@@ -47,8 +47,8 @@ public class GerenteInfoI {
     private JLabel generic1B;
     private JLabel generic2A;
     private JLabel generic2B;
-    private Empregado empregado;
-    private Empregado editado;
+    private final Empregado empregado;
+    private final Empregado editado;
 
     public GerenteInfoI(Empregado empregado, Empregado editado) {
         this.empregado = empregado;

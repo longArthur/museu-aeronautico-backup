@@ -8,6 +8,7 @@ import Persistance.LoginDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,7 @@ public class login {
     private JLabel label1;
     private JPanel login;
     private JLabel loginLabel;
-    private JTextField loginField;
+    private JFormattedTextField loginField;
     private JLabel senhaLabel;
     private JPasswordField senhaField;
     private JCheckBox checkBox1;
@@ -48,9 +49,9 @@ public class login {
                 LoginDAO loginDAO = LoginDAO.getInstance();
                 try {
                     CPF cpf = new CPF(loginField.getText());
-                    Login login1 = (Login) loginDAO.pesquisar(cpf);
+                    Login login1 = loginDAO.pesquisar(cpf);
                     if (login1 == null) {
-                        Empregado empregado = (Empregado) EmpregadoDAO.getInstance().pesquisar(cpf);
+                        Empregado empregado = EmpregadoDAO.getInstance().pesquisar(cpf);
                         if (empregado != null) {
                             String senha = JOptionPane.showInputDialog(frame, "Insira sua nova senha!");
                             loginDAO.inserir(new Login(empregado, Login.hash(senha)));
@@ -92,6 +93,7 @@ public class login {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
+        createUIComponents();
         panel1 = new JPanel();
         panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel2 = new JPanel();
@@ -133,7 +135,6 @@ public class login {
         login.add(spacer8, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 5, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer9 = new com.intellij.uiDesigner.core.Spacer();
         login.add(spacer9, new com.intellij.uiDesigner.core.GridConstraints(6, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        loginField = new JTextField();
         loginField.setBackground(new Color(-5131596));
         loginField.setForeground(new Color(-15461356));
         loginField.setRequestFocusEnabled(true);
@@ -197,4 +198,11 @@ public class login {
         return panel1;
     }
 
+    private void createUIComponents() {
+        try {
+            loginField = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

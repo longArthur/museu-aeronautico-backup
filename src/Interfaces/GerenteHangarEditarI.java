@@ -8,17 +8,19 @@ import Persistance.HangarDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class GerenteHangarEditarI {
     private JPanel panel5;
     private JPanel panel6;
-    private JTextField codigoField;
+    private JLabel codigoField;
     private JTextField larguraField;
     private JTextField cidadeField;
     private JTextField comprimentoField;
@@ -38,10 +40,10 @@ public class GerenteHangarEditarI {
     private JTextField bairroField;
     private JTextField numeroField;
     private JTextField estadoField;
-    private JTextField cepField;
+    private JFormattedTextField cepField;
     private JTextField compField;
-    private Empregado empregado;
-    private Hangar hangar;
+    private final Empregado empregado;
+    private final Hangar hangar;
 
     public GerenteHangarEditarI(Empregado empregado, Hangar hangar) {
         this.empregado = empregado;
@@ -66,7 +68,7 @@ public class GerenteHangarEditarI {
                             Integer.parseInt(qtdVagasField.getText()), Double.parseDouble(larguraField.getText()),
                             Double.parseDouble(comprimentoField.getText()), Integer.parseInt(capVisitanteField.getText()),
                             new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()),
-                                    cepField.getText(), estadoField.getText(), compField.getText()),
+                                    cepField.getText().replaceAll("-", ""), estadoField.getText(), compField.getText()),
                             DepartamentoDAO.getInstance().pesquisarTudo().get(departamentoComboBox.getSelectedIndex()));
                     hangarInterno.setCodigo(Integer.parseInt(codigoField.getText()));
                     if (HangarDAO.getInstance().editar(hangarInterno)) {
@@ -91,7 +93,7 @@ public class GerenteHangarEditarI {
         DepartamentoDAO.getInstance().pesquisarTudo().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));
 
         departamentoComboBox = new JComboBox<>(nomesDepartamentos.toArray());
-        codigoField = new JTextField(String.valueOf(hangar.getCodigo()));
+        codigoField = new JLabel(String.valueOf(hangar.getCodigo()));
         blocoLabel = new JTextField(hangar.getBloco());
         qtdVagasField = new JTextField(String.valueOf(hangar.getQuantidadeVagas()));
         larguraField = new JTextField(String.valueOf(hangar.getLarguraMetros()));
@@ -102,7 +104,12 @@ public class GerenteHangarEditarI {
         bairroField = new JTextField(hangar.getEndereco().getBairro());
         numeroField = new JTextField(hangar.getEndereco().getNumero_endereco());
         estadoField = new JTextField(hangar.getEndereco().getEstado());
-        cepField = new JTextField(hangar.getEndereco().getCep());
+        try {
+            cepField = new JFormattedTextField(new MaskFormatter("#####-###"));
+            cepField.setText(hangar.getEndereco().getCep());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         compField = new JTextField(hangar.getEndereco().getComplemento());
 
     }
@@ -237,6 +244,7 @@ public class GerenteHangarEditarI {
         if (label8Font != null) label8.setFont(label8Font);
         label8.setText("Codigo:");
         panel7.add(label8, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        codigoField.setText("Label");
         panel7.add(codigoField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
         panel7.add(larguraField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
         panel7.add(comprimentoField, new com.intellij.uiDesigner.core.GridConstraints(2, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));

@@ -6,11 +6,15 @@ import Persistance.EmpregadoDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -35,10 +39,10 @@ public class GerenteInserirI {
     private JLabel sobrenomeLabel;
     private JLabel departamentoLabel;
     private JLabel CPFLabel;
-    private JTextField cpfField;
+    private JFormattedTextField cpfField;
     private JTextField nomeField;
     private JComboBox DepartamentoComboBox;
-    private JTextField dataIngresso;
+    private JFormattedTextField dataIngresso;
     private JButton inserirButton;
     private JPanel panel7;
     private JTextField salarioField;
@@ -50,9 +54,9 @@ public class GerenteInserirI {
     private JTextField bairroField;
     private JTextField numeroField;
     private JTextField estadoField;
-    private JTextField cepField;
+    private JFormattedTextField cepField;
     private JTextField compField;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public GerenteInserirI(Empregado empregado) {
         this.empregado = empregado;
@@ -68,6 +72,7 @@ public class GerenteInserirI {
             new GerenteHomeI(empregado);
             frame.dispose();
         });
+
         inserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,14 +83,14 @@ public class GerenteInserirI {
                             empregado1 = new Empregado(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText().replaceAll("-", ""), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()));
                         }
                         case 1 -> {
                             empregado1 = new Piloto(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText().replaceAll("-", ""), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira sua CHT"));
                         }
@@ -93,7 +98,7 @@ public class GerenteInserirI {
                             empregado1 = new Historiador(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText().replaceAll("-", ""), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu registro"));
                         }
@@ -101,7 +106,7 @@ public class GerenteInserirI {
                             empregado1 = new Engenheiro(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText().replaceAll("-", ""), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     JOptionPane.showInputDialog("Insira seu CREA"),
                                     JOptionPane.showInputDialog("Insira sua área de atuação"));
@@ -110,7 +115,7 @@ public class GerenteInserirI {
                             empregado1 = new Gerente(new CPF(cpfField.getText()),
                                     LocalDate.parse(dataIngresso.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                                     nomeField.getText(), sobrenomeFIeld.getText(), BigDecimal.valueOf(Double.parseDouble(salarioField.getText())),
-                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText(), compField.getText()),
+                                    new Endereco(cidadeField.getText(), ruaField.getText(), bairroField.getText(), Integer.parseInt(numeroField.getText()), estadoField.getText(), cepField.getText().replaceAll("-", ""), compField.getText()),
                                     DepartamentoDAO.getInstance().pesquisarTudo().get(DepartamentoComboBox.getSelectedIndex()),
                                     LocalDate.parse(JOptionPane.showInputDialog("Insira a data de inicio da gerenia (dd/MM/aaaa)"),
                                             DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -277,10 +282,10 @@ public class GerenteInserirI {
         inserirButton = new JButton();
         inserirButton.setText("Inserir");
         panel7.add(inserirButton, new com.intellij.uiDesigner.core.GridConstraints(8, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        cpfField = new JTextField();
         panel7.add(cpfField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
         nomeField = new JTextField();
         panel7.add(nomeField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(50, -1), new Dimension(50, -1), null, 0, false));
+        dataIngresso.setText("");
         panel7.add(dataIngresso, new com.intellij.uiDesigner.core.GridConstraints(1, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         departamentoLabel = new JLabel();
         Font departamentoLabelFont = this.$$$getFont$$$(null, -1, 20, departamentoLabel.getFont());
@@ -326,7 +331,6 @@ public class GerenteInserirI {
         panel7.add(estadoField, new com.intellij.uiDesigner.core.GridConstraints(4, 8, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         compField = new JTextField();
         panel7.add(compField, new com.intellij.uiDesigner.core.GridConstraints(5, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        cepField = new JTextField();
         panel7.add(cepField, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JLabel label6 = new JLabel();
         Font label6Font = this.$$$getFont$$$(null, -1, 20, label6.getFont());
@@ -383,7 +387,30 @@ public class GerenteInserirI {
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
 
-        dataIngresso = new JTextField("dd/mm/aaaa");
+        try {
+            dataIngresso = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            cpfField = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        cpfField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                cpfField.setText("");
+            }
+        });
+
+        try {
+            cepField = new JFormattedTextField(new MaskFormatter("#####-###"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
 
         ArrayList<String> nomesDepartamentos = new ArrayList<>();
         DepartamentoDAO.getInstance().pesquisarTudo().forEach(departamento -> nomesDepartamentos.add(departamento.getNome()));

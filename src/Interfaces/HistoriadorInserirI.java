@@ -2,12 +2,14 @@ package Interfaces;
 
 import Logic.Empregado;
 import Logic.Hangar;
+import Logic.Main;
 import Logic.Modelo;
 import Persistance.HangarDAO;
 import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +44,7 @@ public class HistoriadorInserirI {
     private JTextField marcaField;
     private JTextField envergaduraField;
     private JTextField areaAtuacaoField;
-    private JTextField dataProducaoField;
+    private JFormattedTextField dataProducaoField;
     private JTextField materialUsadoField;
     private JComboBox codeHangarComboBox;
     private JComboBox tipoComboBox;
@@ -52,7 +54,7 @@ public class HistoriadorInserirI {
     private JTextPane historicoTextPane;
     private JLabel historicoLabel;
     private JButton voltarSairButton;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public HistoriadorInserirI(Empregado empregado) {
         this.empregado = empregado;
@@ -108,7 +110,11 @@ public class HistoriadorInserirI {
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
 
-        dataProducaoField = new JTextField("dd/mm/aaaa");
+        try {
+            dataProducaoField = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         codeHangarComboBox = new JComboBox<>(HangarDAO.getInstance().pesquisarTudo().toArray());
 

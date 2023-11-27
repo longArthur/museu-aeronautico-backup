@@ -93,7 +93,8 @@ public class Modelo {
             return "Avião";
         }
         return "Modelo";
-    };
+    }
+
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }

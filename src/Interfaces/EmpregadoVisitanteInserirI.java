@@ -7,6 +7,7 @@ import Persistance.VisitanteDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,10 +32,10 @@ public class EmpregadoVisitanteInserirI {
     private JTextField sobrenomeField;
     private JLabel nomeLabel;
     private JLabel CPFLabel;
-    private JTextField cpfField;
+    private JFormattedTextField cpfField;
     private JTextField nomeField;
     private JButton inserirButton;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public EmpregadoVisitanteInserirI(Empregado empregado) {
         //TODO: mover este codigo para o EmpregadoVisitanteInserirI.java
@@ -228,7 +229,6 @@ public class EmpregadoVisitanteInserirI {
         panel6.add(sobrenomeField, new com.intellij.uiDesigner.core.GridConstraints(2, 9, 4, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         nomeField = new JTextField();
         panel6.add(nomeField, new com.intellij.uiDesigner.core.GridConstraints(2, 3, 4, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        cpfField = new JTextField();
         panel6.add(cpfField, new com.intellij.uiDesigner.core.GridConstraints(7, 3, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer22 = new com.intellij.uiDesigner.core.Spacer();
         panel5.add(spacer22, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -269,6 +269,12 @@ public class EmpregadoVisitanteInserirI {
 
     private void createUIComponents() {
         nomeIndividuoLabel = new JLabel(empregado.getNomeSobrenome());
+
+        try {
+            cpfField = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         GeneroComboBox = new JComboBox(new String[]{"Masculino", "Feminino", "Nao-binario"});
     }

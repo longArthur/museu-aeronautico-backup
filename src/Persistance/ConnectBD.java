@@ -17,10 +17,10 @@ public class ConnectBD {
      * @author Karen Borges
      */
     //Atributos para manipulação do BD
-    private static String user="root";
-    private static String password=null;
-    private static String driver="com.mysql.cj.jdbc.Driver";
-    private static String url= "jdbc:mysql://localhost:3306/sigipev";
+    private static final String user="root";
+    private static final String password=null;
+    private static final String driver="com.mysql.cj.jdbc.Driver";
+    private static final String url= "jdbc:mysql://localhost:3306/sigipev";
     private static Connection conexao;
     private static ConnectBD conexaoBD;
 

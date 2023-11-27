@@ -40,9 +40,9 @@ public class GerenteHomeI {
     private JTextField textField1;
     private JButton inserirEmpregadoButton;
     private JTable table1;
-    private Empregado empregado;
+    private final Empregado empregado;
 
-    private JFrame frame;
+    private final JFrame frame;
 
 
     public GerenteHomeI(Empregado empregado) {
@@ -116,7 +116,7 @@ public class GerenteHomeI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Empregado empregado1 = (Empregado) EmpregadoDAO.getInstance().pesquisar((CPF) table.getValueAt(table.getSelectedRow(), 0));
+                    Empregado empregado1 = EmpregadoDAO.getInstance().pesquisar((CPF) table.getValueAt(table.getSelectedRow(), 0));
                     if (empregado1 == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else {

@@ -87,7 +87,7 @@ public class LoginDAO implements DAO<Login, CPF> {
             if (rs.isBeforeFirst()){
                 rs.next();
                 CPF cpfget = new CPF(rs.getString(1));
-                Empregado empregado = (Empregado) EmpregadoDAO.getInstance().pesquisar(cpfget);
+                Empregado empregado = EmpregadoDAO.getInstance().pesquisar(cpfget);
                 byte[] senha = rs.getBytes(2);
 
                 return new Login(empregado, senha);

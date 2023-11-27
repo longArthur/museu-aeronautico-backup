@@ -37,7 +37,7 @@ public class HistoriadorI {
     private JButton pesquisarButton;
     private JTextField pesquisaField;
     private JPanel panel6;
-    private Empregado empregado;
+    private final Empregado empregado;
 
     public HistoriadorI(Empregado empregado) {
         this.empregado = empregado;
@@ -107,7 +107,7 @@ public class HistoriadorI {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
+                    Modelo modelo = ModeloDAO.getInstance().pesquisar((Integer) table.getValueAt(table.getSelectedRow(), 0));
                     if (modelo == null)
                         JOptionPane.showMessageDialog(frame, "Tabela mal-funcionando, contate um administrador.");
                     else new HistoriadorInfoI(empregado, modelo);
@@ -128,7 +128,7 @@ public class HistoriadorI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Modelo modelo = (Modelo) ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisaField.getText()));
+                    Modelo modelo = ModeloDAO.getInstance().pesquisar(Integer.parseInt(pesquisaField.getText()));
                     Objects.requireNonNull(modelo, "Modelo nao encontrado!");
 
                     DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();

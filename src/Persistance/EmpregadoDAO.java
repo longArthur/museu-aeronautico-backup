@@ -184,23 +184,83 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
     @Override
     public boolean editar(Empregado obj) {
         if(obj == null) return false;
-        String sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+        if(EmpregadoDAO.getInstance().pesquisar(obj.getCpf()) == null) return false;
+        if(obj.getEndereco().getCodigo() == 0) EnderecoDAO.getInstance().inserir(obj.getEndereco());
+
         try {
-            PreparedStatement pstmt = conexao.prepareStatement(sql);
-            pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
-            pstmt.setString(2, obj.getNome());
-            pstmt.setString(3, obj.getSobrenome());
-            pstmt.setBigDecimal(4, obj.getSalario());
-            pstmt.setString(5, "empregado");
-            pstmt.setInt(6, obj.getEndereco().getCodigo());
-            pstmt.setInt(7, obj.getDepartamento().getCodigo());
-            pstmt.setString(8, obj.getCpf().toStringNaoFormatado());
+            String sql = "";
 
-            pstmt.executeUpdate();
-
-            if (pstmt.getUpdateCount() > 0) {
-                return true;
+            if (obj instanceof Gerente gerente) {
+                sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, inicio_gerencia = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+                PreparedStatement pstmt = conexao.prepareStatement(sql);
+                pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+                pstmt.setString(2, obj.getNome());
+                pstmt.setString(3, obj.getSobrenome());
+                pstmt.setBigDecimal(4, obj.getSalario());
+                pstmt.setString(5, "gerente");
+                pstmt.setDate(6, java.sql.Date.valueOf(gerente.getInicio_gerencia()));
+                pstmt.setInt(7, obj.getEndereco().getCodigo());
+                pstmt.setInt(8, obj.getDepartamento().getCodigo());
+                pstmt.setString(9, obj.getCpf().toStringNaoFormatado());
+                pstmt.executeUpdate();
             }
+            else if (obj instanceof Engenheiro engenheiro) {
+                sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, CREA = ?, area_atuacao = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+                PreparedStatement pstmt = conexao.prepareStatement(sql);
+                pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+                pstmt.setString(2, obj.getNome());
+                pstmt.setString(3, obj.getSobrenome());
+                pstmt.setBigDecimal(4, obj.getSalario());
+                pstmt.setString(5, "engenheiro");
+                pstmt.setString(6, engenheiro.getCrea());
+                pstmt.setString(7, engenheiro.getAreaAtuacao());
+                pstmt.setInt(8, obj.getEndereco().getCodigo());
+                pstmt.setInt(9, obj.getDepartamento().getCodigo());
+                pstmt.setString(10, obj.getCpf().toStringNaoFormatado());
+                pstmt.executeUpdate();
+            }
+            else if (obj instanceof Piloto piloto) {
+                sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, CHT = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+                PreparedStatement pstmt = conexao.prepareStatement(sql);
+                pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+                pstmt.setString(2, obj.getNome());
+                pstmt.setString(3, obj.getSobrenome());
+                pstmt.setBigDecimal(4, obj.getSalario());
+                pstmt.setString(5, "piloto");
+                pstmt.setString(6, piloto.getCHT());
+                pstmt.setInt(7, obj.getEndereco().getCodigo());
+                pstmt.setInt(8, obj.getDepartamento().getCodigo());
+                pstmt.setString(9, obj.getCpf().toStringNaoFormatado());
+                pstmt.executeUpdate();
+            }
+            else if (obj instanceof Historiador historiador) {
+                sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, registro = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+                PreparedStatement pstmt = conexao.prepareStatement(sql);
+                pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+                pstmt.setString(2, obj.getNome());
+                pstmt.setString(3, obj.getSobrenome());
+                pstmt.setBigDecimal(4, obj.getSalario());
+                pstmt.setString(5, "historiador");
+                pstmt.setString(6, historiador.getRegistro());
+                pstmt.setInt(7, obj.getEndereco().getCodigo());
+                pstmt.setInt(8, obj.getDepartamento().getCodigo());
+                pstmt.setString(9, obj.getCpf().toStringNaoFormatado());
+                pstmt.executeUpdate();
+            }
+            else {
+                sql = "UPDATE empregado SET data_ingressao = ?, nome = ?, sobrenome = ?, salario = ?, tipo = ?, endereco = ?, departamento = ? WHERE CPF = ?";
+                PreparedStatement pstmt = conexao.prepareStatement(sql);
+                pstmt.setDate(1, java.sql.Date.valueOf(obj.getDataIngresso()));
+                pstmt.setString(2, obj.getNome());
+                pstmt.setString(3, obj.getSobrenome());
+                pstmt.setBigDecimal(4, obj.getSalario());
+                pstmt.setString(5, "empregado");
+                pstmt.setInt(6, obj.getEndereco().getCodigo());
+                pstmt.setInt(7, obj.getDepartamento().getCodigo());
+                pstmt.setString(8, obj.getCpf().toStringNaoFormatado());
+                pstmt.executeUpdate();
+            }
+            return true;
         } catch (SQLException sqe) {
             System.out.println("Erro = " + sqe);
         }
@@ -223,7 +283,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 BigDecimal salario = resultado.getBigDecimal("salario");
                 String tipo = resultado.getString("tipo");
                 Endereco endereco = EnderecoDAO.getInstance().pesquisar(resultado.getInt("endereco"));
-                Departamento departamento = (Departamento) DepartamentoDAO.getInstance().pesquisar(resultado.getInt("departamento"));
+                Departamento departamento = DepartamentoDAO.getInstance().pesquisar(resultado.getInt("departamento"));
 
                 
 
@@ -267,7 +327,7 @@ public class EmpregadoDAO implements DAO<Empregado, CPF> {
                 BigDecimal salario = resultado.getBigDecimal("salario");
                 String tipo = resultado.getString("tipo");
                 Endereco endereco = EnderecoDAO.getInstance().pesquisar(resultado.getInt("endereco"));
-                Departamento departamento = (Departamento) DepartamentoDAO.getInstance().pesquisar(resultado.getInt("departamento"));
+                Departamento departamento = DepartamentoDAO.getInstance().pesquisar(resultado.getInt("departamento"));
 
                 if(tipo.equals("gerente")){
                     LocalDate inicio_gerencia = resultado.getDate("inicio_gerencia").toLocalDate();

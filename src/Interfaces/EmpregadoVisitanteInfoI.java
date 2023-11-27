@@ -33,8 +33,8 @@ public class EmpregadoVisitanteInfoI {
     private JLabel CPFLabel;
     private JLabel nomeLabel;
     private JLabel sobrenomeLabelField;
-    private Empregado empregado;
-    private Visitante visitante;
+    private final Empregado empregado;
+    private final Visitante visitante;
 
 
     public EmpregadoVisitanteInfoI(Empregado empregado, Visitante visitante) {

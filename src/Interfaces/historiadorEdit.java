@@ -8,6 +8,7 @@ import Persistance.ModeloDAO;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,11 +43,11 @@ public class historiadorEdit {
     private JTextField envergaduraTextField;
     private JTextField areaDeAtuacaoField;
     private JLabel historicoLabel;
-    private JTextField dataDeProducao;
+    private JFormattedTextField dataDeProducao;
     private JLabel nomeIndividuoLabel;
     private JComboBox hangarComboBox;
-    private Empregado empregado;
-    private Modelo modelo;
+    private final Empregado empregado;
+    private final Modelo modelo;
 
     public historiadorEdit(Empregado empregado, Modelo modelo) {
         this.empregado = empregado;
@@ -114,7 +115,12 @@ public class historiadorEdit {
 
         codigoTextField = new JLabel(String.valueOf(modelo.getCodigo()));
         marcaTextField = new JTextField(modelo.getMarca());
-        dataDeProducao = new JTextField(modelo.getDataProducao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        try {
+            dataDeProducao = new JFormattedTextField(new MaskFormatter("##/##/####"));
+            dataDeProducao.setText(modelo.getDataProducao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         comprimentotextField = new JTextField(String.valueOf(modelo.getComprimentoMetros()));
         envergaduraTextField = new JTextField(String.valueOf(modelo.getEnvergaduraMetros()));
         historicoTextPane = new JTextPane();

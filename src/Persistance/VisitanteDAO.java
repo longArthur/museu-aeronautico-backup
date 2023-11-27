@@ -98,7 +98,7 @@ public class VisitanteDAO implements DAO<Visitante, CPF> {
                         new CPF(rs.getString("cpf")),
                         rs.getString("nome"),
                         rs.getString("sobrenome"),
-                        rs.getString("genero").toUpperCase().equals("HOMEM") ? Visitante.Genero.HOMEM : rs.getString("genero").toUpperCase().equals("MULHER") ? Visitante.Genero.MULHER : Visitante.Genero.NAOBINARIO
+                        rs.getString("genero").equalsIgnoreCase("HOMEM") ? Visitante.Genero.HOMEM : rs.getString("genero").equalsIgnoreCase("MULHER") ? Visitante.Genero.MULHER : Visitante.Genero.NAOBINARIO
                 );
             }
         } catch (SQLException sqe) {
@@ -119,7 +119,7 @@ public class VisitanteDAO implements DAO<Visitante, CPF> {
                         new CPF(rs.getString("cpf")),
                         rs.getString("nome"),
                         rs.getString("sobrenome"),
-                        rs.getString("genero").toUpperCase().equals("HOMEM") ? Visitante.Genero.HOMEM : rs.getString("genero").toUpperCase().equals("MULHER") ? Visitante.Genero.MULHER : Visitante.Genero.NAOBINARIO
+                        rs.getString("genero").equalsIgnoreCase("HOMEM") ? Visitante.Genero.HOMEM : rs.getString("genero").equalsIgnoreCase("MULHER") ? Visitante.Genero.MULHER : Visitante.Genero.NAOBINARIO
                 ));
             }
         } catch (SQLException sqe) {

@@ -34,8 +34,8 @@ public class EmpregadoVisitanteEditI {
     private JLabel cpfField1;
     private JTextField sobrenomeField1;
     private JComboBox GeneroComboBox1;
-    private Empregado empregado;
-    private Visitante visitante;
+    private final Empregado empregado;
+    private final Visitante visitante;
 
     public EmpregadoVisitanteEditI(Empregado empregado, Visitante visitante) {
         this.empregado = empregado;

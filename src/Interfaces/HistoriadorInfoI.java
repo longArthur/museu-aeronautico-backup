@@ -49,8 +49,8 @@ public class HistoriadorInfoI {
     private JButton editarButton;
     private JLabel estadoLabel;
     private JLabel estadoField;
-    private Empregado empregado;
-    private Modelo modelo;
+    private final Empregado empregado;
+    private final Modelo modelo;
 
     public HistoriadorInfoI(Empregado empregado, Modelo modelo) {
         this.empregado = empregado;
