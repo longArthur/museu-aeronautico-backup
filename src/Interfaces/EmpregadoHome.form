@@ -243,6 +243,7 @@
                         </constraints>
                         <properties>
                           <font size="20"/>
+                          <foreground color="-394241"/>
                           <text value="CPF:"/>
                         </properties>
                       </component>

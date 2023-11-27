@@ -81,6 +81,7 @@ public class EmpregadoHome {
             Visita visita = visitaDAO.pesquisar((CPF) tabela.getValueAt(tabela.getSelectedRow(), 1));
             visita.setTempoEstadia(Duration.between(visita.getDataIngresso(), LocalDateTime.now()));
             visitaDAO.editar(visita);
+            System.out.println(visitaDAO.pesquisar(visita.getVisitante().getCpf()).getTempoEstadia());
             DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
             tableModel.setRowCount(0);
             for (Object[] objects : populateData()) {
@@ -278,6 +279,7 @@ public class EmpregadoHome {
         CPFLabel = new JLabel();
         Font CPFLabelFont = this.$$$getFont$$$(null, -1, 20, CPFLabel.getFont());
         if (CPFLabelFont != null) CPFLabel.setFont(CPFLabelFont);
+        CPFLabel.setForeground(new Color(-394241));
         CPFLabel.setText("CPF:");
         panel6.add(CPFLabel, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 2, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer18 = new com.intellij.uiDesigner.core.Spacer();
@@ -359,7 +361,7 @@ public class EmpregadoHome {
         for (int i = 0; i < visitas.size(); i++)
             dados[i] = new Object[]{visitas.get(i).getDataIngresso().format(format), visitas.get(i).getVisitante().getCpf(),
                     visitas.get(i).getVisitante().getNomeSobrenome(), visitas.get(i).getHangar(),
-                    (visitas.get(i).getTempoEstadia() != null) ? formatDuration(visitas.get(i).getTempoEstadia()) : "Nao terminada."};
+                    (visitas.get(i).getTempoEstadia() != null | visitas.get(i).getTempoEstadia().isZero() | visitas.get(i).getTempoEstadia().isNegative()) ? formatDuration(visitas.get(i).getTempoEstadia()) : "Nao terminada."};
         return dados;
     }
 
