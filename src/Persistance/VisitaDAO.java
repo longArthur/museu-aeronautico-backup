@@ -97,7 +97,7 @@ public class VisitaDAO implements DAO<Visita, CPF> {
     @Override
     public Visita pesquisar(CPF obj) {
         if(obj == null) return null;
-        String sql = "SELECT * FROM visita WHERE cpf_visitante = ?";
+        String sql = "SELECT * FROM visita WHERE cpf_visitante = ? ORDER BY data_ingresso DESC LIMIT 1";
         try {
             java.sql.PreparedStatement pstmt = conexao.prepareStatement(sql);
             pstmt.setString(1, obj.toStringNaoFormatado());
@@ -120,16 +120,18 @@ public class VisitaDAO implements DAO<Visita, CPF> {
     @Override
     public ArrayList<Visita> pesquisarTudo() {
         ArrayList<Visita> visitas = new ArrayList<>();
-        String sql = "SELECT * FROM visita";
+        String sql = "SELECT * FROM visita ORDER BY data_ingresso";
         try {
             java.sql.PreparedStatement pstmt = conexao.prepareStatement(sql);
             java.sql.ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
-                visitas.add(new Visita(
+                Visita visita = new Visita(
                         rs.getTimestamp("data_ingresso").toLocalDateTime(),
                         VisitanteDAO.getInstance().pesquisar(new CPF(rs.getString("cpf_visitante"))),
                         HangarDAO.getInstance().pesquisar(rs.getInt("cod_hangar"))
-                ));
+                );
+                visita.setTempoEstadia(Duration.ofSeconds(rs.getInt("tempo_estadia")));
+                visitas.add(visita);
             }
         } catch (java.sql.SQLException sqe) {
             System.out.println("Erro = " + sqe);

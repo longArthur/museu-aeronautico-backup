@@ -80,6 +80,7 @@ public class EmpregadoHome {
             Visita visita = visitaDAO.pesquisar((CPF) tabela.getValueAt(tabela.getSelectedRow(), 1));
             visita.setTempoEstadia(Duration.between(visita.getDataIngresso(), LocalDateTime.now()));
             visitaDAO.editar(visita);
+            System.out.println(visitaDAO.pesquisar(visita.getVisitante().getCpf()).getTempoEstadia());
             DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
             tableModel.setRowCount(0);
             for (Object[] objects : populateData()) {
@@ -354,7 +355,7 @@ public class EmpregadoHome {
         for (int i = 0; i < visitas.size(); i++)
             dados[i] = new Object[]{visitas.get(i).getDataIngresso().format(format), visitas.get(i).getVisitante().getCpf(),
                     visitas.get(i).getVisitante().getNomeSobrenome(), visitas.get(i).getHangar(),
-                    (visitas.get(i).getTempoEstadia() != null) ? formatDuration(visitas.get(i).getTempoEstadia()) : "Nao terminada."};
+                    (visitas.get(i).getTempoEstadia() != null | visitas.get(i).getTempoEstadia().isZero() | visitas.get(i).getTempoEstadia().isNegative()) ? formatDuration(visitas.get(i).getTempoEstadia()) : "Nao terminada."};
         return dados;
     }
 
