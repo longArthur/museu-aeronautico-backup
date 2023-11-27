@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="2d2145de-ca5d-45bd-b817-53ce6197a392" name="sigipev@localhost Mapping">
+      <data-sources db="59f781f4-5546-4df2-91bf-e5bb844b4758" ddl="298600d9-e3a2-43cc-ae9b-94bf779fe0b8" />
+      <scope>
+        <node negative="1">
+          <node kind="database" qname="@" />
+          <node kind="schema" qname="sigipev" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="298600d9-e3a2-43cc-ae9b-94bf779fe0b8" />
+          <option name="name" value="sigipev@localhost (DDL)" />
+          <option name="dbmsName" value="MARIADB" />
+          <option name="urls">
+            <array />
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
