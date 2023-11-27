@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class EmpregadoDAOTest {
+
     @BeforeAll
     public static void transactionRollbackStart(){
         try {
