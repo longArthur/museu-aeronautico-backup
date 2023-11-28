@@ -90,7 +90,6 @@ public class EmpregadoHome {
         });
 
         menu.addPopupMenuListener(new PopupMenuListener() {
-
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {

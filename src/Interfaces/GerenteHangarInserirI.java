@@ -20,7 +20,7 @@ import java.util.Locale;
 public class GerenteHangarInserirI {
     private JPanel panel5;
     private JPanel panel6;
-    private JTextField codigoField;
+
     private JTextField larguraField;
     private JTextField cidadeField;
     private JTextField comprimentoField;
@@ -70,7 +70,6 @@ public class GerenteHangarInserirI {
                             DepartamentoDAO.getInstance().pesquisarTudo().get(departamentoComboBox.getSelectedIndex()));
                     if (HangarDAO.getInstance().inserir(hangar) != null) {
                         JOptionPane.showMessageDialog(frame, "Hangar inserido com sucesso!");
-                        codigoField.setText("");
                         blocoLabel.setText("");
                         qtdVagasField.setText("");
                         larguraField.setText("");
